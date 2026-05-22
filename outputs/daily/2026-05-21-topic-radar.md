@@ -11,15 +11,13 @@
 ### 1) SpaceX IPO 文件曝光：AI 算力“超级甲方”出现了——Anthropic 月付 $12.5 亿买算力
 
 - **来源**
-  - Reuters（经 Investing/MarketScreener 转引，2026-05-21 相关更新与披露）
-    - https://m.investing.com/news/stock-market-news/anthropic-nears-first-quarterly-profit-agrees-to-pay-spacex-125-billion-monthly-for-computing-power-4702825
-    - https://uk.marketscreener.com/news/bound-for-mars-elon-musk-s-spacex-unveils-filing-for-blockbuster-ipo-ce7f5ad9df8ff022
-  - TechCrunch（补充解读，2026-05-21 传播素材可用，但事实点以 Reuters/文件为准）
-    - https://techcrunch.com/2026/05/20/the-spacex-ipo-filing-ai-bets-starship-dreams-elon-musk/
+  - Axios（2026-05-21）：https://www.axios.com/2026/05/21/ai-news-cycle-openai-anthropic-spacex
+  - DCD / DataCenterDynamics（2026-05-21，转述 IPO 文件披露细节，写作时需回到原文件或多方交叉核实）：https://www.datacenterdynamics.com/en/news/spacex-ipo-filing-reveals-anthropic-set-to-pay-musks-firm-125bn-a-month-to-rent-xai-data-center-space/
+  - Reuters（无法直接访问原文时，可用同日转引作线索，但事实点以 SpaceX 公开文件/多方交叉核实为准，且需标注“需要二次核实”）
 
 - **事件摘要（写给留学生看的版本）**
   - SpaceX 的 IPO 文件把 AI 业务赌注摊牌：不仅做火箭/卫星，还把“AI 训练基础设施”当成未来增长引擎。
-  - 同一份披露里最炸裂的细节：Anthropic 与 SpaceX 的算力合作扩容，**月度费用级别达到 $1.25B**，并覆盖其 AI 训练集群（报道提到 Colossus / Colossus II 等表述）。
+  - 同一份披露里最炸裂的细节：Anthropic 扩大与 SpaceX 相关算力合作，公开报道披露其支出规模**约 $1.25B/月**（写作时要强调：金额口径与合同条款需二次核实）。
 
 - **为什么对美国留学生重要**
   - 你在校准备的“AI / SWE / Infra”不只是大厂/创业公司路线：**AI 时代的高薪岗位正在往“算力—数据中心—训练平台—可靠性工程”集中**，而“谁敢长期签下天价算力合同”本质是行业景气度与用人强度的信号。
