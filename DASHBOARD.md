@@ -27,6 +27,31 @@ node scripts/build-dashboard.mjs
 
 - `outputs/dashboard/index.html`
 
+---
+
+## 如何做到“0 手动”（自动部署到公网、全团队实时看到）
+
+前提：你已经把仓库连接到 Netlify（continuous deployment），并且 Netlify 的 Publish 目录是 `outputs/`。
+
+### 一次性设置
+
+1. 确保仓库已推到 GitHub（`main` 分支）。
+2. 在 Netlify 选择 “Import from existing repository with continuous deployment”，并使用仓库内的 `netlify.toml`。
+
+### 日常（完全 0 手动）
+
+把你的“每日选题雷达自动化”最后一步改成执行：
+
+```bash
+python3 scripts/publish-dashboard.py
+```
+
+它会自动：
+- 生成/更新 `outputs/dashboard/data.js`
+- `git add outputs` → `git commit` → `git push`
+
+Netlify 会在收到 push 后自动重建并发布，团队打开同一个站点地址即可看到最新。
+
 ## 解析约定（不要改结构）
 
 构建脚本依赖每日 Markdown 的固定结构：
