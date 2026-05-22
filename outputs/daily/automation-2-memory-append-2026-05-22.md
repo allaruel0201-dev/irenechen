@@ -10,3 +10,6 @@
 
 - Run (Asia/Shanghai): 2026-05-22 11:29 CST
   - Deployment notes: 当前目录不是 git repo；已添加 `netlify.toml` / `vercel.json` / `.gitignore`，用于“push 自动部署 outputs/”。
+
+- Run (Asia/Shanghai): 2026-05-22 14:56 CST
+  - Dashboard UX: 构建脚本清洗 Markdown 行内 `**...**`/`__...__`，并已重建 `outputs/dashboard/data.js`。
