@@ -58,7 +58,8 @@ def main() -> int:
   run([sys.executable, "scripts/build-dashboard.py"])
 
   # 2) Stage outputs (including updated data.js)
-  run(["git", "add", "outputs"])
+  # Netlify rebuilds from repo contents; commit both generated outputs and the build scripts.
+  run(["git", "add", "outputs", "scripts/build-dashboard.py", "scripts/build-dashboard.mjs", "scripts/publish-dashboard.py"])
 
   # 3) If nothing changed, exit quietly
   status = run(["git", "status", "--porcelain"])
@@ -98,4 +99,3 @@ def main() -> int:
 
 if __name__ == "__main__":
   raise SystemExit(main())
-

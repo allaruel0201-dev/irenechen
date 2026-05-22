@@ -35,7 +35,11 @@ def take_section(markdown: str, start_heading_re: re.Pattern[str], end_heading_r
 
 
 def _clean_line(line: str) -> str:
-  return re.sub(r"^\s*[-*]\s+", "", line).strip()
+  text = re.sub(r"^\s*[-*]\s+", "", line).strip()
+  # Dashboard展示用：去掉常见 Markdown 行内标记（避免出现 **加粗**）。
+  text = re.sub(r"\*\*(.+?)\*\*", r"\1", text)
+  text = re.sub(r"__(.+?)__", r"\1", text)
+  return text
 
 
 def _extract_sublist_after_label(block_lines: list[str], label_index: int, max_items: int = 10) -> list[str]:

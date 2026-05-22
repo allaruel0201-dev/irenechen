@@ -27,7 +27,11 @@ function takeSection(markdown, startHeadingRegex, endHeadingRegex) {
 }
 
 function cleanLineText(line) {
-  return line.replace(/^\s*[-*]\s+/, "").trim();
+  let text = line.replace(/^\s*[-*]\s+/, "").trim();
+  // Dashboard展示用：去掉常见 Markdown 行内标记（避免出现 **加粗**）。
+  text = text.replace(/\*\*(.+?)\*\*/g, "$1");
+  text = text.replace(/__(.+?)__/g, "$1");
+  return text;
 }
 
 function extractSubListAfterLabel(blockLines, labelLineIndex, maxItems = 8) {
