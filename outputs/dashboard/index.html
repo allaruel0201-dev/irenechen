@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>美国留学生职业机会选题雷达 Dashboard</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-title">选题雷达 Dashboard</div>
+        <div class="brand-sub">从每日输出中快速定位“今天必写”</div>
+      </div>
+      <div class="controls">
+        <label class="control">
+          <span>关键词</span>
+          <input id="q" type="search" placeholder="Nvidia / H-1B / quant / data center…" />
+        </label>
+        <label class="control">
+          <span>最低总分</span>
+          <select id="minScore">
+            <option value="0">不限</option>
+            <option value="18">≥18（备选以上）</option>
+            <option value="22">≥22（本周重点）</option>
+            <option value="26" selected>≥26（必写）</option>
+          </select>
+        </label>
+        <div class="hint">提示：最低总分只筛选“必写 3 题”，不影响备选池。</div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="sidebar-title">日期</div>
+        <div id="dayList" class="day-list"></div>
+      </aside>
+
+      <section class="content">
+        <div id="empty" class="empty hidden">
+          <div class="empty-title">没有匹配结果</div>
+          <div class="empty-sub">试试降低最低分或换个关键词。</div>
+        </div>
+
+        <div id="dayView" class="day-view"></div>
+      </section>
+    </main>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

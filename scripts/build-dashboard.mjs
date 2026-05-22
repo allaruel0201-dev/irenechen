@@ -1,0 +1,169 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+
+const WORKSPACE_ROOT = process.cwd();
+const DAILY_DIR = path.join(WORKSPACE_ROOT, "outputs", "daily");
+const DASHBOARD_DIR = path.join(WORKSPACE_ROOT, "outputs", "dashboard");
+
+function safeJsonStringify(value) {
+  return JSON.stringify(value, null, 2);
+}
+
+function parseDateFromFilename(filename) {
+  const match = filename.match(/^(\d{4}-\d{2}-\d{2})-topic-radar\.md$/);
+  return match ? match[1] : null;
+}
+
+function takeSection(markdown, startHeadingRegex, endHeadingRegex) {
+  const startMatch = markdown.match(startHeadingRegex);
+  if (!startMatch) return null;
+  const startIndex = startMatch.index ?? 0;
+  const afterStartIndex = startIndex + startMatch[0].length;
+  const rest = markdown.slice(afterStartIndex);
+
+  const endMatch = rest.match(endHeadingRegex);
+  const endIndex = endMatch ? afterStartIndex + (endMatch.index ?? 0) : markdown.length;
+  return markdown.slice(afterStartIndex, endIndex).trim();
+}
+
+function cleanLineText(line) {
+  return line.replace(/^\s*[-*]\s+/, "").trim();
+}
+
+function extractSubListAfterLabel(blockLines, labelLineIndex, maxItems = 8) {
+  const items = [];
+  for (let i = labelLineIndex + 1; i < blockLines.length; i++) {
+    const line = blockLines[i];
+    if (/^\s*-\s+\*\*/.test(line)) break; // next label
+    const bullet = line.match(/^\s*-\s+(.+)\s*$/);
+    if (!bullet) continue;
+    const text = cleanLineText(bullet[0]);
+    if (!text) continue;
+    items.push(text);
+    if (items.length >= maxItems) break;
+  }
+  return items;
+}
+
+function extractTextAfterLabel(blockLines, labelLineIndex, maxChars = 420) {
+  const out = [];
+  for (let i = labelLineIndex + 1; i < blockLines.length; i++) {
+    const line = blockLines[i];
+    if (/^\s*-\s+\*\*/.test(line)) break; // next label
+    if (/^\s*###\s+/.test(line)) break;
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    out.push(cleanLineText(line));
+  }
+  const joined = out.join(" ");
+  return joined.length > maxChars ? `${joined.slice(0, maxChars - 1)}…` : joined;
+}
+
+function parseTopTopics(markdown) {
+  const section = takeSection(
+    markdown,
+    /^##\s*1\)\s*今日最值得写的\s*3\s*个选题\s*$/m,
+    /^##\s*2\)\s*/m,
+  );
+  if (!section) return [];
+
+  const headingMatches = [...section.matchAll(/^###\s+(.+)\s*$/gm)].map((m) => ({
+    title: m[1].trim(),
+    index: m.index ?? 0,
+    length: m[0].length,
+  }));
+
+  const topics = [];
+  for (let idx = 0; idx < headingMatches.length; idx++) {
+    const current = headingMatches[idx];
+    const next = headingMatches[idx + 1];
+    const blockStart = current.index + current.length;
+    const blockEnd = next ? next.index : section.length;
+
+    const title = current.title;
+    const block = section.slice(blockStart, blockEnd);
+    const blockLines = block.split("\n");
+
+    let scoreTotal = null;
+    for (const line of blockLines) {
+      const score = line.match(/\*\*总分\D*(\d{1,2})\b/);
+      if (score) scoreTotal = Number(score[1]);
+    }
+
+    let sources = [];
+    let summary = "";
+    for (let i = 0; i < blockLines.length; i++) {
+      const line = blockLines[i];
+      if (/^\s*-\s+\*\*来源/.test(line)) sources = extractSubListAfterLabel(blockLines, i, 10);
+      if (/^\s*-\s+\*\*事件摘要/.test(line)) summary = extractTextAfterLabel(blockLines, i, 520);
+    }
+
+    topics.push({
+      title,
+      score_total: scoreTotal,
+      sources,
+      summary,
+    });
+  }
+
+  return topics.slice(0, 3);
+}
+
+function parseAlternativeTopics(markdown) {
+  const section = takeSection(
+    markdown,
+    /^##\s*2\)\s*备选选题池.*$/m,
+    /^##\s*3\)\s*/m,
+  );
+  if (!section) return [];
+
+  const alternatives = [];
+  for (const line of section.split("\n")) {
+    const item = line.match(/^\s*\d+\.\s+\*\*(.+?)\*\*：(.+?)（总分：(\d{1,2})）\s*$/);
+    if (item) {
+      alternatives.push({
+        title: item[1].trim(),
+        summary: item[2].trim(),
+        score_total: Number(item[3]),
+      });
+    }
+  }
+  return alternatives;
+}
+
+async function build() {
+  await fs.mkdir(DASHBOARD_DIR, { recursive: true });
+
+  const entries = await fs.readdir(DAILY_DIR, { withFileTypes: true });
+  const dailyFiles = entries
+    .filter((d) => d.isFile())
+    .map((d) => d.name)
+    .filter((name) => name.endsWith("-topic-radar.md"));
+
+  const days = [];
+  for (const filename of dailyFiles) {
+    const date = parseDateFromFilename(filename);
+    if (!date) continue;
+    const fullPath = path.join(DAILY_DIR, filename);
+    const markdown = await fs.readFile(fullPath, "utf8");
+
+    days.push({
+      date,
+      file: `outputs/daily/${filename}`,
+      top_topics: parseTopTopics(markdown),
+      alternatives: parseAlternativeTopics(markdown),
+    });
+  }
+
+  days.sort((a, b) => (a.date < b.date ? 1 : -1));
+
+  const data = {
+    generated_at: new Date().toISOString(),
+    days,
+  };
+
+  const js = `// Auto-generated by scripts/build-dashboard.mjs\nwindow.TOPIC_RADAR_DATA = ${safeJsonStringify(data)};\n`;
+  await fs.writeFile(path.join(DASHBOARD_DIR, "data.js"), js, "utf8");
+}
+
+await build();

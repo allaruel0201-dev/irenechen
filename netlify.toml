@@ -1,0 +1,7 @@
+[build]
+  command = "python3 scripts/build-dashboard.py"
+  publish = "outputs"
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+

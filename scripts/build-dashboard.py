@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from __future__ import annotations
+
+import json
+import os
+import re
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+
+WORKSPACE_ROOT = Path(os.getcwd())
+DAILY_DIR = WORKSPACE_ROOT / "outputs" / "daily"
+DASHBOARD_DIR = WORKSPACE_ROOT / "outputs" / "dashboard"
+
+
+DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-topic-radar\.md$")
+
+
+def parse_date_from_filename(filename: str) -> str | None:
+  m = DATE_RE.match(filename)
+  return m.group(1) if m else None
+
+
+def take_section(markdown: str, start_heading_re: re.Pattern[str], end_heading_re: re.Pattern[str]) -> str | None:
+  start = start_heading_re.search(markdown)
+  if not start:
+    return None
+  rest = markdown[start.end() :]
+  end = end_heading_re.search(rest)
+  return (rest[: end.start()] if end else rest).strip()
+
+
+def _clean_line(line: str) -> str:
+  return re.sub(r"^\s*[-*]\s+", "", line).strip()
+
+
+def _extract_sublist_after_label(block_lines: list[str], label_index: int, max_items: int = 10) -> list[str]:
+  items: list[str] = []
+  for i in range(label_index + 1, len(block_lines)):
+    line = block_lines[i]
+    if re.match(r"^\s*-\s+\*\*", line):
+      break
+    m = re.match(r"^\s*-\s+(.+?)\s*$", line)
+    if not m:
+      continue
+    text = _clean_line(line)
+    if text:
+      items.append(text)
+    if len(items) >= max_items:
+      break
+  return items
+
+
+def _extract_text_after_label(block_lines: list[str], label_index: int, max_chars: int = 520) -> str:
+  out: list[str] = []
+  for i in range(label_index + 1, len(block_lines)):
+    line = block_lines[i]
+    if re.match(r"^\s*-\s+\*\*", line):
+      break
+    if re.match(r"^\s*###\s+", line):
+      break
+    t = line.strip()
+    if not t:
+      continue
+    out.append(_clean_line(line))
+  joined = " ".join(out).strip()
+  if len(joined) > max_chars:
+    return joined[: max_chars - 1] + "…"
+  return joined
+
+
+def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
+  section = take_section(
+    markdown,
+    re.compile(r"^##\s*1\)\s*今日最值得写的\s*3\s*个选题\s*$", re.M),
+    re.compile(r"^##\s*2\)\s*", re.M),
+  )
+  if not section:
+    return []
+
+  headings = list(re.finditer(r"^###\s+(.+?)\s*$", section, re.M))
+  topics: list[dict[str, Any]] = []
+  for idx, h in enumerate(headings):
+    title = h.group(1).strip()
+    block_start = h.end()
+    block_end = headings[idx + 1].start() if idx + 1 < len(headings) else len(section)
+    block = section[block_start:block_end]
+    block_lines = block.splitlines()
+
+    score_total: int | None = None
+    for line in block_lines:
+      m = re.search(r"\*\*总分\D*(\d{1,2})\b", line)
+      if m:
+        score_total = int(m.group(1))
+
+    sources: list[str] = []
+    summary = ""
+    why = ""
+    signal = ""
+    for i, line in enumerate(block_lines):
+      if re.match(r"^\s*-\s+\*\*来源", line):
+        sources = _extract_sublist_after_label(block_lines, i, 10)
+      if re.match(r"^\s*-\s+\*\*事件摘要", line):
+        summary = _extract_text_after_label(block_lines, i, 520)
+      if re.match(r"^\s*-\s+\*\*为什么对美国留学生重要", line):
+        why = _extract_text_after_label(block_lines, i, 680)
+      if re.match(r"^\s*-\s+\*\*职业机会信号", line):
+        signal = _extract_text_after_label(block_lines, i, 680)
+
+    topics.append(
+      {
+        "title": title,
+        "score_total": score_total,
+        "sources": sources,
+        "summary": summary,
+        "why_it_matters": why,
+        "job_signal": signal,
+      }
+    )
+
+  return topics[:3]
+
+
+ALT_RE = re.compile(r"^\s*\d+\.\s+\*\*(.+?)\*\*：(.+?)（总分：(\d{1,2})）\s*$")
+
+
+def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
+  section = take_section(
+    markdown,
+    re.compile(r"^##\s*2\)\s*备选选题池.*$", re.M),
+    re.compile(r"^##\s*3\)\s*", re.M),
+  )
+  if not section:
+    return []
+
+  alternatives: list[dict[str, Any]] = []
+  for line in section.splitlines():
+    m = ALT_RE.match(line)
+    if not m:
+      continue
+    alternatives.append(
+      {
+        "title": m.group(1).strip(),
+        "summary": m.group(2).strip(),
+        "score_total": int(m.group(3)),
+      }
+    )
+  return alternatives
+
+
+def build() -> None:
+  DASHBOARD_DIR.mkdir(parents=True, exist_ok=True)
+
+  if not DAILY_DIR.exists():
+    raise SystemExit(f"Missing daily dir: {DAILY_DIR}")
+
+  days: list[dict[str, Any]] = []
+  for p in DAILY_DIR.iterdir():
+    if not p.is_file():
+      continue
+    date = parse_date_from_filename(p.name)
+    if not date:
+      continue
+    markdown = p.read_text(encoding="utf-8")
+    days.append(
+      {
+        "date": date,
+        "file": f"outputs/daily/{p.name}",
+        "top_topics": parse_top_topics(markdown),
+        "alternatives": parse_alternatives(markdown),
+      }
+    )
+
+  days.sort(key=lambda d: d["date"], reverse=True)
+  data = {
+    "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    "days": days,
+  }
+
+  js = "// Auto-generated by scripts/build-dashboard.py\nwindow.TOPIC_RADAR_DATA = "
+  js += json.dumps(data, ensure_ascii=False, indent=2)
+  js += ";\n"
+  (DASHBOARD_DIR / "data.js").write_text(js, encoding="utf-8")
+
+
+if __name__ == "__main__":
+  build()
