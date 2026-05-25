@@ -13,3 +13,12 @@
 
 - Run (Asia/Shanghai): 2026-05-22 14:56 CST
   - Dashboard UX: 构建脚本清洗 Markdown 行内 `**...**`/`__...__`，并已重建 `outputs/dashboard/data.js`。
+
+- Run (Asia/Shanghai): 2026-05-22 15:02 CST
+  - Sources updated: 明确日常必看媒体为 Business Insider/Bloomberg/eFinancialCareers/Reuters；论坛 WSO/Blind；政策源 USCIS/DHS 且仅纳入与中国留学生强相关的新政（H-1B/F-1/OPT/CPT）。
+
+- Run (Asia/Shanghai): 2026-05-22 15:04 CST
+  - Sources updated: 已从 sources.md 移除 LinkedIn（不再作为日常追踪源）。
+
+- Run (Asia/Shanghai): 2026-05-22 15:08 CST
+  - Sources updated: 放弃直接抓 Bloomberg 付费墙；改为仅从其他权威媒体对 Bloomberg 的转载/引用中提取线索，并强制标注“二次转载/需二次核实”。
