@@ -2,4 +2,6 @@
 outputs/.DS_Store
 outputs/daily/.DS_Store
 outputs/dashboard/.DS_Store
-
+.DS_Store
+__pycache__/
+scripts/__pycache__/

@@ -10,6 +10,7 @@ from pathlib import Path
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[1]
 DAILY_DIR = WORKSPACE_ROOT / "outputs" / "daily"
+NO_QUOTES = ("“", "”", "\"")
 
 
 DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-topic-radar\.md$")
@@ -53,7 +54,40 @@ def latest_daily_date() -> str | None:
   return max(dates) if dates else None
 
 
+def strip_quotes_in_file(path: Path) -> bool:
+  if not path.exists() or not path.is_file():
+    return False
+  text = path.read_text(encoding="utf-8")
+  updated = text
+  for q in NO_QUOTES:
+    updated = updated.replace(q, "")
+  if updated == text:
+    return False
+  path.write_text(updated, encoding="utf-8")
+  return True
+
+
+def git_pull_rebase_autostash() -> tuple[int, str]:
+  # Avoid non-fast-forward push failures when GitHub Actions (or others) push to main.
+  return try_run(["git", "pull", "--rebase", "--autostash"])
+
+
 def main() -> int:
+  # 0) Keep local branch up-to-date (robust for fully automated runs).
+  code, out = git_pull_rebase_autostash()
+  if code != 0:
+    # Don't hard-fail here; later steps may still succeed (e.g., first run).
+    sys.stderr.write("Warning: git pull --rebase failed; continuing.\n")
+    sys.stderr.write(out + "\n")
+
+  # 0.1) Enforce "no quotes" style on the latest daily file (post-process safety net).
+  date = latest_daily_date()
+  if date:
+    latest_daily = DAILY_DIR / f"{date}-topic-radar.md"
+    if strip_quotes_in_file(latest_daily):
+      # Stage later with other outputs.
+      pass
+
   # 1) Build dashboard data.js
   run([sys.executable, "scripts/build-dashboard.py"])
 
@@ -83,6 +117,13 @@ def main() -> int:
 
   # 5) Push
   code, out = try_run(["git", "push"])
+  if code != 0 and ("fetch first" in out.lower() or "non-fast-forward" in out.lower()):
+    # Remote moved (often GitHub Actions). Rebase and retry once.
+    pull_code, pull_out = git_pull_rebase_autostash()
+    if pull_code == 0:
+      code, out = try_run(["git", "push"])
+    else:
+      out = out + "\n\n" + pull_out
   if code != 0:
     sys.stderr.write(
       "Commit created but push failed.\n"
