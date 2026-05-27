@@ -97,7 +97,10 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
 
     score_total: int | None = None
     for line in block_lines:
-      m = re.search(r"\*\*总分\D*(\d{1,2})\b", line)
+      # Support both:
+      # - "... **总分 26**"
+      # - "... 总分 26"
+      m = re.search(r"(?:\*\*)?总分\D*(\d{1,2})\b", line)
       if m:
         score_total = int(m.group(1))
 
@@ -106,13 +109,13 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
     why = ""
     signal = ""
     for i, line in enumerate(block_lines):
-      if re.match(r"^\s*-\s+\*\*来源", line):
+      if re.match(r"^\s*-\s+(?:\*\*)?来源", line):
         sources = _extract_sublist_after_label(block_lines, i, 10)
-      if re.match(r"^\s*-\s+\*\*事件摘要", line):
+      if re.match(r"^\s*-\s+(?:\*\*)?事件摘要", line):
         summary = _extract_text_after_label(block_lines, i, 520)
-      if re.match(r"^\s*-\s+\*\*为什么对美国留学生重要", line):
+      if re.match(r"^\s*-\s+(?:\*\*)?为什么对美国留学生重要", line):
         why = _extract_text_after_label(block_lines, i, 680)
-      if re.match(r"^\s*-\s+\*\*职业机会信号", line):
+      if re.match(r"^\s*-\s+(?:\*\*)?职业机会信号", line):
         signal = _extract_text_after_label(block_lines, i, 680)
 
     topics.append(
@@ -129,7 +132,7 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
   return topics[:3]
 
 
-ALT_RE = re.compile(r"^\s*\d+\.\s+\*\*(.+?)\*\*：(.+?)（总分：(\d{1,2})）\s*$")
+ALT_RE = re.compile(r"^\s*\d+\.\s+(?:\*\*(.+?)\*\*|(.+?))：(.+?)（总分：(\d{1,2})）\s*$")
 
 
 def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
@@ -146,11 +149,12 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
     m = ALT_RE.match(line)
     if not m:
       continue
+    title = (m.group(1) or m.group(2) or "").strip()
     alternatives.append(
       {
-        "title": m.group(1).strip(),
-        "summary": m.group(2).strip(),
-        "score_total": int(m.group(3)),
+        "title": title,
+        "summary": m.group(3).strip(),
+        "score_total": int(m.group(4)),
       }
     )
   return alternatives
