@@ -9,6 +9,10 @@ on:
       - "scripts/build-dashboard.mjs"
       - "scripts/publish-dashboard.py"
       - "outputs/dashboard/**"
+  schedule:
+    # Run daily at 01:10 UTC (09:10 Asia/Shanghai), as a safety net in case
+    # someone forgets to commit/push `outputs/dashboard/data.js`.
+    - cron: "10 1 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -20,7 +24,8 @@ concurrency:
 
 jobs:
   publish:
-    if: github.actor != 'github-actions[bot]'
+    # Prevent infinite loops on bot pushes, but allow scheduled/manual runs.
+    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -50,4 +55,3 @@ jobs:
           msg="dashboard: ${latest_date:-update}"
           git commit -m "$msg"
           git push
-
