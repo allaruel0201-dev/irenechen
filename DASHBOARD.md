@@ -31,14 +31,34 @@ node scripts/build-dashboard.mjs
 
 ## 如何做到“0 手动”（自动部署到公网、全团队实时看到）
 
+你可以用 **GitHub Pages（推荐：免费、够用、稳定）**，也可以用 Netlify（可能触发免费额度/用量上限）。
+
+### 方案 A：GitHub Pages（推荐，免费）
+
+仓库已内置工作流：`.github/workflows/deploy-pages.yml`，它会把 `outputs/` 部署成 GitHub Pages 站点。
+
+一次性设置（在 GitHub 网页端操作）：
+
+1. 打开仓库 → `Settings` → `Pages`
+2. `Build and deployment` 里选择 `Source: GitHub Actions`
+3. 等待 `Deploy GitHub Pages (dashboard)` 工作流跑完
+4. 站点地址通常是：`https://<owner>.github.io/<repo>/`（以 GitHub Pages 页面显示为准）
+
+日常（完全 0 手动）：
+
+- 你的自动化照常执行：`python3 scripts/publish-dashboard.py`
+- 推送到 `main` 后，GitHub Actions 会自动部署 Pages
+
+### 方案 B：Netlify（可选，可能需要付费）
+
 前提：你已经把仓库连接到 Netlify（continuous deployment），并且 Netlify 的 Publish 目录是 `outputs/`。
 
-### 一次性设置
+一次性设置：
 
 1. 确保仓库已推到 GitHub（`main` 分支）。
 2. 在 Netlify 选择 “Import from existing repository with continuous deployment”，并使用仓库内的 `netlify.toml`。
 
-### 日常（完全 0 手动）
+日常（完全 0 手动）：
 
 把你的“每日选题雷达自动化”最后一步改成执行：
 

@@ -1,0 +1,54 @@
+name: Deploy GitHub Pages (dashboard)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "outputs/**"
+      - "scripts/build-dashboard.py"
+      - "scripts/build-dashboard.mjs"
+      - ".github/workflows/deploy-pages.yml"
+  schedule:
+    # Run daily at 01:15 UTC (09:15 Asia/Shanghai) as a safety net.
+    - cron: "15 1 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: deploy-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build dashboard data.js
+        run: python3 scripts/build-dashboard.py
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: outputs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
