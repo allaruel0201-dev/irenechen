@@ -132,7 +132,11 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
   return topics[:3]
 
 
-ALT_RE = re.compile(r"^\s*\d+\.\s+(?:\*\*(.+?)\*\*|(.+?))：(.+?)（总分：(\d{1,2})）\s*$")
+ALT_SINGLE_LINE_TITLE_RE = re.compile(r"^\s*\d+\.\s+\*\*(.+?)\*\*(.*)$")
+ALT_PLAIN_LINE_RE = re.compile(r"^\s*\d+\.\s+(.+)$")
+ALT_BLOCK_START_RE = re.compile(r"^\s*(\d+)\.\s+\*\*(.+?)\*\*\s*$")
+ALT_SCORE_RE = re.compile(r"评分[：:]\s*(\d{1,2})\s*$")
+ALT_INLINE_SCORE_RE = re.compile(r"（总分：(\d{1,2})(?:[^）]*)）")
 
 
 def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
@@ -145,18 +149,85 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
     return []
 
   alternatives: list[dict[str, Any]] = []
-  for line in section.splitlines():
-    m = ALT_RE.match(line)
-    if not m:
+  lines = section.splitlines()
+  i = 0
+  while i < len(lines):
+    line = lines[i]
+
+    inline_title = ALT_SINGLE_LINE_TITLE_RE.match(line)
+    if not inline_title:
+      plain_line = ALT_PLAIN_LINE_RE.match(line)
+      if plain_line:
+        tail = plain_line.group(1).strip()
+        score_match = ALT_INLINE_SCORE_RE.search(tail)
+        if score_match:
+          body = ALT_INLINE_SCORE_RE.sub("", tail).strip()
+          title, _, summary = body.partition("：")
+          if not summary:
+            title, _, summary = body.partition(":")
+          alternatives.append(
+            {
+              "title": title.strip(),
+              "summary": summary.strip(),
+              "score_total": int(score_match.group(1)),
+            }
+          )
+          i += 1
+          continue
+
+      block_start = ALT_BLOCK_START_RE.match(line)
+      if not block_start:
+        i += 1
+        continue
+
+      title = block_start.group(2).strip()
+      block: list[str] = []
+      i += 1
+      while i < len(lines):
+        next_line = lines[i]
+        if ALT_BLOCK_START_RE.match(next_line) or re.match(r"^##\s+", next_line):
+          break
+        block.append(next_line.rstrip())
+        i += 1
+
+      summary = ""
+      score_total: int | None = None
+      for block_line in block:
+        stripped = block_line.strip()
+        if not stripped:
+          continue
+        if stripped.startswith("来源：") or stripped.startswith("角度："):
+          if not summary:
+            summary = stripped
+        score_match = ALT_SCORE_RE.search(stripped)
+        if score_match:
+          score_total = int(score_match.group(1))
+
+      alternatives.append(
+        {
+          "title": title,
+          "summary": summary,
+          "score_total": score_total,
+        }
+      )
       continue
-    title = (m.group(1) or m.group(2) or "").strip()
+
+    tail = inline_title.group(2).strip()
+    score_match = ALT_INLINE_SCORE_RE.search(tail)
+    if not score_match:
+      i += 1
+      continue
+    title = inline_title.group(1).strip()
+    summary = ALT_INLINE_SCORE_RE.sub("", tail).strip()
+    summary = summary.lstrip("：:").strip()
     alternatives.append(
       {
         "title": title,
-        "summary": m.group(3).strip(),
-        "score_total": int(m.group(4)),
+        "summary": summary,
+        "score_total": int(score_match.group(1)),
       }
     )
+    i += 1
   return alternatives
 
 

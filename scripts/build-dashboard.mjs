@@ -122,15 +122,91 @@ function parseAlternativeTopics(markdown) {
   if (!section) return [];
 
   const alternatives = [];
-  for (const line of section.split("\n")) {
-    const item = line.match(/^\s*\d+\.\s+\*\*(.+?)\*\*：(.+?)（总分：(\d{1,2})）\s*$/);
-    if (item) {
-      alternatives.push({
-        title: item[1].trim(),
-        summary: item[2].trim(),
-        score_total: Number(item[3]),
-      });
+  const lines = section.split("\n");
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    const inlineTitle = line.match(/^\s*\d+\.\s+\*\*(.+?)\*\*(.*)$/);
+    if (inlineTitle) {
+      const tail = inlineTitle[2].trim();
+      const scoreMatch = tail.match(/（总分：(\d{1,2})(?:[^）]*)）/);
+      if (scoreMatch) {
+        const summary = tail.replace(/（总分：(\d{1,2})(?:[^）]*)）/, "").replace(/^[：:]\s*/, "").trim();
+        alternatives.push({
+          title: inlineTitle[1].trim(),
+          summary,
+          score_total: Number(scoreMatch[1]),
+        });
+        i += 1;
+        continue;
+      }
     }
+
+    const plainLine = line.match(/^\s*\d+\.\s+(.+)$/);
+    if (plainLine) {
+      const tail = plainLine[1].trim();
+      const scoreMatch = tail.match(/（总分：(\d{1,2})(?:[^）]*)）/);
+      if (scoreMatch) {
+        const body = tail.replace(/（总分：(\d{1,2})(?:[^）]*)）/, "").trim();
+        let title = body;
+        let summary = "";
+        if (body.includes("：")) {
+          [title, summary] = body.split(/：(.*)/s, 2);
+        } else if (body.includes(":")) {
+          [title, summary] = body.split(/:(.*)/s, 2);
+        }
+        alternatives.push({
+          title: title.trim(),
+          summary: (summary || "").trim(),
+          score_total: Number(scoreMatch[1]),
+        });
+        i += 1;
+        continue;
+      }
+    }
+
+    const blockStart = line.match(/^\s*\d+\.\s+\*\*(.+?)\*\*\s*$/);
+    if (!blockStart) {
+      i += 1;
+      continue;
+    }
+
+    if (/^\s*\d+\.\s+\*\*(.+?)\*\*\s*$/.test(line) === false) {
+      i += 1;
+      continue;
+    }
+
+    if (/^\s*\d+\.\s+\*\*(.+?)\*\*(.*)$/.test(line) && !/^\s*\d+\.\s+\*\*(.+?)\*\*\s*$/.test(line)) {
+      i += 1;
+      continue;
+    }
+
+    const title = blockStart[1].trim();
+    const block = [];
+    i += 1;
+    while (i < lines.length) {
+      const nextLine = lines[i];
+      if (/^\s*\d+\.\s+\*\*(.+?)\*\*(.*)$/.test(nextLine) || /^##\s+/.test(nextLine)) break;
+      block.push(nextLine.trim());
+      i += 1;
+    }
+
+    let summary = "";
+    let scoreTotal = null;
+    for (const blockLine of block) {
+      if (!blockLine) continue;
+      if (!summary && (blockLine.startsWith("来源：") || blockLine.startsWith("角度："))) {
+        summary = blockLine;
+      }
+      const scoreMatch = blockLine.match(/评分[：:]\s*(\d{1,2})\s*$/);
+      if (scoreMatch) scoreTotal = Number(scoreMatch[1]);
+    }
+
+    alternatives.push({
+      title,
+      summary,
+      score_total: scoreTotal,
+    });
   }
   return alternatives;
 }
