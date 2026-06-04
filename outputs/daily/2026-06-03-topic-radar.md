@@ -155,11 +155,10 @@
 
 ### 3) Broadcom 当天交出 AI 收入 143% 增长：下一波更值钱的简历，不一定在大模型公司，而在 custom chip 和 AI networking
 
-- **来源（当日权威）**
-  - Broadcom 财报摘要，经 Investing 转引，6 月 3 日：https://za.investing.com/news/stock-market-news/broadcom-reports-48-revenue-growth-in-fiscal-q2-raises-guidance-93CH-4313124
-- **来源（当日社区二次验证，不作事实依据）**
-  - Reddit `r/stocks` 6 月 3 日高互动讨论：https://www.reddit.com/r/stocks/comments/1tw1xmy/broadcom_stock_slips_on_disappointing_software/
-  - Reddit `r/MU_Stock` 6 月 3 日讨论：https://www.reddit.com/r/MU_Stock/comments/1tw1kmi/broadcom_avgo_q2_2026_earnings_ai_surge/
+- **来源**
+  - 当日权威：Broadcom 财报摘要，经 Investing 转引，6 月 3 日：https://za.investing.com/news/stock-market-news/broadcom-reports-48-revenue-growth-in-fiscal-q2-raises-guidance-93CH-4313124
+  - 当日社区二次验证，不作事实依据：Reddit `r/stocks` 6 月 3 日高互动讨论：https://www.reddit.com/r/stocks/comments/1tw1xmy/broadcom_stock_slips_on_disappointing_software/
+  - 当日社区二次验证，不作事实依据：Reddit `r/MU_Stock` 6 月 3 日讨论：https://www.reddit.com/r/MU_Stock/comments/1tw1kmi/broadcom_avgo_q2_2026_earnings_ai_surge/
 
 - **事件摘要**
   - Broadcom 在 6 月 3 日发布财报摘要，披露公司 Q2 总收入同比增长 **48%**。
@@ -294,4 +293,3 @@
 3. Broadcom 完整财报原文、AI 收入细分以及与校招岗位之间是否存在直接外溢。  
 4. Broadcom、Meta 及相关生态公司对国际学生 sponsor 友好度与 2026-2027 intern / new grad 节奏。  
 5. Reddit 讨论里涉及 backlog、客户结构、岗位机会、薪资推测的说法。  
-
