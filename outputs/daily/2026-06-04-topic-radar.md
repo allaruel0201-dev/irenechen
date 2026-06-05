@@ -226,51 +226,51 @@
 > 以下均为 2026-06-04 当天更新，但综合传播效率、与学生距离或信号清晰度，弱于 Top 3。
 
 1. **Ramp 以 440 亿美元估值完成 7.5 亿美元融资**
-   - 来源：TechCrunch  
-     https://techcrunch.com/2026/06/04/ramp-raises-750m-at-44b-valuation/
-   - 机会角度：AI 与企业财务软件、fintech automation、growth product、risk infra 仍有资金追捧。
-   - 评分：25
+   来源：TechCrunch  
+   https://techcrunch.com/2026/06/04/ramp-raises-750m-at-44b-valuation/
+   角度：AI 与企业财务软件、fintech automation、growth product、risk infra 仍有资金追捧。
+   评分：25
 
 2. **美国众议院小组提出联邦优先的 AI 监管草案**
-   - 来源：Reuters  
-     https://www.marketscreener.com/news/congressional-group-unveils-bill-to-preempt-state-ai-rules-ce7f5dddd488f421
-   - 机会角度：对 AI policy、governance、compliance、trust and safety 是长期岗位信号，但离学生短期找工仍偏远。
-   - 评分：22
+   来源：Reuters  
+   https://www.marketscreener.com/news/congressional-group-unveils-bill-to-preempt-state-ai-rules-ce7f5dddd488f421
+   角度：对 AI policy、governance、compliance、trust and safety 是长期岗位信号，但离学生短期找工仍偏远。
+   评分：22
 
 3. **Supabase 融资 5 亿美元，估值 40 亿美元**
-   - 来源：Supabase 官方博客  
-     https://supabase.com/blog/supabase-series-d
-   - 机会角度：数据库、开发者工具、agent backend、infra product 仍是 AI 时代的底层受益环节。
-   - 评分：24
+   来源：Supabase 官方博客  
+   https://supabase.com/blog/supabase-series-d
+   角度：数据库、开发者工具、agent backend、infra product 仍是 AI 时代的底层受益环节。
+   评分：24
 
 4. **Quantinuum 在纳斯达克首秀，估值约 176 亿美元**
-   - 来源：Reuters  
-     https://www.marketscreener.com/news/quantinuum-soars-in-nasdaq-debut-to-hit-17-6-billion-valuation-ce7f5dddd788f423
-   - 机会角度：适合做量子计算求职科普，但对大多数留学生仍太前沿、转化门槛高。
-   - 评分：21
+   来源：Reuters  
+   https://www.marketscreener.com/news/quantinuum-soars-in-nasdaq-debut-to-hit-17-6-billion-valuation-ce7f5dddd788f423
+   角度：适合做量子计算求职科普，但对大多数留学生仍太前沿、转化门槛高。
+   评分：21
 
 5. **S&P 500 不为大型 IPO 开绿灯，SpaceX 暂无快速纳入可能**
-   - 来源：Reuters  
-     https://www.marketscreener.com/news/sp-says-no-fast-track-for-blockbuster-ipos-like-spacex-and-openai-ce7f5dddd988f425
-   - 机会角度：可延展为 被动资金、指数规则、资本市场结构 教学内容，适合金融科普号二创。
-   - 评分：20
+   来源：Reuters  
+   https://www.marketscreener.com/news/sp-says-no-fast-track-for-blockbuster-ipos-like-spacex-and-openai-ce7f5dddd988f425
+   角度：可延展为 被动资金、指数规则、资本市场结构 教学内容，适合金融科普号二创。
+   评分：20
 
 6. **Blackstone 旗下 BREDS 产品二季度赎回升至 4.3%**
-   - 来源：Reuters  
-     https://www.marketscreener.com/news/blackstone-s-breds-private-credit-fund-q2-withdrawal-rate-rises-to-4-3-ce7f5dddcc08f72c
-   - 机会角度：可单独拆成 private credit 风控、流动性、基金结构课程型内容。
-   - 评分：23
+   来源：Reuters  
+   https://www.marketscreener.com/news/blackstone-s-breds-private-credit-fund-q2-withdrawal-rate-rises-to-4-3-ce7f5dddcc08f72c
+   角度：可单独拆成 private credit 风控、流动性、基金结构课程型内容。
+   评分：23
 
 7. **美国银行监管机构向国会提交放松监管议程**
-   - 来源：Reuters  
-     https://www.marketscreener.com/news/us-bank-regulators-submit-deregulatory-agenda-to-lawmakers-ce7f5dddd288f41f
-   - 机会角度：中长期利好银行创新和业务扩张叙事，可引到 bank strategy、regulatory affairs、compliance tech，但短期信号偏弱。
-   - 评分：20
+   来源：Reuters  
+   https://www.marketscreener.com/news/us-bank-regulators-submit-deregulatory-agenda-to-lawmakers-ce7f5dddd288f41f
+   角度：中长期利好银行创新和业务扩张叙事，可引到 bank strategy、regulatory affairs、compliance tech，但短期信号偏弱。
+   评分：20
 
 8. **Helion 话题在公开社区有讨论，但集中在技术可行性争议，不足以作为求职事实依据**
-   - 来源：公开检索到的社区讨论，热度有限，仅作痛点验证
-   - 机会角度：可用来说明学生对 AI 能源赛道认知不足，但不建议把社区争论当作主线。
-   - 评分：18
+   来源：公开检索到的社区讨论，热度有限，仅作痛点验证
+   角度：可用来说明学生对 AI 能源赛道认知不足，但不建议把社区争论当作主线。
+   评分：18
 
 ---
 
