@@ -47,6 +47,27 @@
 
 参考 sources.md。
 
+每日自动化执行前，必须先扫以下来源，再决定当天有没有可写线索：
+- Reuters
+- Bloomberg（如果可接入）
+- Wall Street Journal
+- Fortune
+- Forbes
+- Business Insider
+- eFinancialCareers
+- WSO
+
+执行要求：
+- Reuters：每日必扫，优先看投行、买方、量化、AI、科技大厂、身份政策、市场结构变化等权威更新。
+- Bloomberg：每日必扫，但仅限本环境可接入时；如果无法访问，就跳过，不要硬引。
+- Wall Street Journal：每日必扫，优先看投行、资本市场、科技大厂、公司战略、身份与宏观对求职的影响。
+- Fortune：每日必扫，优先看大公司组织变化、薪酬、AI 对岗位结构的影响、职场与 early career 讨论。
+- Forbes：每日必扫，优先看移民、签证、就业趋势、薪酬与行业变化；观点型内容要和权威事实源区分。
+- Business Insider：每日必扫，优先看华尔街、量化交易行业及公司、科技大厂、AI 招聘风向、组织变化、薪酬与裁员后续。
+- eFinancialCareers：每日必扫，优先看投行、买方、交易、量化、intern / analyst、junior hiring、奖金与 headcount 风向。
+- WSO：每日必扫，但仅作社区热度、痛点和行业体感补充；如果目标日期当天没有高互动讨论，不要硬写。
+- 只有完成这几类来源的扫描后，才进入当日选题筛选与成稿。
+
 需要重点关注：
 - Bloomberg
 - Reuters

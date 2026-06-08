@@ -1,5 +1,14 @@
 <!--
 写作规范（给自动化/编辑用）
+- 每日执行前先扫：Reuters、Bloomberg（如果可接入）、Wall Street Journal、Fortune、Forbes、Business Insider、eFinancialCareers、WSO。
+- Reuters：优先看投行、买方、量化、AI、科技大厂、身份政策、市场结构变化等权威更新。
+- Bloomberg：如果可接入就扫；如果无法访问，就跳过，不要硬引。
+- Wall Street Journal：优先看投行、资本市场、科技大厂、公司战略、身份与宏观对求职的影响。
+- Fortune：优先看大公司组织变化、薪酬、AI 对岗位结构的影响、职场与 early career 讨论。
+- Forbes：优先看移民、签证、就业趋势、薪酬与行业变化；观点型内容要和权威事实源区分。
+- Business Insider：优先看华尔街、量化交易行业及公司、科技大厂、AI 招聘风向、组织变化、薪酬与裁员后续。
+- eFinancialCareers：优先看投行、买方、交易、量化、intern / analyst、junior hiring、奖金与 headcount 风向。
+- WSO：只作社区热度、痛点和行业体感补充；若目标日期当天没有高互动讨论，不要硬写。
 - 全文尽量不要使用引号（包括 “ ” 或 ""）；需要强调用加粗或分点。
 - Freshness：只写目标日期当天更新内容；历史信息仅作“背景资料”并明确标注。
 - 涉及岗位、deadline、签证政策、薪资、学校数据：必须写“需要二次核实”。

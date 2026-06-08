@@ -92,8 +92,20 @@ def main() -> int:
   run([sys.executable, "scripts/build-dashboard.py"])
 
   # 2) Stage outputs (including updated data.js)
-  # Netlify rebuilds from repo contents; commit both generated outputs and the build scripts.
-  run(["git", "add", "outputs", "scripts/build-dashboard.py", "scripts/build-dashboard.mjs", "scripts/publish-dashboard.py"])
+  # Netlify rebuilds from repo contents; also stage automation rule files that affect future runs.
+  run(
+    [
+      "git",
+      "add",
+      "outputs",
+      "scripts/build-dashboard.py",
+      "scripts/build-dashboard.mjs",
+      "scripts/publish-dashboard.py",
+      "AGENTS.md",
+      "sources.md",
+      "templates/daily-topic-report.md",
+    ]
+  )
 
   # 3) If nothing changed, exit quietly
   status = run(["git", "status", "--porcelain"])
