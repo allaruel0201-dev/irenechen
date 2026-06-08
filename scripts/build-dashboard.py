@@ -80,8 +80,8 @@ def _extract_text_after_label(block_lines: list[str], label_index: int, max_char
 def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
   section = take_section(
     markdown,
-    re.compile(r"^##\s*1\)\s*今日最值得写的\s*3\s*个选题\s*$", re.M),
-    re.compile(r"^##\s*2\)\s*", re.M),
+    re.compile(r"^##\s*1[\)）]\s*今日最值得写的\s*3\s*个选题\s*$", re.M),
+    re.compile(r"^##\s*2[\)）]\s*", re.M),
   )
   if not section:
     return []
@@ -109,13 +109,13 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
     why = ""
     signal = ""
     for i, line in enumerate(block_lines):
-      if re.match(r"^\s*-\s+(?:\*\*)?来源", line):
+      if re.match(r"^\s*-\s+(?:\*\*)?来源(?:\*\*)?\s*$", line):
         sources = _extract_sublist_after_label(block_lines, i, 10)
-      if re.match(r"^\s*-\s+(?:\*\*)?事件摘要", line):
+      if re.match(r"^\s*-\s+(?:\*\*)?事件摘要(?:\*\*)?\s*$", line):
         summary = _extract_text_after_label(block_lines, i, 520)
-      if re.match(r"^\s*-\s+(?:\*\*)?为什么对美国留学生重要", line):
+      if re.match(r"^\s*-\s+(?:\*\*)?为什么对美国留学生重要(?:\*\*)?\s*$", line):
         why = _extract_text_after_label(block_lines, i, 680)
-      if re.match(r"^\s*-\s+(?:\*\*)?职业机会信号", line):
+      if re.match(r"^\s*-\s+(?:\*\*)?职业机会信号(?:\*\*)?\s*$", line):
         signal = _extract_text_after_label(block_lines, i, 680)
 
     topics.append(
@@ -137,13 +137,15 @@ ALT_PLAIN_LINE_RE = re.compile(r"^\s*\d+\.\s+(.+)$")
 ALT_BLOCK_START_RE = re.compile(r"^\s*(\d+)\.\s+\*\*(.+?)\*\*\s*$")
 ALT_SCORE_RE = re.compile(r"评分[：:]\s*(\d{1,2})\s*$")
 ALT_INLINE_SCORE_RE = re.compile(r"（总分：(\d{1,2})(?:[^）]*)）")
+ALT_ANY_NUMBERED_RE = re.compile(r"^\s*\d+\.\s+")
+ALT_TOTAL_SCORE_RE = re.compile(r"总分[：:]\s*(\d{1,2})\s*/\s*30")
 
 
 def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
   section = take_section(
     markdown,
-    re.compile(r"^##\s*2\)\s*备选选题池.*$", re.M),
-    re.compile(r"^##\s*3\)\s*", re.M),
+    re.compile(r"^##\s*2[\)）]\s*备选选题池.*$", re.M),
+    re.compile(r"^##\s*3[\)）]\s*", re.M),
   )
   if not section:
     return []
@@ -174,6 +176,46 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
           )
           i += 1
           continue
+
+        title, sep, summary = tail.partition("：")
+        if not sep:
+          title, sep, summary = tail.partition(":")
+
+        block: list[str] = []
+        i += 1
+        while i < len(lines):
+          next_line = lines[i]
+          if ALT_ANY_NUMBERED_RE.match(next_line) or re.match(r"^##\s+", next_line):
+            break
+          block.append(next_line.rstrip())
+          i += 1
+
+        score_total: int | None = None
+        if not summary:
+          for block_line in block:
+            stripped = block_line.strip()
+            if not stripped or stripped.startswith("来源："):
+              continue
+            score_match = ALT_TOTAL_SCORE_RE.search(stripped)
+            if score_match:
+              score_total = int(score_match.group(1))
+              continue
+            summary = stripped
+            break
+        for block_line in block:
+          score_match = ALT_TOTAL_SCORE_RE.search(block_line.strip())
+          if score_match:
+            score_total = int(score_match.group(1))
+            break
+
+        alternatives.append(
+          {
+            "title": title.strip(),
+            "summary": summary.strip(),
+            "score_total": score_total,
+          }
+        )
+        continue
 
       block_start = ALT_BLOCK_START_RE.match(line)
       if not block_start:
