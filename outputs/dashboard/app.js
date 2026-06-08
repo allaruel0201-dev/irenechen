@@ -7,10 +7,53 @@ function escapeHtml(text) {
     .replaceAll("'", "&#039;");
 }
 
-function scorePill(score) {
-  if (typeof score !== "number") return `<span class="pill">总分：N/A</span>`;
-  const cls = score >= 26 ? "good" : score >= 22 ? "" : "warn";
-  return `<span class="pill ${cls}">总分：${score}</span>`;
+function splitTopicTitle(title) {
+  const raw = String(title || "").trim();
+  const match = raw.match(/^(\d+)[\.\)）]?\s*(.+)$/);
+  if (!match) return { index: "", title: raw };
+  return {
+    index: match[1].padStart(2, "0"),
+    title: match[2].trim(),
+  };
+}
+
+function sectionBlock(label, body) {
+  const text = String(body || "").trim();
+  if (!text) return "";
+  return `
+    <section class="memo-block">
+      <div class="memo-label">${escapeHtml(label)}</div>
+      <div class="memo-copy">${escapeHtml(text)}</div>
+    </section>
+  `;
+}
+
+function sourceHome(url, sources) {
+  const href = String(url || "").trim();
+  if (href) {
+    try {
+      return new URL(href).origin;
+    } catch (_err) {
+      // Ignore invalid URLs and fall through to label-based mapping.
+    }
+  }
+
+  const label = String((sources || [])[0] || "").toLowerCase();
+  if (label.includes("reuters")) return "https://www.reuters.com/";
+  if (label.includes("financial times")) return "https://www.ft.com/";
+  if (label.includes("fortune")) return "https://fortune.com/";
+  if (label.includes("washington post")) return "https://www.washingtonpost.com/";
+  if (label.includes("techcrunch")) return "https://techcrunch.com/";
+  if (label.includes("barrons")) return "https://www.barrons.com/";
+  if (label.includes("yahoo")) return "https://finance.yahoo.com/";
+  if (label.includes("marketscreener")) return "https://www.marketscreener.com/";
+  return "";
+}
+
+function storyLink(url, text) {
+  const href = String(url || "").trim();
+  if (!href) return `<span class="topic-title">${escapeHtml(text)}</span>`;
+  return `<a class="topic-link" href="${escapeHtml(href)}" target="_blank" rel="noreferrer">${escapeHtml(text)}</a>`;
 }
 
 function buildDayList(days, activeDate) {
@@ -22,11 +65,12 @@ function buildDayList(days, activeDate) {
     btn.className = "day-btn" + (day.date === activeDate ? " active" : "");
     const count = (day.top_topics || []).length;
     btn.innerHTML = `
-      <div>
-        <div style="font-weight:800">${escapeHtml(day.date)}</div>
-        <div class="day-meta">必写：${count}｜备选：${(day.alternatives || []).length}</div>
+      <span class="day-marker" aria-hidden="true"></span>
+      <div class="day-copy">
+        <div class="day-date">${escapeHtml(day.date)}</div>
+        <div class="day-meta">必写 ${count} · 备选 ${(day.alternatives || []).length}</div>
       </div>
-      <div class="day-meta">›</div>
+      <div class="day-chevron" aria-hidden="true">↗</div>
     `;
     btn.addEventListener("click", () => {
       state.activeDate = day.date;
@@ -44,28 +88,38 @@ function renderDay(day) {
   }
 
   const topCards = (day.top_topics || [])
-    .map((t) => {
+    .map((t, idx) => {
+      const parsed = splitTopicTitle(t.title);
+      const primaryUrl = sourceHome(
+        ((t.source_urls || []).find((url) => String(url || "").trim()) || "").trim(),
+        t.sources || []
+      ) || `../daily/${encodeURIComponent(day.date + "-topic-radar.md")}`;
       const sources = (t.sources || []).slice(0, 6);
       const summary = (t.summary || "").trim();
       const why = (t.why_it_matters || "").trim();
       const signal = (t.job_signal || "").trim();
       return `
-        <div class="card">
-          <div class="card-title">${escapeHtml(t.title)}</div>
-          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
-            ${scorePill(t.score_total)}
+        <article class="card topic-card">
+          <div class="topic-head">
+            <div class="topic-title-group">
+              <div class="topic-index">${escapeHtml(parsed.index || String(idx + 1).padStart(2, "0"))}</div>
+              ${storyLink(primaryUrl, parsed.title)}
+            </div>
           </div>
-          ${summary ? `<div class="sources"><div style="margin-top:8px; font-weight:700; color:#cfd5ea">事件摘要</div><div style="margin-top:6px">${escapeHtml(summary)}</div></div>` : ""}
-          ${why ? `<div class="sources"><div style="margin-top:10px; font-weight:700; color:#cfd5ea">和求职的关系（为什么重要）</div><div style="margin-top:6px">${escapeHtml(why)}</div></div>` : ""}
-          ${signal ? `<div class="sources"><div style="margin-top:10px; font-weight:700; color:#cfd5ea">职业机会信号（可落地）</div><div style="margin-top:6px">${escapeHtml(signal)}</div></div>` : ""}
+          ${sectionBlock("这件事", summary)}
+          ${sectionBlock("为什么值得写", why)}
+          ${sectionBlock("可写角度", signal)}
           ${
             sources.length
-              ? `<div class="sources"><div>来源（节选）</div><ul>${sources
+              ? `<section class="memo-block">
+                  <div class="memo-label">来源</div>
+                  <ul class="source-list">${sources
                   .map((s) => `<li>${escapeHtml(s)}</li>`)
-                  .join("")}</ul></div>`
+                  .join("")}</ul>
+                </section>`
               : ""
           }
-        </div>
+        </article>
       `;
     })
     .join("");
@@ -73,34 +127,49 @@ function renderDay(day) {
   const altCards = (day.alternatives || [])
     .sort((a, b) => (b.score_total || 0) - (a.score_total || 0))
     .map((a) => {
+      const parsed = splitTopicTitle(a.title);
+      const primaryUrl =
+        sourceHome(String(a.source_url || "").trim(), [parsed.title]) ||
+        `../daily/${encodeURIComponent(day.date + "-topic-radar.md")}`;
       return `
-        <div class="card">
-          <div class="card-title">${escapeHtml(a.title)}</div>
-          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
-            ${scorePill(a.score_total)}
+        <article class="card alt-card">
+          <div class="alt-head">
+            ${storyLink(primaryUrl, parsed.title)}
           </div>
-          <div class="sources">${escapeHtml(a.summary || "")}</div>
-        </div>
+          <div class="memo-copy alt-summary">${escapeHtml(a.summary || "")}</div>
+        </article>
       `;
     })
     .join("");
 
   container.innerHTML = `
-    <div class="section">
-      <div class="section-title">
-        <div>必写 3 题</div>
-        <div class="section-sub"><a class="link" href="../daily/${encodeURIComponent(day.date + "-topic-radar.md")}" target="_blank" rel="noreferrer">打开原文</a></div>
-      </div>
-      <div class="cards">${topCards || `<div class="sources">当日未识别到“必写”结构。</div>`}</div>
+    <div class="day-header">
+      <div class="day-header-meta">Daily Memo · ${escapeHtml(day.date)}</div>
+      <h1 class="day-header-title">前一日选题概览</h1>
+      <div class="day-header-sub">查看主选题和备选池。</div>
     </div>
 
-    <div class="section">
-      <div class="section-title">
-        <div>备选池</div>
-        <div class="section-sub">默认全部展示（不受最低总分影响）</div>
+    <section class="section">
+      <div class="section-title-row">
+        <div>
+          <div class="section-kicker">Top Picks</div>
+          <div class="section-title">主选题</div>
+        </div>
+        <div class="section-sub"><a class="link" href="../daily/${encodeURIComponent(day.date + "-topic-radar.md")}" target="_blank" rel="noreferrer">查看原文</a></div>
       </div>
-      <div class="cards">${altCards || `<div class="sources">当日未识别到备选池结构。</div>`}</div>
-    </div>
+      <div class="cards">${topCards || `<div class="empty-panel">当日未识别到“必写”结构。</div>`}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-title-row">
+        <div>
+          <div class="section-kicker">Watchlist</div>
+          <div class="section-title">备选池</div>
+        </div>
+        <div class="section-sub">始终展示</div>
+      </div>
+      <div class="cards alt-cards">${altCards || `<div class="empty-panel">当日未识别到备选池结构。</div>`}</div>
+    </section>
   `;
 }
 

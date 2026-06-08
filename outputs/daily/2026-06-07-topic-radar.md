@@ -14,7 +14,7 @@
 
 ## 1）今日最值得写的 3 个选题
 
-### 1. OpenAI 被曝要把 ChatGPT 做成 superapp：对留学生最直接的信号，不是产品八卦，而是 AI 产品岗、agent、搜索、支付、开发者生态会继续卷到一起
+### 1. OpenAI 想把 ChatGPT 做成超级入口：AI 产品、Agent 和搜索方向值得继续跟
 
 - **来源**
   - Reuters，2026-06-07  
@@ -23,19 +23,19 @@
     https://www.ft.com/
 
 - **事件摘要**
-  - Reuters 6 月 7 日援引 Financial Times 报道称，OpenAI 正推动 ChatGPT 的 superapp 改造，方向包括更强的个性化、购物、支付、搜索和用户自建 agent / app 生态。
-  - 可核实事实是：OpenAI 的产品野心正在从单一聊天工具继续外扩，目标更像一个用户入口层和任务分发层。
-  - 目前没有当日公开信息能证明因此会立刻新增多少 headcount，所以不能直接写成 OpenAI 要大规模扩招。
+  - Reuters 6 月 7 日援引 Financial Times 报道称，OpenAI 正在推进 ChatGPT 的 superapp 改造，方向包括个性化、购物、支付、搜索和用户自建 agent / app 生态。
+  - 目前能确认的是产品方向在继续外扩，ChatGPT 想做更大的用户入口。
+  - 当天没有公开信息证明会立刻带来大规模扩招。
 
 - **为什么对美国留学生重要**
-  - 这条线索对学生的价值在于，它把 AI 求职重心继续往 产品 + 平台 + agent workflow + 生态工具 方向推。
-  - 对还没毕业的学生来说，未来简历更容易被看见的，不只是会调 API，而是能证明自己理解 用户入口、任务编排、支付闭环、搜索分发、开发者生态 的候选人。
-  - 如果你原本只准备通用 SWE 面试，这条新闻提醒你需要更早补 AI 产品 sense 和 agent 应用场景。
+  - 这条新闻说明，AI 求职重点还会继续往产品、平台和 agent 应用走。
+  - 对学生来说，光会调 API 已经不够，最好能证明你理解用户入口、任务流程和产品闭环。
+  - 如果你原本只准备通用 SWE 面试，这条线索提醒你要更早补 AI 产品理解和 agent 项目。
 
 - **职业机会信号**
-  - 可核实事实：OpenAI 被曝考虑把 ChatGPT 扩成更完整的平台型产品。
-  - 推断：更值得准备的方向会偏向 AI Product、Applied AI、Agent Engineering、Search / Recommendation、Payments Risk、Developer Relations、Growth PM、Trust & Safety。
-  - 这不是 OpenAI 单一公司的信号，更像整个 AI 应用层开始争夺入口和闭环能力。
+  - 可核实事实：OpenAI 被曝考虑把 ChatGPT 做成更完整的平台型产品。
+  - 可写方向：AI Product、Applied AI、Agent Engineering、Search / Recommendation、Growth PM、Full-stack。
+  - 这说明整个 AI 应用层都在抢入口和用户时长。
 
 - **适合平台**
   - 两者都适合
@@ -60,7 +60,7 @@
   - Agent Engineer
   - Search / Recommendation
   - Full-stack SWE
-  - Payments Risk / Trust & Safety
+  - Growth PM
   - Developer Relations
 
 - **引流方式**
@@ -95,26 +95,26 @@
 
 ---
 
-### 2. 华尔街 CEO 公开说 AI 会先替掉初级岗：这不是一句吓人的话，而是投行、销售交易、研究支持岗位的门槛正在上移
+### 2. 华尔街开始公开谈 AI 压缩初级岗：金融求职门槛在提高
 
 - **来源**
   - Fortune，2026-06-07  
     https://fortune.com/2026/06/07/banks-mass-workforce-cuts-ai-entry-level-jobs-junior-analysts/
 
 - **事件摘要**
-  - Fortune 6 月 7 日汇总多家大行高管表态，称 AI 正在提升效率，也可能削减部分初级岗位工作量，尤其是依赖文档整理、基础分析、重复性写作和初级执行的工作。
-  - 文章提到 Goldman Sachs、Citigroup、Bank of America 等机构高层的公开判断，并引用学生对入行门槛变化的担忧。
-  - 可核实事实是：银行高层越来越公开地把 AI 与 workforce reduction、junior task automation 放在一起讨论。
+  - Fortune 6 月 7 日汇总多家大行高管表态，称 AI 正在提升效率，也会压缩一部分初级岗位工作量。
+  - 受影响最大的，是文档整理、基础分析、重复写作和执行类工作。
+  - 可核实事实是，银行高层已经开始公开谈 AI 对 junior work 的替代。
 
 - **为什么对美国留学生重要**
-  - 金融高薪赛道一直是留学生重点目标。对还没毕业的学生来说，风险不是 明天没岗位，而是 同样数量的候选人会去竞争更少的低附加值初级工作。
-  - 这会让会做 AI 辅助研究、自动化建模、Python / VBA / SQL、行业写作框架、信息整合的人更占优势。
-  - 对投行、销售交易、研究、风控、财富管理支持岗位来说，门槛上移比岗位消失更值得警惕。
+  - 对还没毕业的学生来说，最直接的变化是初级岗位竞争会更激烈。
+  - 会用 AI 做研究、自动化和信息整理的人，会更容易拉开差距。
+  - 对投行、销售交易、研究、风控这些方向来说，门槛在提高。
 
 - **职业机会信号**
-  - 可核实事实：华尔街高层正把 AI 对 junior work 的替代作用公开化。
-  - 推断：未来更有竞争力的候选人，需要在传统 finance technical 之外，证明自己能借助 AI 提升交付效率，尤其是 research automation、dashboard、数据清洗、行业资料压缩。
-  - 这条新闻更适合写成 低端重复性工作在贬值，高判断力和高执行密度工作在升值，而不是写成 投行校招要消失。
+  - 可核实事实：华尔街高层正把 AI 替代部分初级工作的影响公开化。
+  - 可写方向：research automation、dashboard、数据清洗、行业资料整理、AI + finance 复合能力。
+  - 文章重点放在什么能力更值钱。
 
 - **适合平台**
   - 两者都适合
@@ -174,26 +174,26 @@
 
 ---
 
-### 3. 数据中心在美国地方政治里开始变成敏感议题：对留学生的信号不是 AI 要熄火，而是 AI infra、能源、合规、选址、公共事务岗位会更重要
+### 3. 数据中心争议升温：AI 基建、能源和数据中心岗位值得关注
 
 - **来源**
   - The Washington Post，2026-06-07  
     https://www.washingtonpost.com/politics/2026/06/07/ai-backlash-coming-key-midterm-battlegrounds/
 
 - **事件摘要**
-  - Washington Post 6 月 7 日报道，美国多地围绕数据中心、电力消耗、水资源和社区影响的争议正在升温，相关议题进入地方与中期选举政治讨论。
-  - 文章同时指出，尽管存在反弹，主流政客并未普遍主张直接叫停数据中心建设。
-  - 可核实事实是：AI 基建扩张正在遇到更高的地方治理和公共资源摩擦，但政策层面还没有出现一刀切的全面叫停。
+  - Washington Post 6 月 7 日报道，美国多地围绕数据中心、电力、水资源和社区影响的争议正在升温。
+  - 相关议题已经进入地方政治讨论。
+  - 当天能确认的是，数据中心扩张面临更多约束，但还没有出现全面叫停。
 
 - **为什么对美国留学生重要**
-  - 很多学生一提 AI 就只想到算法、模型、SWE，但真正持续放预算的往往是数据中心、云、网络、电力、冷却、建设、政府关系和合规。
-  - 这类新闻能提醒学生，不是所有高薪机会都在模型层。AI infra 周边的工程和策略岗，反而可能是更稳定、更缺人的环节。
-  - 对身份敏感的留学生来说，越靠近企业刚需基建和长期资本开支，岗位稳定性通常比纯概念型热点更好。
+  - 这条新闻提醒大家，AI 机会也在模型之外的基建环节。
+  - 真正长期花钱的环节还包括数据中心、云、网络、电力和冷却。
+  - 对想找更稳岗位的学生，这些方向值得更早了解。
 
 - **职业机会信号**
-  - 可核实事实：地方层面的数据中心反弹正在上升，但并未形成全面封锁。
-  - 推断：未来值得关注的岗位包括 cloud infra、data center operations、network engineering、power systems、sustainability、site selection、public policy、regulatory affairs、supply chain。
-  - 这不是说所有 AI 公司都会扩招，而是预算会继续流向 基建 + 合规 + 资源协调 这些更不性感但更刚需的岗位。
+  - 可核实事实：地方层面的数据中心反弹在上升，但没有形成全面封锁。
+  - 可写方向：cloud infra、data center operations、network engineering、power systems、sustainability、site selection、supply chain。
+  - 预算会继续流向基建、运维和容量相关岗位，这类方向更适合做中长期布局。
 
 - **适合平台**
   - 公众号更适合，小红书可做简版
@@ -205,7 +205,7 @@
 
 - **公众号标题 2 个**
   1. 数据中心成美国地方政治敏感议题后，留学生该如何看待 AI infra 求职机会
-  2. 当 AI 基建遇到社区反弹，哪些工程与合规岗位反而更值得准备
+  2. 当 AI 基建遇到社区反弹，哪些工程和运维岗位更值得准备
 
 - **内容切入角度**
   - 不写成 AI 发展受阻。
@@ -218,8 +218,6 @@
   - Network Engineering
   - Site Reliability Engineering
   - Power / Electrical Engineering
-  - Regulatory Affairs
-  - Public Policy
   - Supply Chain / Capacity Planning
 
 - **引流方式**
@@ -235,11 +233,11 @@
 - **需要二次核实的事实点**
   - 各州 / 各地对数据中心项目的具体审批状态
   - 相关企业在当地的实际招聘规模
-  - 国际学生进入 policy / regulatory / public affairs 岗位的身份限制
+  - 国际学生进入数据中心、云、网络相关岗位的实际招聘要求
 
 - **风险提示**
   - 不要把地方反弹写成 AI 基建要熄火。
-  - 更稳的表达是：基建继续推进，但岗位机会会越来越受 电力、合规、选址、社区关系 约束。
+  - 更稳的表达是：基建继续推进，但岗位机会会越来越受 电力、选址、社区关系 约束。
 
 - **评分**
   - 时效性：5/5
@@ -258,22 +256,22 @@
 
 > 2026-06-07 当天严格筛选后，可用备选不多。以下条目可进入观察池，但不建议全部当天硬写。
 
-1. AI mega stock deals raise specter of more shares than buyers：如果 AI 龙头、SpaceX、Anthropic 等继续吸走市场流动性，一级市场和 IPO 叙事会继续回暖，但也可能挤压其他资产承接力。适合写 ECM、TMT 投行、资本市场结构，不适合写成普遍扩招。  
+1. AI mega stock deals raise specter of more shares than buyers：AI 龙头继续吸走市场资金，IPO 和一级市场热度还会在。适合写 ECM、TMT 投行和资本市场结构。  
    来源：Fortune，2026-06-07  
    https://fortune.com/2026/06/07/ai-mega-stock-deals-space-x-anthropic/
    总分：23/30
 
-2. Tech stocks dive as Fed bets rattle AI rally：AI 相关股票仍是市场最敏感的高波动板块，说明 AI 不是没机会，而是更需要学生理解 利率、资本成本、估值和业务兑现 的关系。适合写给想进二级市场、研究、买方的学生。  
+2. Tech stocks dive as Fed bets rattle AI rally：AI 相关股票波动很大，适合写给想进二级市场、研究、买方的学生，重点讲利率、估值和业务兑现。  
    来源：Reuters，2026-06-07  
    https://ca.marketscreener.com/news/tech-stocks-dive-as-fed-bets-rattle-ai-rally-ce7f5dd2dc8dfe26/
    总分：20/30
 
-3. Anthropic again calls for pause in global AI development：政策与安全讨论升温，适合延展到 AI safety、policy、eval、governance 岗位，但离大多数学生短期求职仍偏远。  
+3. Anthropic again calls for pause in global AI development：和我们当前重点方向相关度偏弱，可先不优先写。  
    来源：AFP，2026-06-07  
    https://www.barrons.com/news/anthropic-again-calls-for-pause-in-global-ai-development-399234cc
    总分：18/30
 
-4. 特朗普团队对 OpenAI 的态度与潜在干预空间引发讨论：更适合放入 明天继续跟进，而不是当天主推，因为政策走向和实质落地仍不清晰。  
+4. 特朗普团队对 OpenAI 的态度与潜在干预空间引发讨论：适合继续跟进，政策走向和落地细节还不清楚。  
    来源：TechCrunch，2026-06-07  
    https://techcrunch.com/2026/06/07/trump-administration-might-take-equity-stake-in-openai/
    总分：19/30

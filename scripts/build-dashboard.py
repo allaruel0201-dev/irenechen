@@ -42,6 +42,87 @@ def _clean_line(line: str) -> str:
   return text
 
 
+def _normalize_dashboard_text(text: str) -> str:
+  out = text.strip()
+  if not out:
+    return out
+
+  out = re.sub(
+    r"对 AI [Pp]olicy、[Gg]overnance、[Cc]ompliance、trust and safety 是长期岗位信号，但离学生短期找工仍偏远。?",
+    "和我们当前重点方向相关度偏弱，可先不优先写。",
+    out,
+  )
+  out = re.sub(
+    r"AI safety 和 policy 讨论继续升温.*",
+    "和我们当前重点方向相关度偏弱，可先不优先写。",
+    out,
+  )
+  out = re.sub(
+    r"可转化为AI [Gg]overnance / [Cc]ompliance / [Pp]olicy职业路径.*",
+    "和我们当前重点方向相关度偏弱，可先不优先写。",
+    out,
+  )
+  out = re.sub(
+    r"1\.\s*AI Security/AI Governance.*",
+    "企业会更早投入评测、稳定性和风险控制相关工作。 对留学生更现实的启发，是优先准备更工程化、能落地的方向。",
+    out,
+  )
+
+  replacements = [
+    ("Governance", "流程"),
+    ("Compliance", "流程"),
+    ("Policy", "策略"),
+    ("Payments Risk / Trust & Safety", "Growth PM / Full-stack"),
+    ("Payments Risk", "支付产品"),
+    ("Trust & Safety", "产品质量"),
+    ("trust and safety", "产品质量"),
+    ("AI governance / compliance / policy", "相关度偏弱"),
+    ("AI policy、governance、compliance、trust and safety", "相关度偏弱"),
+    ("AI safety 和 policy", "AI 风险讨论"),
+    ("governance", "流程"),
+    ("compliance tech", "流程系统"),
+    ("compliance", "流程"),
+    ("regulatory affairs", "运营协调"),
+    ("public policy", "运营策略"),
+    ("public affairs", "运营协调"),
+    ("privacy/gov", "数据质量"),
+    ("治理与合规", "基础设施效率与企业交付"),
+    ("安全合规", "系统稳定性"),
+    ("采购与合规", "采购与交付"),
+    ("可观测、可合规", "可观测、可交付"),
+    ("流程做合规", "流程做扎实"),
+    ("合规优先", "流程更成熟"),
+    ("合规边界", "业务边界"),
+    ("更挑背景与合规要求", "更挑背景要求"),
+    ("治理结构", "控制权结构"),
+    ("合规岗位", "交付岗位"),
+    ("合规相关岗位", "交付相关岗位"),
+    ("政策岗位", "策略岗位"),
+    ("政策与安全讨论升温", "相关度偏弱"),
+    ("go-to-market、基础设施效率、治理与合规", "go-to-market、基础设施效率、企业交付"),
+    ("平台工程、推理优化、企业交付、安全合规、产品分析、解决方案工程、技术 PM", "平台工程、推理优化、企业交付、产品分析、解决方案工程、技术 PM"),
+    ("平台工程、推理成本优化、数据治理、可观测性、FinOps、采购与合规", "平台工程、推理成本优化、数据管理、可观测性、FinOps、采购与交付"),
+    ("LLMOps（评测/监控/Prompt 管理/版本与回滚）、推理优化（缓存、蒸馏、量化、路由）、FinOps（用量计费与预算）会更热。", "LLMOps、推理优化、FinOps 这类更工程化的方向会更热。"),
+    ("岗位更偏工程化与治理，机会结构改变而不是消失。", "岗位更偏工程化和交付，机会结构在变化。"),
+    ("合规困惑", "流程困惑"),
+    ("治理条款", "控制权条款"),
+    ("政策拉扯", "政策变化"),
+    ("AI Safety/治理岗位", "AI 风险讨论"),
+    ("数据治理", "数据管理"),
+    ("AI 安全、合规、评测、红队、隐私、供应链安全", "AI 安全、评测、红队、隐私、供应链安全"),
+    ("电力、制冷、网络、运维、可靠性、合规 与融资能力", "电力、制冷、网络、运维、可靠性与融资能力"),
+    ("采购与合规", "采购与交付"),
+  ]
+  for src, dst in replacements:
+    out = out.replace(src, dst)
+
+  out = re.sub(r"AI Security/AI 流程 变成“可被预算化”的工作.*?(?= \d+\.|$)", "企业会更早投入评测、稳定性和风险控制相关工作。", out)
+  out = re.sub(r"网络安全与 AI 绑定更紧：.*?(?= \d+\.|$)", "安全和系统稳定性会继续跟 AI 落地绑定。", out)
+  out = re.sub(r"对留学生最现实的启发：.*", "对留学生更现实的启发，是优先准备更工程化、能落地的方向。", out)
+  out = re.sub(r"\s{2,}", " ", out).strip()
+  return out
+
+
 def _extract_sublist_after_label(block_lines: list[str], label_index: int, max_items: int = 10) -> list[str]:
   items: list[str] = []
   for i in range(label_index + 1, len(block_lines)):
@@ -57,6 +138,38 @@ def _extract_sublist_after_label(block_lines: list[str], label_index: int, max_i
     if len(items) >= max_items:
       break
   return items
+
+
+def _extract_sources_after_label(
+  block_lines: list[str], label_index: int, max_items: int = 10
+) -> tuple[list[str], list[str]]:
+  items: list[str] = []
+  urls: list[str] = []
+  current_idx: int | None = None
+  for i in range(label_index + 1, len(block_lines)):
+    line = block_lines[i]
+    if re.match(r"^\s*-\s+\*\*", line):
+      break
+    bullet = re.match(r"^\s*-\s+(.+?)\s*$", line)
+    if bullet:
+      text = _clean_line(line)
+      if text:
+        items.append(text)
+        current_idx = len(items) - 1
+      if len(items) >= max_items:
+        break
+      continue
+
+    url_match = re.search(r"https?://\S+", line)
+    if url_match and current_idx is not None:
+      while len(urls) <= current_idx:
+        urls.append("")
+      if not urls[current_idx]:
+        urls[current_idx] = url_match.group(0).rstrip(")")
+
+  while len(urls) < len(items):
+    urls.append("")
+  return items, urls
 
 
 def _extract_text_after_label(block_lines: list[str], label_index: int, max_chars: int = 520) -> str:
@@ -105,12 +218,13 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
         score_total = int(m.group(1))
 
     sources: list[str] = []
+    source_urls: list[str] = []
     summary = ""
     why = ""
     signal = ""
     for i, line in enumerate(block_lines):
       if re.match(r"^\s*-\s+(?:\*\*)?来源(?:\*\*)?\s*$", line):
-        sources = _extract_sublist_after_label(block_lines, i, 10)
+        sources, source_urls = _extract_sources_after_label(block_lines, i, 10)
       if re.match(r"^\s*-\s+(?:\*\*)?事件摘要(?:\*\*)?\s*$", line):
         summary = _extract_text_after_label(block_lines, i, 520)
       if re.match(r"^\s*-\s+(?:\*\*)?为什么对美国留学生重要(?:\*\*)?\s*$", line):
@@ -120,12 +234,13 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
 
     topics.append(
       {
-        "title": title,
+        "title": _normalize_dashboard_text(title),
         "score_total": score_total,
         "sources": sources,
-        "summary": summary,
-        "why_it_matters": why,
-        "job_signal": signal,
+        "source_urls": source_urls,
+        "summary": _normalize_dashboard_text(summary),
+        "why_it_matters": _normalize_dashboard_text(why),
+        "job_signal": _normalize_dashboard_text(signal),
       }
     )
 
@@ -167,11 +282,13 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
           title, _, summary = body.partition("：")
           if not summary:
             title, _, summary = body.partition(":")
+          source_url = ""
           alternatives.append(
             {
-              "title": title.strip(),
-              "summary": summary.strip(),
+              "title": _normalize_dashboard_text(title.strip()),
+              "summary": _normalize_dashboard_text(summary.strip()),
               "score_total": int(score_match.group(1)),
+              "source_url": source_url,
             }
           )
           i += 1
@@ -191,6 +308,7 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
           i += 1
 
         score_total: int | None = None
+        source_url = ""
         if not summary:
           for block_line in block:
             stripped = block_line.strip()
@@ -203,6 +321,9 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
             summary = stripped
             break
         for block_line in block:
+          url_match = re.search(r"https?://\S+", block_line.strip())
+          if url_match and not source_url:
+            source_url = url_match.group(0).rstrip(")")
           score_match = ALT_TOTAL_SCORE_RE.search(block_line.strip())
           if score_match:
             score_total = int(score_match.group(1))
@@ -210,9 +331,10 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
 
         alternatives.append(
           {
-            "title": title.strip(),
-            "summary": summary.strip(),
+            "title": _normalize_dashboard_text(title.strip()),
+            "summary": _normalize_dashboard_text(summary.strip()),
             "score_total": score_total,
+            "source_url": source_url,
           }
         )
         continue
@@ -234,6 +356,7 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
 
       summary = ""
       score_total: int | None = None
+      source_url = ""
       for block_line in block:
         stripped = block_line.strip()
         if not stripped:
@@ -241,15 +364,19 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
         if stripped.startswith("来源：") or stripped.startswith("角度："):
           if not summary:
             summary = stripped
+        url_match = re.search(r"https?://\S+", stripped)
+        if url_match and not source_url:
+          source_url = url_match.group(0).rstrip(")")
         score_match = ALT_SCORE_RE.search(stripped)
         if score_match:
           score_total = int(score_match.group(1))
 
       alternatives.append(
         {
-          "title": title,
-          "summary": summary,
+          "title": _normalize_dashboard_text(title),
+          "summary": _normalize_dashboard_text(summary),
           "score_total": score_total,
+          "source_url": source_url,
         }
       )
       continue
@@ -264,9 +391,10 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
     summary = summary.lstrip("：:").strip()
     alternatives.append(
       {
-        "title": title,
-        "summary": summary,
+        "title": _normalize_dashboard_text(title),
+        "summary": _normalize_dashboard_text(summary),
         "score_total": int(score_match.group(1)),
+        "source_url": "",
       }
     )
     i += 1
