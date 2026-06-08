@@ -28,28 +28,6 @@ function sectionBlock(label, body) {
   `;
 }
 
-function sourceHome(url, sources) {
-  const href = String(url || "").trim();
-  if (href) {
-    try {
-      return new URL(href).origin;
-    } catch (_err) {
-      // Ignore invalid URLs and fall through to label-based mapping.
-    }
-  }
-
-  const label = String((sources || [])[0] || "").toLowerCase();
-  if (label.includes("reuters")) return "https://www.reuters.com/";
-  if (label.includes("financial times")) return "https://www.ft.com/";
-  if (label.includes("fortune")) return "https://fortune.com/";
-  if (label.includes("washington post")) return "https://www.washingtonpost.com/";
-  if (label.includes("techcrunch")) return "https://techcrunch.com/";
-  if (label.includes("barrons")) return "https://www.barrons.com/";
-  if (label.includes("yahoo")) return "https://finance.yahoo.com/";
-  if (label.includes("marketscreener")) return "https://www.marketscreener.com/";
-  return "";
-}
-
 function storyLink(url, text) {
   const href = String(url || "").trim();
   if (!href) return `<span class="topic-title">${escapeHtml(text)}</span>`;
@@ -90,10 +68,9 @@ function renderDay(day) {
   const topCards = (day.top_topics || [])
     .map((t, idx) => {
       const parsed = splitTopicTitle(t.title);
-      const primaryUrl = sourceHome(
-        ((t.source_urls || []).find((url) => String(url || "").trim()) || "").trim(),
-        t.sources || []
-      ) || `../daily/${encodeURIComponent(day.date + "-topic-radar.md")}`;
+      const primaryUrl =
+        ((t.source_urls || []).find((url) => String(url || "").trim()) || "").trim() ||
+        `../daily/${encodeURIComponent(day.date + "-topic-radar.md")}`;
       const sources = (t.sources || []).slice(0, 6);
       const summary = (t.summary || "").trim();
       const why = (t.why_it_matters || "").trim();
@@ -128,9 +105,7 @@ function renderDay(day) {
     .sort((a, b) => (b.score_total || 0) - (a.score_total || 0))
     .map((a) => {
       const parsed = splitTopicTitle(a.title);
-      const primaryUrl =
-        sourceHome(String(a.source_url || "").trim(), [parsed.title]) ||
-        `../daily/${encodeURIComponent(day.date + "-topic-radar.md")}`;
+      const primaryUrl = String(a.source_url || "").trim() || `../daily/${encodeURIComponent(day.date + "-topic-radar.md")}`;
       return `
         <article class="card alt-card">
           <div class="alt-head">
@@ -173,22 +148,18 @@ function renderDay(day) {
   `;
 }
 
-function applyFilters(data, query, minScore) {
+function applyFilters(data, query) {
   const q = String(query || "").trim().toLowerCase();
-  const min = Number(minScore || 0);
 
   const days = (data.days || []).map((d) => {
     const top = (d.top_topics || []).filter((t) => {
       const text = `${t.title || ""} ${(t.sources || []).join(" ")}`.toLowerCase();
-      const passQ = !q || text.includes(q);
-      const passScore = typeof t.score_total !== "number" ? min <= 0 : t.score_total >= min;
-      return passQ && passScore;
+      return !q || text.includes(q);
     });
 
     const alts = (d.alternatives || []).filter((a) => {
       const text = `${a.title || ""} ${a.summary || ""}`.toLowerCase();
       const passQ = !q || text.includes(q);
-      // Alternatives should always be visible; minScore is for "top topics" only.
       return passQ;
     });
 
@@ -206,9 +177,8 @@ const state = {
 function render() {
   const data = window.TOPIC_RADAR_DATA || { days: [] };
   const query = document.getElementById("q").value;
-  const minScore = document.getElementById("minScore").value;
 
-  const filteredDays = applyFilters(data, query, minScore);
+  const filteredDays = applyFilters(data, query);
   const empty = document.getElementById("empty");
   const dayView = document.getElementById("dayView");
 
@@ -230,6 +200,5 @@ function render() {
 }
 
 document.getElementById("q").addEventListener("input", render);
-document.getElementById("minScore").addEventListener("change", render);
 
 render();

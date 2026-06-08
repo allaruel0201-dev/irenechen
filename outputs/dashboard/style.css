@@ -11,8 +11,6 @@
   --accent: #6e8f6a;
   --accent-strong: #587654;
   --accent-soft: rgba(110, 143, 106, 0.12);
-  --score-good-bg: rgba(110, 143, 106, 0.12);
-  --score-warn-bg: rgba(171, 144, 96, 0.10);
   --shadow-soft: 0 16px 34px rgba(33, 28, 15, 0.06);
   --radius-lg: 20px;
   --radius-md: 16px;
@@ -109,14 +107,6 @@ a {
   align-items: end;
   gap: 14px 16px;
   max-width: 760px;
-}
-
-.hint {
-  flex-basis: 100%;
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1.5;
-  text-align: right;
 }
 
 .control {
@@ -519,10 +509,6 @@ a {
   .controls {
     width: 100%;
     justify-content: start;
-  }
-
-  .hint {
-    text-align: left;
   }
 }
 

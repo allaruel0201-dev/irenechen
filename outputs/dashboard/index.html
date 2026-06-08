@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>美国留学生职业机会选题雷达 Dashboard</title>
-    <link rel="stylesheet" href="./style.css?v=20260608-1" />
+    <link rel="stylesheet" href="./style.css?v=20260608-4" />
   </head>
   <body>
     <header class="topbar">
@@ -18,16 +18,6 @@
           <span>关键词</span>
           <input id="q" type="search" placeholder="Nvidia / H-1B / quant / data center…" />
         </label>
-        <label class="control">
-          <span>最低总分</span>
-          <select id="minScore">
-            <option value="0">不限</option>
-            <option value="18">≥18（备选以上）</option>
-            <option value="22">≥22（本周重点）</option>
-            <option value="26" selected>≥26（必写）</option>
-          </select>
-        </label>
-        <div class="hint">最低总分只影响主选题筛选。</div>
       </div>
     </header>
 
@@ -40,14 +30,14 @@
       <section class="content">
         <div id="empty" class="empty hidden">
           <div class="empty-title">没有匹配结果</div>
-          <div class="empty-sub">试试降低最低分或换个关键词。</div>
+          <div class="empty-sub">试试换个关键词。</div>
         </div>
 
         <div id="dayView" class="day-view"></div>
       </section>
     </main>
 
-    <script src="./data.js?v=20260608-1"></script>
-    <script src="./app.js?v=20260608-1"></script>
+    <script src="./data.js?v=20260608-4"></script>
+    <script src="./app.js?v=20260608-4"></script>
   </body>
 </html>
