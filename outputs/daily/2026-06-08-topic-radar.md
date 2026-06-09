@@ -11,9 +11,10 @@
 ## 今日扫描结果
 
 - 已扫描并纳入判断：Reuters、Fortune、Axios、AP、Corning 官方公告、公开社区页
+- 已扫描并纳入判断：Reuters、Fortune、Business Insider、Axios、AP、Corning 官方公告、公开社区页
 - 已扫描但当天无足够强可写线索：Forbes、eFinancialCareers、WSO、LinkedIn 公开页
-- 已尝试但本环境未获得稳定可用当天原文：Bloomberg、WSJ、Business Insider、CNBC
-- 当日判断：`2026-06-08` 有合格内容，且满足新策略中至少 1 条金融高薪赛道 / 身份政策候选的要求。今天最强的两条主线分别是 `H-1B 费用判决` 和 `Goldman 校招竞争信号`。
+- 已尝试但本环境未获得稳定可用当天原文：Bloomberg、WSJ、CNBC
+- 当日判断：`2026-06-08` 有合格内容，且满足新策略中至少 1 条金融高薪赛道 / 身份政策候选的要求。今天最强的三条主线分别是 `H-1B 费用判决`、`Goldman 校招竞争信号` 和 `Citadel/Citadel Securities intern 信号`。
 
 ---
 
@@ -76,21 +77,19 @@
 
 ---
 
-### 3. Amazon 和 Corning 为 AI 数据中心签下多亿美元级别光纤链条：AI 机会不只在模型公司，留学生该开始补基建岗位地图
+### 3. Citadel 和 Citadel Securities 只录取 0.36% 实习生：顶级量化与做市赛道还在加码校园人才，但门槛已经卷到极致
 
 - 这件事
-  - Reuters 6 月 8 日报道，Amazon 和 Corning 签下 multibillion-dollar 协议，扩大美国数据中心所需光纤和连接产品产能；Corning 同日还披露会带来约 1,000 个 advanced manufacturing jobs。它说明 AI 投资还在继续往光纤、网络、制造和数据中心链条外溢。
+  - Business Insider 6 月 8 日报道称，Citadel 和 Citadel Securities 今年收到超过 115,900 份实习申请，只录取 350 多名 intern，录取率仅 0.36%。更关键的是，文中明确写到它们并不 headcount-restrained，且 roles 覆盖 quant research、trading 和 engineering。
 
 - 为什么值得写
-  - 这条新闻很适合拿来打破只有算法岗才算 AI 机会的误区。对工程、EE、ME、OR、supply chain、cloud infra 背景的留学生，这比单纯模型产品新闻更能转化成长期求职判断。
+  - 这条新闻对想冲量化、做市、对冲基金的留学生非常关键，因为它同时给了两个强信号：顶级买方赛道仍在系统性投入校园人才，但竞争密度已经远超普通金融岗。它比泛泛的 hedge fund 高薪新闻更适合直接转成求职判断。
 
 - 什么方向展开
-  - 可以写成 AI 预算真正持续投入的地方，其实是数据中心、光纤、网络、运维和容量规划。可执行判断是：学生可以开始补 AI infra 岗位地图，优先看 sponsor 可能性更高的 engineering、network、cloud 和 TPM 岗。
+  - 可以直接写成 量化和做市校招没停，真正变化的是筛选标准：AI fluency、coding judgment、STEM 硬底子和高阶问题解决能力更重要。可执行判断是：别把 quant 当成只拼题库的赛道，要尽早补数理、编程、AI tool usage 和竞赛/研究型 profile。
 
 - 来源
-  - Reuters，2026-06-08：https://www.investing.com/news/stock-market-news/amazon-corning-sign-multibilliondollar-deal-to-boost-fiber-optics-manufacturing-in-us-4730958
-  - Corning 官方公告，2026-06-08：https://www.corning.com/worldwide/en/about-us/news-events/news-releases/2026/06/amazon-announces-agreement-with-corning-to-boost-us-fiber-optics-manufacturing-creating-1000-advanced-manufacturing-jobs-in-north-carolina.html
-  - 社区热度验证：Reddit r/StockMarket，2026-06-08：https://www.reddit.com/r/StockMarket/comments/1u08rgq/corning_shares_jump_4_after_striking_deal_to/
+  - Business Insider，2026-06-08：https://www.businessinsider.com/ken-griffin-citadel-securities-summer-intern-competitive-hedge-fund-2026-6
 
 - 评分
   - 时效性：5/5
@@ -113,10 +112,11 @@
 | --- | --- | --- | --- |
 | OpenAI 已 confidentially file IPO | Reuters 6 月 8 日称 OpenAI 已秘密递交 IPO 文件。可往 TMT 投行、ECM、IR 以及 AI 公司上市后的人才竞争方向延伸，但别写成单纯估值八卦。 | Reuters，2026-06-08 | 26/30 |
 | Meta 砸 1.15 亿美元做数据中心技工培训并承诺工作机会 | Reuters 6 月 8 日称 Meta 将投入 1.15 亿美元建设 skilled trades jobs program，服务 AI 数据中心扩张。适合写 AI boom 正在创造哪些非算法岗位，但国际学生可申请性要二次核实。 | Reuters，2026-06-08 | 24/30 |
+| Amazon-Corning 扩大美国光纤与数据中心供应链 | Reuters 6 月 8 日称 Amazon 和 Corning 签下 multibillion-dollar 协议，扩大美国本土光纤和连接产品产能。适合写 AI infra 链条岗位，但和 Citadel 这条相比，对留学生求职的直接性稍弱。 | Reuters / Corning，2026-06-08 | 27/30 |
 | Fortune 说 AI disruption 比原预测早 6 年到来 | Fortune 6 月 8 日称，AI 对办公室岗位的扰动速度比很多人预期更快。更适合做能力结构变化，不算强岗位信号。 | Fortune，2026-06-08 | 23/30 |
 | Spotify 用内部流动应对 hiring war | Fortune 6 月 8 日称 Spotify 更依赖内部流动与留人策略应对招聘竞争。可写企业更珍惜现有人才，但和留学生当下投递的直接关系偏弱。 | Fortune，2026-06-08 | 19/30 |
 | Reddit 上 H-1B 判决后的本土候选人竞争焦虑升温 | 6 月 8 日 Reddit 讨论里，本土求职者对 H-1B 费用判决后的竞争情绪明显升温。可用来做舆论体感补充，但不能当事实依据。 | Reddit r/cscareerquestions，2026-06-08 | 18/30 |
-| Amazon-Corning 相关新闻下，社区对 AI 基建岗位理解严重偏差 | 6 月 8 日 Reddit 讨论更多聚焦股价和交易，几乎没人讨论岗位链条。反而适合反向做科普：AI 基建里哪些岗位更真实。 | Reddit r/StockMarket，2026-06-08 | 17/30 |
+| Citadel intern 新闻侧面印证量化校招的 profile 军备竞赛 | BI 文中提到 intern 来自 90 多所学校，近 90% 是技术背景，还有大量 Olympiad 奖项选手。可延伸成 量化岗到底在筛什么人，但要避免写成普通学生完全没机会。 | Business Insider，2026-06-08 | 25/30 |
 | Goldman 仍招约 2,500 entry-level permanent hires | Fortune 同篇提到 Goldman 仍会招约 2,500 名入门级永久员工，说明华尔街校招并没停。可单独拆成 岗位还在，但筛选更狠。 | Fortune，2026-06-08 | 24/30 |
 
 ---
@@ -154,5 +154,5 @@
 
 - 今天最值得写的是：`H-1B 10 万美元费用被判无效`
 - 如果要做第二条强转化内容：`Goldman 实习录取率连续第三年低于 1%`
-- 如果要拉开差异化：`Amazon-Corning 这类 AI 基建岗位地图`
-- 整体判断：6 月 8 日不是岗位放量日，但对留学生非常关键，因为它同时给了 `身份成本变化`、`华尔街校招竞争强度`、`AI 基建岗位链条` 三种可落地的职业判断。
+- 如果要拉开差异化：`Citadel/Citadel Securities 0.36% intern 录取率`
+- 整体判断：6 月 8 日不是岗位放量日，但对留学生非常关键，因为它同时给了 `身份成本变化`、`华尔街校招竞争强度`、`顶级量化校招标准` 三种可落地的职业判断。
