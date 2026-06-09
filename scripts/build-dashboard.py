@@ -182,6 +182,8 @@ def _extract_text_after_label(block_lines: list[str], label_index: int, max_char
     line = block_lines[i]
     if re.match(r"^\s*-\s+\*\*", line):
       break
+    if re.match(r"^\s*\*\*[^*]+\*\*\s*$", line.strip()):
+      break
     if re.match(r"^\s*###\s+", line):
       break
     t = line.strip()
@@ -192,6 +194,40 @@ def _extract_text_after_label(block_lines: list[str], label_index: int, max_char
   if len(joined) > max_chars:
     return joined[: max_chars - 1] + "…"
   return joined
+
+
+def _is_label_line(line: str, *labels: str) -> bool:
+  stripped = line.strip()
+  for label in labels:
+    if re.match(rf"^\s*-\s+(?:\*\*)?{re.escape(label)}(?:\*\*)?\s*$", line):
+      return True
+    if stripped == f"**{label}**" or stripped == f"**{label}**  ":
+      return True
+  return False
+
+
+def _extract_plain_lines_after_label(
+  block_lines: list[str], label_index: int, max_items: int = 10
+) -> tuple[list[str], list[str]]:
+  items: list[str] = []
+  urls: list[str] = []
+  for i in range(label_index + 1, len(block_lines)):
+    line = block_lines[i]
+    if re.match(r"^\s*-\s+", line):
+      break
+    if re.match(r"^\s*\*\*[^*]+\*\*\s*$", line.strip()):
+      break
+    if re.match(r"^\s*###\s+", line):
+      break
+    text = _clean_line(line)
+    if not text:
+      continue
+    items.append(text)
+    url_match = re.search(r"https?://\S+", line)
+    urls.append(url_match.group(0).rstrip(")") if url_match else "")
+    if len(items) >= max_items:
+      break
+  return items, urls
 
 
 def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
@@ -212,6 +248,18 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
     block = section[block_start:block_end]
     block_lines = block.splitlines()
 
+    if re.fullmatch(r"\d{1,2}", title):
+      for line in block_lines:
+        stripped = line.strip()
+        if not stripped:
+          continue
+        if stripped.startswith("**"):
+          break
+        if stripped.startswith("- "):
+          break
+        title = stripped
+        break
+
     score_total: int | None = None
     for line in block_lines:
       # Support both:
@@ -227,13 +275,16 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
     why = ""
     signal = ""
     for i, line in enumerate(block_lines):
-      if re.match(r"^\s*-\s+(?:\*\*)?来源(?:\*\*)?\s*$", line):
-        sources, source_urls = _extract_sources_after_label(block_lines, i, 10)
-      if re.match(r"^\s*-\s+(?:\*\*)?事件摘要(?:\*\*)?\s*$", line):
+      if _is_label_line(line, "来源"):
+        if re.match(r"^\s*-\s+", line):
+          sources, source_urls = _extract_sources_after_label(block_lines, i, 10)
+        else:
+          sources, source_urls = _extract_plain_lines_after_label(block_lines, i, 10)
+      if _is_label_line(line, "事件摘要", "这件事"):
         summary = _extract_text_after_label(block_lines, i, 520)
-      if re.match(r"^\s*-\s+(?:\*\*)?为什么对美国留学生重要(?:\*\*)?\s*$", line):
+      if _is_label_line(line, "为什么对美国留学生重要", "为什么值得写"):
         why = _extract_text_after_label(block_lines, i, 680)
-      if re.match(r"^\s*-\s+(?:\*\*)?职业机会信号(?:\*\*)?\s*$", line):
+      if _is_label_line(line, "职业机会信号", "可写角度", "什么方向展开"):
         signal = _extract_text_after_label(block_lines, i, 680)
 
     topics.append(
@@ -258,6 +309,7 @@ ALT_SCORE_RE = re.compile(r"评分[：:]\s*(\d{1,2})\s*$")
 ALT_INLINE_SCORE_RE = re.compile(r"（总分：(\d{1,2})(?:[^）]*)）")
 ALT_ANY_NUMBERED_RE = re.compile(r"^\s*\d+\.\s+")
 ALT_TOTAL_SCORE_RE = re.compile(r"总分[：:]\s*(\d{1,2})\s*/\s*30")
+ALT_TABLE_ROW_RE = re.compile(r"^\|(.+)\|\s*$")
 
 
 def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
@@ -270,6 +322,34 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
     return []
 
   alternatives: list[dict[str, Any]] = []
+
+  table_lines = [line for line in section.splitlines() if line.strip().startswith("|")]
+  if len(table_lines) >= 3:
+    for line in table_lines[2:]:
+      row_match = ALT_TABLE_ROW_RE.match(line.strip())
+      if not row_match:
+        continue
+      cols = [c.strip() for c in row_match.group(1).split("|")]
+      if len(cols) < 4:
+        continue
+      title, summary, source, score = cols[:4]
+      if not title or title == "---":
+        continue
+      score_num: int | None = None
+      score_match = re.search(r"(\d{1,2})\s*/\s*30", score)
+      if score_match:
+        score_num = int(score_match.group(1))
+      alternatives.append(
+        {
+          "title": _normalize_dashboard_text(title),
+          "summary": _normalize_dashboard_text(summary),
+          "score_total": score_num,
+          "source_url": "",
+        }
+      )
+    if alternatives:
+      return alternatives
+
   lines = section.splitlines()
   i = 0
   while i < len(lines):

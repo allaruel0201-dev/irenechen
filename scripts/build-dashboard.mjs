@@ -49,11 +49,38 @@ function extractSubListAfterLabel(blockLines, labelLineIndex, maxItems = 8) {
   return items;
 }
 
+function isLabelLine(line, ...labels) {
+  const stripped = String(line || "").trim();
+  return labels.some((label) => {
+    const bulletRe = new RegExp(`^\\s*-\\s+(?:\\*\\*)?${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:\\*\\*)?\\s*$`);
+    return bulletRe.test(line) || stripped === `**${label}**`;
+  });
+}
+
+function extractPlainLinesAfterLabel(blockLines, labelLineIndex, maxItems = 10) {
+  const items = [];
+  const urls = [];
+  for (let i = labelLineIndex + 1; i < blockLines.length; i++) {
+    const line = blockLines[i];
+    if (/^\s*-\s+/.test(line)) break;
+    if (/^\s*\*\*[^*]+\*\*\s*$/.test(line.trim())) break;
+    if (/^\s*###\s+/.test(line)) break;
+    const text = cleanLineText(line);
+    if (!text) continue;
+    items.push(text);
+    const urlMatch = line.match(/https?:\/\/\S+/);
+    urls.push(urlMatch ? urlMatch[0].replace(/\)$/, "") : "");
+    if (items.length >= maxItems) break;
+  }
+  return { items, urls };
+}
+
 function extractTextAfterLabel(blockLines, labelLineIndex, maxChars = 420) {
   const out = [];
   for (let i = labelLineIndex + 1; i < blockLines.length; i++) {
     const line = blockLines[i];
     if (/^\s*-\s+\*\*/.test(line)) break; // next label
+    if (/^\s*\*\*[^*]+\*\*\s*$/.test(line.trim())) break;
     if (/^\s*###\s+/.test(line)) break;
     const trimmed = line.trim();
     if (!trimmed) continue;
@@ -66,8 +93,8 @@ function extractTextAfterLabel(blockLines, labelLineIndex, maxChars = 420) {
 function parseTopTopics(markdown) {
   const section = takeSection(
     markdown,
-    /^##\s*1\)\s*今日最值得写的\s*3\s*个选题\s*$/m,
-    /^##\s*2\)\s*/m,
+    /^##\s*1[\)）]\s*今日最值得写的\s*3\s*个选题\s*$/m,
+    /^##\s*2[\)）]\s*/m,
   );
   if (!section) return [];
 
@@ -84,9 +111,20 @@ function parseTopTopics(markdown) {
     const blockStart = current.index + current.length;
     const blockEnd = next ? next.index : section.length;
 
-    const title = current.title;
+    let title = current.title;
     const block = section.slice(blockStart, blockEnd);
     const blockLines = block.split("\n");
+
+    if (/^\d{1,2}$/.test(title)) {
+      for (const line of blockLines) {
+        const stripped = line.trim();
+        if (!stripped) continue;
+        if (stripped.startsWith("**")) break;
+        if (stripped.startsWith("- ")) break;
+        title = stripped;
+        break;
+      }
+    }
 
     let scoreTotal = null;
     for (const line of blockLines) {
@@ -95,18 +133,35 @@ function parseTopTopics(markdown) {
     }
 
     let sources = [];
+    let sourceUrls = [];
     let summary = "";
+    let why = "";
+    let signal = "";
     for (let i = 0; i < blockLines.length; i++) {
       const line = blockLines[i];
-      if (/^\s*-\s+\*\*来源/.test(line)) sources = extractSubListAfterLabel(blockLines, i, 10);
-      if (/^\s*-\s+\*\*事件摘要/.test(line)) summary = extractTextAfterLabel(blockLines, i, 520);
+      if (isLabelLine(line, "来源")) {
+        if (/^\s*-\s+/.test(line)) {
+          sources = extractSubListAfterLabel(blockLines, i, 10);
+          sourceUrls = new Array(sources.length).fill("");
+        } else {
+          const extracted = extractPlainLinesAfterLabel(blockLines, i, 10);
+          sources = extracted.items;
+          sourceUrls = extracted.urls;
+        }
+      }
+      if (isLabelLine(line, "事件摘要", "这件事")) summary = extractTextAfterLabel(blockLines, i, 520);
+      if (isLabelLine(line, "为什么对美国留学生重要", "为什么值得写")) why = extractTextAfterLabel(blockLines, i, 680);
+      if (isLabelLine(line, "职业机会信号", "可写角度", "什么方向展开")) signal = extractTextAfterLabel(blockLines, i, 680);
     }
 
     topics.push({
       title,
       score_total: scoreTotal,
       sources,
+      source_urls: sourceUrls,
       summary,
+      why_it_matters: why,
+      job_signal: signal,
     });
   }
 
@@ -116,10 +171,32 @@ function parseTopTopics(markdown) {
 function parseAlternativeTopics(markdown) {
   const section = takeSection(
     markdown,
-    /^##\s*2\)\s*备选选题池.*$/m,
-    /^##\s*3\)\s*/m,
+    /^##\s*2[\)）]\s*备选选题池.*$/m,
+    /^##\s*3[\)）]\s*/m,
   );
   if (!section) return [];
+
+  const tableLines = section.split("\n").filter((line) => line.trim().startsWith("|"));
+  if (tableLines.length >= 3) {
+    const alternatives = [];
+    for (const line of tableLines.slice(2)) {
+      const trimmed = line.trim();
+      const match = trimmed.match(/^\|(.+)\|\s*$/);
+      if (!match) continue;
+      const cols = match[1].split("|").map((c) => c.trim());
+      if (cols.length < 4) continue;
+      const [title, summary, _source, score] = cols;
+      if (!title || title === "---") continue;
+      const scoreMatch = score.match(/(\d{1,2})\s*\/\s*30/);
+      alternatives.push({
+        title,
+        summary,
+        score_total: scoreMatch ? Number(scoreMatch[1]) : null,
+        source_url: "",
+      });
+    }
+    if (alternatives.length) return alternatives;
+  }
 
   const alternatives = [];
   const lines = section.split("\n");
