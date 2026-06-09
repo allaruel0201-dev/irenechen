@@ -10,7 +10,6 @@
 
 ## 今日扫描结果
 
-- 已扫描并纳入判断：Reuters、Fortune、Axios、AP、Corning 官方公告、公开社区页
 - 已扫描并纳入判断：Reuters、Fortune、Business Insider、Axios、AP、Corning 官方公告、公开社区页
 - 已扫描但当天无足够强可写线索：Forbes、eFinancialCareers、WSO、LinkedIn 公开页
 - 已尝试但本环境未获得稳定可用当天原文：Bloomberg、WSJ、CNBC
@@ -20,21 +19,22 @@
 
 ## 1）今日最值得写的 3 个选题
 
-### 1. H-1B 10 万美元申请费被法院判无效：留学生不能把坏消息当成结束，但可以把求职策略从被动防守拉回正常节奏
+### 01
+H-1B 10 万美元申请费被法院判无效：留学生不能把坏消息当成结束，但可以把求职策略从被动防守拉回正常节奏
 
-- 这件事
-  - 6 月 8 日，Reuters 报道美国联邦法官裁定特朗普政府针对新 H-1B 申请设定的 10 万美元费用违法，应被撤销。对留学生来说，这是一条直接影响 sponsor 成本和企业用人意愿的身份政策信号。
+**这件事**  
+6 月 8 日，Reuters 报道美国联邦法官裁定特朗普政府针对新 H-1B 申请设定的 10 万美元费用违法，应被撤销。对留学生来说，这是一条直接影响 sponsor 成本和企业用人意愿的身份政策信号。
 
-- 为什么值得写
-  - 这条新闻不是抽象政治争议，而是企业要不要继续招国际学生的真实成本变化。它很适合写成 留学生求职风险有没有边际缓和，以及哪些行业更值得继续投。
+**为什么值得写**  
+这条新闻不是抽象政治争议，而是企业要不要继续招国际学生的真实成本变化。它很适合写成留学生求职风险有没有边际缓和，以及哪些行业更值得继续投。
 
-- 什么方向展开
-  - 重点写 sponsor 成本下降后，tech、金融、量化、咨询这些依赖高技能外籍人才的行业会不会恢复正常招聘讨论。可执行判断是：学生现在要重新做 sponsor 分层投递，但不能把它写成身份风险已经解除。
+**可写角度**  
+重点写 sponsor 成本下降后，tech、金融、量化、咨询这些依赖高技能外籍人才的行业会不会恢复正常招聘讨论。学生现在更适合重新做 sponsor 分层投递，但不能把它写成身份风险已经解除。
 
-- 来源
-  - Reuters，2026-06-08：https://www.investing.com/news/world-news/trumps-100000-h1b-visa-fee-is-unlawful-us-judge-rules-4731236
-  - AP，2026-06-08：https://apnews.com/article/de169f36bb0bbdc7c982b556d62e9560
-  - 社区热度验证：Reddit r/cscareerquestions，2026-06-08：https://www.reddit.com/r/cscareerquestions/comments/1u0hh76/judge_blocks_100000_h1b_fee/
+**来源**  
+Reuters，2026-06-08  
+AP，2026-06-08  
+社区热度验证：Reddit r/cscareerquestions，2026-06-08
 
 - 评分
   - 时效性：5/5
@@ -49,20 +49,21 @@
 
 ---
 
-### 2. Goldman 实习录取率连续第三年低于 1%：金融高薪赛道没消失，但校招已经从抢 offer 变成抢入场券
+### 02
+Goldman 实习录取率连续第三年低于 1%：金融高薪赛道没消失，但校招已经从抢 offer 变成抢入场券
 
-- 这件事
-  - Fortune 6 月 8 日称，Goldman Sachs 2026 年暑期实习录取率连续第三年低于 1%，但仍将招约 2,500 名入门级永久员工。这个信号很清楚：金融高薪赛道没有关门，但校招门槛继续抬高。
+**这件事**  
+Fortune 6 月 8 日称，Goldman Sachs 2026 年暑期实习录取率连续第三年低于 1%，但仍将招约 2,500 名入门级永久员工。这个信号很清楚：金融高薪赛道没有关门，但校招门槛继续抬高。
 
-- 为什么值得写
-  - 这条新闻很适合拿来纠正一个常见误判：不是没岗位，而是普通背景候选人的胜率在下降。对留学生来说，它天然能转成 金融校招还能不能冲、什么样的人更容易进 的内容。
+**为什么值得写**  
+这条新闻很适合拿来纠正一个常见误判：不是没岗位，而是普通背景候选人的胜率在下降。对留学生来说，它天然能转成金融校招还能不能冲、什么样的人更容易进的内容。
 
-- 什么方向展开
-  - 可以写成 投行和 markets 仍在招人，但更看重差异化经历、表达能力、技术工具和 profile 组合。可执行判断是：别再只用 GPA 加普通实习去赌大行，要提前补 networking、storyline 和 finance plus tech 的复合能力。
+**可写角度**  
+可以写成投行和 markets 仍在招人，但更看重差异化经历、表达能力、技术工具和 profile 组合。别再只用 GPA 加普通实习去赌大行，要提前补 networking、storyline 和 finance plus tech 的复合能力。
 
-- 来源
-  - Fortune，2026-06-08：https://fortune.com/2026/06/08/exclusive-goldman-sachs-intern-acceptance-rate-falls-below-1-for-third-straight-year/
-  - 背景补充：WSO 首页公开热度页：https://www.wallstreetoasis.com/
+**来源**  
+Fortune，2026-06-08  
+背景补充：WSO 首页公开热度页
 
 - 评分
   - 时效性：5/5
@@ -77,19 +78,20 @@
 
 ---
 
-### 3. Citadel 和 Citadel Securities 只录取 0.36% 实习生：顶级量化与做市赛道还在加码校园人才，但门槛已经卷到极致
+### 03
+Citadel 和 Citadel Securities 只录取 0.36% 实习生：顶级量化与做市赛道还在加码校园人才，但门槛已经卷到极致
 
-- 这件事
-  - Business Insider 6 月 8 日报道称，Citadel 和 Citadel Securities 今年收到超过 115,900 份实习申请，只录取 350 多名 intern，录取率仅 0.36%。更关键的是，文中明确写到它们并不 headcount-restrained，且 roles 覆盖 quant research、trading 和 engineering。
+**这件事**  
+Business Insider 6 月 8 日报道称，Citadel 和 Citadel Securities 今年收到超过 115,900 份实习申请，只录取 350 多名 intern，录取率仅 0.36%。更关键的是，文中明确写到它们并不 headcount-restrained，且 roles 覆盖 quant research、trading 和 engineering。
 
-- 为什么值得写
-  - 这条新闻对想冲量化、做市、对冲基金的留学生非常关键，因为它同时给了两个强信号：顶级买方赛道仍在系统性投入校园人才，但竞争密度已经远超普通金融岗。它比泛泛的 hedge fund 高薪新闻更适合直接转成求职判断。
+**为什么值得写**  
+这条新闻对想冲量化、做市、对冲基金的留学生非常关键，因为它同时给了两个强信号：顶级买方赛道仍在系统性投入校园人才，但竞争密度已经远超普通金融岗。它比泛泛的 hedge fund 高薪新闻更适合直接转成求职判断。
 
-- 什么方向展开
-  - 可以直接写成 量化和做市校招没停，真正变化的是筛选标准：AI fluency、coding judgment、STEM 硬底子和高阶问题解决能力更重要。可执行判断是：别把 quant 当成只拼题库的赛道，要尽早补数理、编程、AI tool usage 和竞赛/研究型 profile。
+**可写角度**  
+可以直接写成量化和做市校招没停，真正变化的是筛选标准：AI fluency、coding judgment、STEM 硬底子和高阶问题解决能力更重要。别把 quant 当成只拼题库的赛道，要尽早补数理、编程、AI tool usage 和竞赛/研究型 profile。
 
-- 来源
-  - Business Insider，2026-06-08：https://www.businessinsider.com/ken-griffin-citadel-securities-summer-intern-competitive-hedge-fund-2026-6
+**来源**  
+Business Insider，2026-06-08
 
 - 评分
   - 时效性：5/5
