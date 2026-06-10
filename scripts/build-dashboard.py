@@ -154,6 +154,10 @@ def _extract_sources_after_label(
     line = block_lines[i]
     if re.match(r"^\s*-\s+\*\*", line):
       break
+    if re.match(r"^\s*\*\*[^*]+\*\*\s*$", line.strip()):
+      break
+    if re.match(r"^\s*###\s+", line):
+      break
     bullet = re.match(r"^\s*-\s+(.+?)\s*$", line)
     if bullet:
       text = _clean_line(line)
@@ -174,6 +178,15 @@ def _extract_sources_after_label(
   while len(urls) < len(items):
     urls.append("")
   return items, urls
+
+
+def _has_bullet_items_after_label(block_lines: list[str], label_index: int) -> bool:
+  for i in range(label_index + 1, len(block_lines)):
+    stripped = block_lines[i].strip()
+    if not stripped:
+      continue
+    return bool(re.match(r"^\s*-\s+", block_lines[i]))
+  return False
 
 
 def _extract_text_after_label(block_lines: list[str], label_index: int, max_chars: int = 520) -> str:
@@ -219,11 +232,15 @@ def _extract_plain_lines_after_label(
       break
     if re.match(r"^\s*###\s+", line):
       break
+    url_match = re.search(r"https?://\S+", line)
+    if url_match and items:
+      if not urls[-1]:
+        urls[-1] = url_match.group(0).rstrip(")")
+      continue
     text = _clean_line(line)
     if not text:
       continue
     items.append(text)
-    url_match = re.search(r"https?://\S+", line)
     urls.append(url_match.group(0).rstrip(")") if url_match else "")
     if len(items) >= max_items:
       break
@@ -276,7 +293,7 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
     signal = ""
     for i, line in enumerate(block_lines):
       if _is_label_line(line, "来源"):
-        if re.match(r"^\s*-\s+", line):
+        if re.match(r"^\s*-\s+", line) or _has_bullet_items_after_label(block_lines, i):
           sources, source_urls = _extract_sources_after_label(block_lines, i, 10)
         else:
           sources, source_urls = _extract_plain_lines_after_label(block_lines, i, 10)

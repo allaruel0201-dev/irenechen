@@ -24,10 +24,14 @@
 H-1B 10 万美元申请费被判违法：不是身份风险消失了，而是 sponsor 成本这条线暂时松了一口气
 
 **来源**
-- AP，2026-06-09
 - Reuters 联播页（Investing），2026-06-08/09 更新
+  https://www.investing.com/news/world-news/trumps-100000-h1b-visa-fee-is-unlawful-us-judge-rules-4731236
+- AP，2026-06-09
+  https://apnews.com/article/h1b-visa-fee-trump-ruling-2026
 - Forbes，2026-06-09
+  https://www.forbes.com/sites/stuartanderson/2026/06/09/judge-strikes-down-100000-h-1b-visa-fee/
 - 社区热度验证：Reddit r/cscareerquestions，2026-06-09
+  https://www.reddit.com/r/cscareerquestions/comments/1u0hh76/judge_blocks_100000_h1b_fee/
 
 **事件摘要**
 6 月 9 日，AP 与 Forbes 持续跟进 6 月 8 日联邦法官裁决，认定特朗普政府对新 H-1B 申请征收的 10 万美元费用违法。可核实事实是，法院已否定这项收费；不能直接下结论的是，企业会不会因此立刻恢复大规模 sponsor。
@@ -95,11 +99,16 @@ H-1B 10 万美元申请费被判违法：不是身份风险消失了，而是 sp
 OpenAI 公开确认已递交保密 S-1：这不只是 AI 圈大新闻，更是 TMT 投行、二级市场和 AI 基建岗位的机会信号
 
 **来源**
-- OpenAI 官方，2026-06-08（背景资料）
-- Fortune / AP，2026-06-09
-- WSJ，2026-06-09
 - Reuters 联播页（Investing），2026-06-09 更新
+  https://www.investing.com/news/stock-market-news/openai-files-for-us-ipo-after-anthropic-as-ai-giants-head-to-public-markets-4732251
+- OpenAI 官方，2026-06-08（背景资料）
+  https://openai.com/index/openai-announces-confidential-s-1-filing/
+- Fortune / AP，2026-06-09
+  https://fortune.com/2026/06/09/openai-confidential-s1-filing-ipo/
+- WSJ，2026-06-09
+  https://www.wsj.com/tech/ai/openai-s1-ipo-filing-2026-06-09
 - 社区热度验证：Hacker News，2026-06-09
+  https://news.ycombinator.com/item?id=44216066
 
 **事件摘要**
 6 月 9 日，多家主流媒体继续消化 OpenAI 已保密递交 S-1 的消息。可核实事实是：OpenAI 确认递交了保密注册文件，且明确表示上市时间可能还要一段时间。这条新闻真正值得写的，不是估值八卦，而是它把 `AI 公司融资需求`、`投行业务窗口`、`AI infra 资本开支` 三条线同时拉到了台前。
@@ -167,8 +176,10 @@ OpenAI 公开确认已递交保密 S-1：这不只是 AI 圈大新闻，更是 T
 Amazon 和 Corning 签下数据中心光纤大单并配套培训计划：AI infra 岗位不只在大模型公司，也在供应链和先进制造
 
 **来源**
-- Amazon 官方，2026-06-09
 - Reuters 联播页（TradingView/Zawya），2026-06-09
+  https://www.tradingview.com/news/reuters.com,2026:newsml_L1N3SI0D7:0-amazon-corning-sign-multibillion-dollar-deal-to-boost-fiber-optics-manufacturing-in-us/
+- Amazon 官方，2026-06-09
+  https://www.aboutamazon.com/news/infrastructure/amazon-corning-fiber-optics-data-centers
 
 **事件摘要**
 6 月 9 日，Amazon 宣布与 Corning 达成多年、数十亿美元级合作，扩美国本土光纤制造，为数据中心供货，并称将在北卡带来 1,000 个先进制造岗位、数百个建设岗位及新的 workforce development program。可核实事实是有投资、有制造扩产、有培训项目；不能直接下结论的是这些岗位是否对国际学生大规模开放。

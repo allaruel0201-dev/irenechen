@@ -39,6 +39,8 @@ function extractSubListAfterLabel(blockLines, labelLineIndex, maxItems = 8) {
   for (let i = labelLineIndex + 1; i < blockLines.length; i++) {
     const line = blockLines[i];
     if (/^\s*-\s+\*\*/.test(line)) break; // next label
+    if (/^\s*\*\*[^*]+\*\*\s*$/.test(line.trim())) break;
+    if (/^\s*###\s+/.test(line)) break;
     const bullet = line.match(/^\s*-\s+(.+)\s*$/);
     if (!bullet) continue;
     const text = cleanLineText(bullet[0]);
@@ -65,14 +67,27 @@ function extractPlainLinesAfterLabel(blockLines, labelLineIndex, maxItems = 10) 
     if (/^\s*-\s+/.test(line)) break;
     if (/^\s*\*\*[^*]+\*\*\s*$/.test(line.trim())) break;
     if (/^\s*###\s+/.test(line)) break;
+    const urlMatch = line.match(/https?:\/\/\S+/);
+    if (urlMatch && items.length) {
+      if (!urls[urls.length - 1]) urls[urls.length - 1] = urlMatch[0].replace(/\)$/, "");
+      continue;
+    }
     const text = cleanLineText(line);
     if (!text) continue;
     items.push(text);
-    const urlMatch = line.match(/https?:\/\/\S+/);
     urls.push(urlMatch ? urlMatch[0].replace(/\)$/, "") : "");
     if (items.length >= maxItems) break;
   }
   return { items, urls };
+}
+
+function hasBulletItemsAfterLabel(blockLines, labelLineIndex) {
+  for (let i = labelLineIndex + 1; i < blockLines.length; i++) {
+    const stripped = blockLines[i].trim();
+    if (!stripped) continue;
+    return /^\s*-\s+/.test(blockLines[i]);
+  }
+  return false;
 }
 
 function extractTextAfterLabel(blockLines, labelLineIndex, maxChars = 420) {
@@ -140,7 +155,7 @@ function parseTopTopics(markdown) {
     for (let i = 0; i < blockLines.length; i++) {
       const line = blockLines[i];
       if (isLabelLine(line, "来源")) {
-        if (/^\s*-\s+/.test(line)) {
+        if (/^\s*-\s+/.test(line) || hasBulletItemsAfterLabel(blockLines, i)) {
           sources = extractSubListAfterLabel(blockLines, i, 10);
           sourceUrls = new Array(sources.length).fill("");
         } else {

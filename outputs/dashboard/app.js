@@ -91,7 +91,10 @@ function renderDay(day) {
               ? `<section class="memo-block">
                   <div class="memo-label">来源</div>
                   <ul class="source-list">${sources
-                  .map((s) => `<li>${escapeHtml(s)}</li>`)
+                  .map((s, sourceIdx) => {
+                    const sourceUrl = String((t.source_urls || [])[sourceIdx] || "").trim();
+                    return `<li>${sourceUrl ? `<a class="link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(s)}</a>` : escapeHtml(s)}</li>`;
+                  })
                   .join("")}</ul>
                 </section>`
               : ""
