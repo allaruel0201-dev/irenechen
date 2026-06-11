@@ -31,7 +31,34 @@ function sectionBlock(label, body) {
 function storyLink(url, text) {
   const href = String(url || "").trim();
   if (!href) return `<span class="topic-title">${escapeHtml(text)}</span>`;
-  return `<a class="topic-link" href="${escapeHtml(href)}" target="_blank" rel="noreferrer">${escapeHtml(text)}</a>`;
+  return `<a class="topic-link" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`;
+}
+
+function clickableCardAttrs(url) {
+  const href = String(url || "").trim();
+  if (!href) return "";
+  return ` data-href="${escapeHtml(href)}" role="link" tabindex="0"`;
+}
+
+function bindCardLinks(scope) {
+  for (const card of scope.querySelectorAll("[data-href]")) {
+    const openCardHref = () => {
+      const href = String(card.getAttribute("data-href") || "").trim();
+      if (!href) return;
+      window.open(href, "_blank", "noopener,noreferrer");
+    };
+
+    card.addEventListener("click", (event) => {
+      if (event.target.closest("a")) return;
+      openCardHref();
+    });
+
+    card.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      openCardHref();
+    });
+  }
 }
 
 function buildDayList(days, activeDate) {
@@ -76,7 +103,7 @@ function renderDay(day) {
       const why = (t.why_it_matters || "").trim();
       const signal = (t.job_signal || "").trim();
       return `
-        <article class="card topic-card">
+        <article class="card topic-card${primaryUrl ? " is-clickable" : ""}"${clickableCardAttrs(primaryUrl)}>
           <div class="topic-head">
             <div class="topic-title-group">
               <div class="topic-index">${escapeHtml(parsed.index || String(idx + 1).padStart(2, "0"))}</div>
@@ -110,7 +137,7 @@ function renderDay(day) {
       const parsed = splitTopicTitle(a.title);
       const primaryUrl = String(a.source_url || "").trim() || `../daily/${encodeURIComponent(day.date + "-topic-radar.md")}`;
       return `
-        <article class="card alt-card">
+        <article class="card alt-card${primaryUrl ? " is-clickable" : ""}"${clickableCardAttrs(primaryUrl)}>
           <div class="alt-head">
             ${storyLink(primaryUrl, parsed.title)}
           </div>
@@ -149,6 +176,8 @@ function renderDay(day) {
       <div class="cards alt-cards">${altCards || `<div class="empty-panel">当日未识别到备选池结构。</div>`}</div>
     </section>
   `;
+
+  bindCardLinks(container);
 }
 
 function applyFilters(data, query) {

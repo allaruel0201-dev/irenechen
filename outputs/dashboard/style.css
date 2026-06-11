@@ -360,6 +360,15 @@ a {
   transform: translateY(-1px);
 }
 
+.card.is-clickable {
+  cursor: pointer;
+}
+
+.card.is-clickable:focus-visible {
+  outline: 2px solid rgba(127, 167, 122, 0.48);
+  outline-offset: 4px;
+}
+
 .topic-head,
 .alt-head {
   display: flex;
