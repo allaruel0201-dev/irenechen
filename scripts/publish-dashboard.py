@@ -5,6 +5,7 @@ import os
 import re
 import subprocess
 import sys
+import importlib.util
 from pathlib import Path
 
 
@@ -72,6 +73,38 @@ def git_pull_rebase_autostash() -> tuple[int, str]:
   return try_run(["git", "pull", "--rebase", "--autostash"])
 
 
+def validate_latest_daily_links(date: str | None) -> None:
+  if not date:
+    return
+
+  latest_daily = DAILY_DIR / f"{date}-topic-radar.md"
+  if not latest_daily.exists():
+    return
+
+  spec = importlib.util.spec_from_file_location("build_dashboard", WORKSPACE_ROOT / "scripts" / "build-dashboard.py")
+  if spec is None or spec.loader is None:
+    raise RuntimeError("Unable to load scripts/build-dashboard.py for validation.")
+
+  module = importlib.util.module_from_spec(spec)
+  spec.loader.exec_module(module)
+  markdown = latest_daily.read_text(encoding="utf-8")
+  topics = module.parse_top_topics(markdown)
+
+  missing: list[str] = []
+  for topic in topics:
+    if not any(str(url or "").strip() for url in topic.get("source_urls", [])):
+      missing.append(str(topic.get("title", "")).strip())
+
+  if missing:
+    bullet_list = "\n".join(f"- {title}" for title in missing)
+    raise RuntimeError(
+      "Latest daily report is missing source URLs for top topics. "
+      "Add a raw article URL on the same line as each source or on the next line before publishing.\n"
+      f"File: {latest_daily}\n"
+      f"{bullet_list}"
+    )
+
+
 def main() -> int:
   # 0) Keep local branch up-to-date (robust for fully automated runs).
   code, out = git_pull_rebase_autostash()
@@ -90,6 +123,7 @@ def main() -> int:
 
   # 1) Build dashboard data.js
   run([sys.executable, "scripts/build-dashboard.py"])
+  validate_latest_daily_links(date)
 
   # 2) Stage outputs (including updated data.js)
   # Netlify rebuilds from repo contents; also stage automation rule files that affect future runs.

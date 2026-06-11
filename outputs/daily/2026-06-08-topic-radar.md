@@ -32,9 +32,9 @@ H-1B 10 万美元申请费被法院判无效：留学生不能把坏消息当成
 重点写 sponsor 成本下降后，tech、金融、量化、咨询这些依赖高技能外籍人才的行业会不会恢复正常招聘讨论。学生现在更适合重新做 sponsor 分层投递，但不能把它写成身份风险已经解除。
 
 **来源**  
-Reuters，2026-06-08  
-AP，2026-06-08  
-社区热度验证：Reddit r/cscareerquestions，2026-06-08
+- Reuters 联播页，2026-06-08：https://www.investing.com/news/world-news/trumps-100000-h1b-visa-fee-is-unlawful-us-judge-rules-4731236
+- AP，2026-06-08：https://apnews.com/article/h1b-visa-fee-trump-ruling-2026
+- 社区热度验证：Reddit r/cscareerquestions，2026-06-08
 
 - 评分
   - 时效性：5/5
@@ -62,8 +62,9 @@ Fortune 6 月 8 日称，Goldman Sachs 2026 年暑期实习录取率连续第三
 可以写成投行和 markets 仍在招人，但更看重差异化经历、表达能力、技术工具和 profile 组合。别再只用 GPA 加普通实习去赌大行，要提前补 networking、storyline 和 finance plus tech 的复合能力。
 
 **来源**  
-Fortune，2026-06-08  
-背景补充：WSO 首页公开热度页
+- Fortune，2026-06-08
+- 补充来源：Business Insider，2026-06-01：https://www.businessinsider.com/goldman-sachs-summer-internship-advice-success-2026-6
+- 背景补充：WSO 首页公开热度页
 
 - 评分
   - 时效性：5/5
@@ -91,7 +92,7 @@ Business Insider 6 月 8 日报道称，Citadel 和 Citadel Securities 今年收
 可以直接写成量化和做市校招没停，真正变化的是筛选标准：AI fluency、coding judgment、STEM 硬底子和高阶问题解决能力更重要。别把 quant 当成只拼题库的赛道，要尽早补数理、编程、AI tool usage 和竞赛/研究型 profile。
 
 **来源**  
-Business Insider，2026-06-08
+- Business Insider，2026-06-08：https://www.businessinsider.com/ken-griffin-citadel-securities-summer-intern-competitive-hedge-fund-2026-6
 
 - 评分
   - 时效性：5/5

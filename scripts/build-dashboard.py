@@ -179,16 +179,17 @@ def _extract_sources_after_label(
       if text:
         items.append(text)
         current_idx = len(items) - 1
+        urls.append(_extract_first_url(line))
       if len(items) >= max_items:
         break
       continue
 
-    url_match = re.search(r"https?://\S+", line)
-    if url_match and current_idx is not None:
+    inline_url = _extract_first_url(line)
+    if inline_url and current_idx is not None:
       while len(urls) <= current_idx:
         urls.append("")
       if not urls[current_idx]:
-        urls[current_idx] = url_match.group(0).rstrip(")")
+        urls[current_idx] = inline_url
 
   while len(urls) < len(items):
     urls.append("")
@@ -227,9 +228,11 @@ def _extract_text_after_label(block_lines: list[str], label_index: int, max_char
 def _is_label_line(line: str, *labels: str) -> bool:
   stripped = line.strip()
   for label in labels:
-    if re.match(rf"^\s*-\s+(?:\*\*)?{re.escape(label)}(?:\*\*)?\s*$", line):
+    label_re = re.escape(label)
+    suffix_re = r"(?:（[^）]*）|\([^)]*\)|[：:].*)?"
+    if re.match(rf"^\s*-\s+(?:\*\*)?{label_re}{suffix_re}(?:\*\*)?\s*$", line):
       return True
-    if stripped == f"**{label}**" or stripped == f"**{label}**  ":
+    if re.match(rf"^\*\*{label_re}{suffix_re}\*\*$", stripped):
       return True
   return False
 
@@ -247,16 +250,16 @@ def _extract_plain_lines_after_label(
       break
     if re.match(r"^\s*###\s+", line):
       break
-    url_match = re.search(r"https?://\S+", line)
-    if url_match and items:
+    inline_url = _extract_first_url(line)
+    if inline_url and items:
       if not urls[-1]:
-        urls[-1] = url_match.group(0).rstrip(")")
+        urls[-1] = inline_url
       continue
     text = _clean_line(line)
     if not text:
       continue
     items.append(text)
-    urls.append(url_match.group(0).rstrip(")") if url_match else "")
+    urls.append(inline_url)
     if len(items) >= max_items:
       break
   return items, urls

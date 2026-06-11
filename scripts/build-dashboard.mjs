@@ -59,11 +59,47 @@ function extractSubListAfterLabel(blockLines, labelLineIndex, maxItems = 8) {
   return items;
 }
 
+function extractSourcesAfterLabel(blockLines, labelLineIndex, maxItems = 10) {
+  const items = [];
+  const urls = [];
+  let currentIdx = null;
+  for (let i = labelLineIndex + 1; i < blockLines.length; i++) {
+    const line = blockLines[i];
+    if (/^\s*-\s+\*\*/.test(line)) break;
+    if (/^\s*\*\*[^*]+\*\*\s*$/.test(line.trim())) break;
+    if (/^\s*###\s+/.test(line)) break;
+
+    const bullet = line.match(/^\s*-\s+(.+)\s*$/);
+    if (bullet) {
+      const text = cleanLineText(bullet[0]);
+      if (text) {
+        items.push(text);
+        currentIdx = items.length - 1;
+        urls.push(extractFirstUrl(line));
+      }
+      if (items.length >= maxItems) break;
+      continue;
+    }
+
+    const inlineUrl = extractFirstUrl(line);
+    if (inlineUrl && currentIdx !== null) {
+      while (urls.length <= currentIdx) urls.push("");
+      if (!urls[currentIdx]) urls[currentIdx] = inlineUrl;
+    }
+  }
+
+  while (urls.length < items.length) urls.push("");
+  return { items, urls };
+}
+
 function isLabelLine(line, ...labels) {
   const stripped = String(line || "").trim();
   return labels.some((label) => {
-    const bulletRe = new RegExp(`^\\s*-\\s+(?:\\*\\*)?${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:\\*\\*)?\\s*$`);
-    return bulletRe.test(line) || stripped === `**${label}**`;
+    const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const suffix = String.raw`(?:（[^）]*）|\([^)]*\)|[：:].*)?`;
+    const bulletRe = new RegExp(`^\\s*-\\s+(?:\\*\\*)?${escaped}${suffix}(?:\\*\\*)?\\s*$`);
+    const strongRe = new RegExp(`^\\*\\*${escaped}${suffix}\\*\\*$`);
+    return bulletRe.test(line) || strongRe.test(stripped);
   });
 }
 
@@ -75,15 +111,15 @@ function extractPlainLinesAfterLabel(blockLines, labelLineIndex, maxItems = 10) 
     if (/^\s*-\s+/.test(line)) break;
     if (/^\s*\*\*[^*]+\*\*\s*$/.test(line.trim())) break;
     if (/^\s*###\s+/.test(line)) break;
-    const urlMatch = line.match(/https?:\/\/\S+/);
-    if (urlMatch && items.length) {
-      if (!urls[urls.length - 1]) urls[urls.length - 1] = urlMatch[0].replace(/\)$/, "");
+    const inlineUrl = extractFirstUrl(line);
+    if (inlineUrl && items.length) {
+      if (!urls[urls.length - 1]) urls[urls.length - 1] = inlineUrl;
       continue;
     }
     const text = cleanLineText(line);
     if (!text) continue;
     items.push(text);
-    urls.push(urlMatch ? urlMatch[0].replace(/\)$/, "") : "");
+    urls.push(inlineUrl);
     if (items.length >= maxItems) break;
   }
   return { items, urls };
@@ -164,8 +200,9 @@ function parseTopTopics(markdown) {
       const line = blockLines[i];
       if (isLabelLine(line, "来源")) {
         if (/^\s*-\s+/.test(line) || hasBulletItemsAfterLabel(blockLines, i)) {
-          sources = extractSubListAfterLabel(blockLines, i, 10);
-          sourceUrls = new Array(sources.length).fill("");
+          const extracted = extractSourcesAfterLabel(blockLines, i, 10);
+          sources = extracted.items;
+          sourceUrls = extracted.urls;
         } else {
           const extracted = extractPlainLinesAfterLabel(blockLines, i, 10);
           sources = extracted.items;
