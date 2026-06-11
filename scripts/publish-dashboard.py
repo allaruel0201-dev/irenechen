@@ -89,19 +89,31 @@ def validate_latest_daily_links(date: str | None) -> None:
   spec.loader.exec_module(module)
   markdown = latest_daily.read_text(encoding="utf-8")
   topics = module.parse_top_topics(markdown)
+  alternatives = module.parse_alternatives(markdown)
 
   missing: list[str] = []
   for topic in topics:
     if not any(str(url or "").strip() for url in topic.get("source_urls", [])):
       missing.append(str(topic.get("title", "")).strip())
 
-  if missing:
-    bullet_list = "\n".join(f"- {title}" for title in missing)
+  missing_alts: list[str] = []
+  for alternative in alternatives:
+    if not str(alternative.get("source_url", "") or "").strip():
+      missing_alts.append(str(alternative.get("title", "")).strip())
+
+  if missing or missing_alts:
+    details: list[str] = []
+    if missing:
+      details.append("Top topics missing URLs:")
+      details.extend(f"- {title}" for title in missing)
+    if missing_alts:
+      details.append("Alternative pool missing URLs:")
+      details.extend(f"- {title}" for title in missing_alts)
     raise RuntimeError(
-      "Latest daily report is missing source URLs for top topics. "
+      "Latest daily report is missing source URLs. "
       "Add a raw article URL on the same line as each source or on the next line before publishing.\n"
       f"File: {latest_daily}\n"
-      f"{bullet_list}"
+      + "\n".join(details)
     )
 
 
