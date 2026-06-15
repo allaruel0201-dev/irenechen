@@ -268,7 +268,7 @@ def _extract_plain_lines_after_label(
 def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
   section = take_section(
     markdown,
-    re.compile(r"^##\s*1[\)）]\s*今日最值得写的\s*3\s*个选题\s*$", re.M),
+    re.compile(r"^##\s*1[\)）]\s*今日最值得写的(?:\s*3\s*个)?选题\s*$", re.M),
     re.compile(r"^##\s*2[\)）]\s*", re.M),
   )
   if not section:
@@ -340,7 +340,7 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
 ALT_SINGLE_LINE_TITLE_RE = re.compile(r"^\s*\d+\.\s+\*\*(.+?)\*\*(.*)$")
 ALT_PLAIN_LINE_RE = re.compile(r"^\s*\d+\.\s+(.+)$")
 ALT_BLOCK_START_RE = re.compile(r"^\s*(\d+)\.\s+\*\*(.+?)\*\*\s*$")
-ALT_SCORE_RE = re.compile(r"评分[：:]\s*(\d{1,2})\s*$")
+ALT_SCORE_RE = re.compile(r"(?:评分|总分)[：:]\s*(\d{1,2})\s*$")
 ALT_INLINE_SCORE_RE = re.compile(r"（总分：(\d{1,2})(?:[^）]*)）")
 ALT_ANY_NUMBERED_RE = re.compile(r"^\s*\d+\.\s+")
 ALT_TOTAL_SCORE_RE = re.compile(r"总分[：:]\s*(\d{1,2})\s*/\s*30")
