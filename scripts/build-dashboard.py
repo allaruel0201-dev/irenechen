@@ -390,85 +390,14 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
   while i < len(lines):
     line = lines[i]
 
-    inline_title = ALT_SINGLE_LINE_TITLE_RE.match(line)
-    if not inline_title:
-      plain_line = ALT_PLAIN_LINE_RE.match(line)
-      if plain_line:
-        tail = plain_line.group(1).strip()
-        score_match = ALT_INLINE_SCORE_RE.search(tail)
-        if score_match:
-          body = ALT_INLINE_SCORE_RE.sub("", tail).strip()
-          title, _, summary = body.partition("：")
-          if not summary:
-            title, _, summary = body.partition(":")
-          source_url = ""
-          alternatives.append(
-            {
-              "title": _normalize_dashboard_text(title.strip()),
-              "summary": _normalize_dashboard_text(summary.strip()),
-              "score_total": int(score_match.group(1)),
-              "source_url": source_url,
-            }
-          )
-          i += 1
-          continue
-
-        title, sep, summary = tail.partition("：")
-        if not sep:
-          title, sep, summary = tail.partition(":")
-
-        block: list[str] = []
-        i += 1
-        while i < len(lines):
-          next_line = lines[i]
-          if ALT_ANY_NUMBERED_RE.match(next_line) or re.match(r"^##\s+", next_line):
-            break
-          block.append(next_line.rstrip())
-          i += 1
-
-        score_total: int | None = None
-        source_url = ""
-        if not summary:
-          for block_line in block:
-            stripped = block_line.strip()
-            if not stripped or stripped.startswith("来源："):
-              continue
-            score_match = ALT_TOTAL_SCORE_RE.search(stripped)
-            if score_match:
-              score_total = int(score_match.group(1))
-              continue
-            summary = stripped
-            break
-        for block_line in block:
-          url_match = re.search(r"https?://\S+", block_line.strip())
-          if url_match and not source_url:
-            source_url = url_match.group(0).rstrip(")")
-          score_match = ALT_TOTAL_SCORE_RE.search(block_line.strip())
-          if score_match:
-            score_total = int(score_match.group(1))
-            break
-
-        alternatives.append(
-          {
-            "title": _normalize_dashboard_text(title.strip()),
-            "summary": _normalize_dashboard_text(summary.strip()),
-            "score_total": score_total,
-            "source_url": source_url,
-          }
-        )
-        continue
-
-      block_start = ALT_BLOCK_START_RE.match(line)
-      if not block_start:
-        i += 1
-        continue
-
+    block_start = ALT_BLOCK_START_RE.match(line)
+    if block_start:
       title = block_start.group(2).strip()
       block: list[str] = []
       i += 1
       while i < len(lines):
         next_line = lines[i]
-        if ALT_BLOCK_START_RE.match(next_line) or re.match(r"^##\s+", next_line):
+        if ALT_ANY_NUMBERED_RE.match(next_line) or re.match(r"^##\s+", next_line):
           break
         block.append(next_line.rstrip())
         i += 1
@@ -500,23 +429,95 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
       )
       continue
 
-    tail = inline_title.group(2).strip()
-    score_match = ALT_INLINE_SCORE_RE.search(tail)
-    if not score_match:
+    inline_title = ALT_SINGLE_LINE_TITLE_RE.match(line)
+    if inline_title:
+      tail = inline_title.group(2).strip()
+      score_match = ALT_INLINE_SCORE_RE.search(tail)
+      if score_match:
+        title = inline_title.group(1).strip()
+        summary = ALT_INLINE_SCORE_RE.sub("", tail).strip()
+        summary = summary.lstrip("：:").strip()
+        alternatives.append(
+          {
+            "title": _normalize_dashboard_text(title),
+            "summary": _normalize_dashboard_text(summary),
+            "score_total": int(score_match.group(1)),
+            "source_url": "",
+          }
+        )
+        i += 1
+        continue
+
       i += 1
       continue
-    title = inline_title.group(1).strip()
-    summary = ALT_INLINE_SCORE_RE.sub("", tail).strip()
-    summary = summary.lstrip("：:").strip()
+
+    plain_line = ALT_PLAIN_LINE_RE.match(line)
+    if not plain_line:
+      i += 1
+      continue
+
+    tail = plain_line.group(1).strip()
+    score_match = ALT_INLINE_SCORE_RE.search(tail)
+    if score_match:
+      body = ALT_INLINE_SCORE_RE.sub("", tail).strip()
+      title, _, summary = body.partition("：")
+      if not summary:
+        title, _, summary = body.partition(":")
+      source_url = ""
+      alternatives.append(
+        {
+          "title": _normalize_dashboard_text(title.strip()),
+          "summary": _normalize_dashboard_text(summary.strip()),
+          "score_total": int(score_match.group(1)),
+          "source_url": source_url,
+        }
+      )
+      i += 1
+      continue
+
+    title, sep, summary = tail.partition("：")
+    if not sep:
+      title, sep, summary = tail.partition(":")
+
+    block = []
+    i += 1
+    while i < len(lines):
+      next_line = lines[i]
+      if ALT_ANY_NUMBERED_RE.match(next_line) or re.match(r"^##\s+", next_line):
+        break
+      block.append(next_line.rstrip())
+      i += 1
+
+    score_total = None
+    source_url = ""
+    if not summary:
+      for block_line in block:
+        stripped = block_line.strip()
+        if not stripped or stripped.startswith("来源："):
+          continue
+        score_match = ALT_TOTAL_SCORE_RE.search(stripped)
+        if score_match:
+          score_total = int(score_match.group(1))
+          continue
+        summary = stripped
+        break
+    for block_line in block:
+      url_match = re.search(r"https?://\S+", block_line.strip())
+      if url_match and not source_url:
+        source_url = url_match.group(0).rstrip(")")
+      score_match = ALT_TOTAL_SCORE_RE.search(block_line.strip())
+      if score_match:
+        score_total = int(score_match.group(1))
+        break
+
     alternatives.append(
       {
-        "title": _normalize_dashboard_text(title),
-        "summary": _normalize_dashboard_text(summary),
-        "score_total": int(score_match.group(1)),
-        "source_url": "",
+        "title": _normalize_dashboard_text(title.strip()),
+        "summary": _normalize_dashboard_text(summary.strip()),
+        "score_total": score_total,
+        "source_url": source_url,
       }
     )
-    i += 1
   return alternatives
 
 

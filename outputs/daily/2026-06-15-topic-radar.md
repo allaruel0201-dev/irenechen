@@ -251,12 +251,14 @@
    https://www.optiver.com/join-us/graduate/  
    总分：22
 
-6. **当日缺少合格身份政策主线，不建议硬写 H-1B / OPT 新变化**  
-   来源：Reuters / Forbes / USCIS / DHS 当日检索未见够强同日主线  
+6. **同一条 PwC 报告还能继续往下写：AI 最先奖励的是能解释结果、推动协作的人**  
+   来源：Business Insider，2026-06-15  
+   https://www.businessinsider.com/pwc-global-jobs-barometer-ai-advanced-skills-entry-level-jobs-2026-6  
    总分：20
 
-7. **当日社区缺少足够强的同日高互动痛点帖，不建议拿匿名吐槽代替事实判断**  
-   来源：WSO / Reddit / HN / LinkedIn 同日检索结果  
+7. **量化赛道延展：学生不该只刷题，更该尽早做 research、trading、systems 的能力分轨**  
+   来源：eFinancialCareers，2026-06-15  
+   https://www.efinancialcareers.com/news/quant-researchers-spend-all-their-time-coding-while-junior-traders-do-real-quant-work  
    总分：19
 
 ---
