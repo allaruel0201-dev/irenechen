@@ -34,6 +34,7 @@
 - 签证政策变化 → 可引导到留学生身份规划和 sponsor 公司选择
 - IPO / M&A 市场回暖 → 可引导到投行和资本市场岗位机会
 - 数据中心和芯片投资上升 → 可引导到 AI infra、semiconductor、cloud 相关岗位
+- 目标公司在美国、香港、新加坡买楼、租下大面积新办公室、搬迁总部 / office、开新 campus → 可引导到区域 headcount、业务重心、实习地点、校招资源和当地岗位机会判断
 
 # Freshness Rule
 
@@ -139,6 +140,7 @@
 - 收购、融资、IPO
 - 战略转型
 - 新办公室 / 新团队
+- 在美国、香港、新加坡买楼、签大面积 office lease、迁入新 office、开设新 headquarters / campus / trading floor / AI lab / engineering hub
 - 薪资和奖金变化
 - 裁员或组织调整
 - 行业人才短缺
