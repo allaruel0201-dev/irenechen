@@ -12,7 +12,7 @@
 > 目标读者：尚未毕业的美国留学生（实习 / New Grad）。  
 > Freshness：仅纳入 **2026-06-20 当天更新** 的新闻、公告、数据或权威资讯。  
 > 重要声明：涉及岗位、薪资、签证、deadline、公司招聘/扩招结论均标注需要二次核实。  
-> 扫描说明：已按要求补扫 Reuters、Bloomberg、WSJ、Fortune、Forbes、Business Insider、eFinancialCareers、WSO，并补看 LinkedIn / Reddit / Hacker News 检索结果作为痛点验证。Bloomberg 本环境不可访问。eFinancialCareers 当天站点仍以维护提示为主。WSO 未检到 2026-06-20 当天足够强的高互动讨论。当天最强信号集中在 **量化 / 高频交易扩张、银行 AI 招聘、以及 AI 工程技能门槛变化**。
+> 今日主线：**量化 / 高频交易扩张、银行 AI 招聘、AI 工程技能门槛变化**
 
 ---
 

@@ -12,13 +12,13 @@
 > 目标读者：尚未毕业的美国留学生（实习 / New Grad）。  
 > Freshness：仅纳入 **2026-06-21 当天更新** 的新闻、公告、数据或权威资讯。  
 > 重要声明：涉及岗位、薪资、签证、deadline、公司招聘/扩招结论均标注需要二次核实。  
-> 扫描说明：已按要求补扫 Reuters、Bloomberg、WSJ、Fortune、Forbes、Business Insider、eFinancialCareers、WSO，并补看 LinkedIn / Reddit / Hacker News 检索结果作为痛点验证。Bloomberg 本环境不可访问。WSO、LinkedIn、Reddit、HN 未检到 2026-06-21 当天足够强的金融 / AI / 身份高互动讨论。Reuters、WSJ、Fortune、Forbes、eFinancialCareers 当天也没有检到足够新的、适合直接转成留学生职业机会判断的同日强信号。**按新策略，周日这一天明确判定为 当日缺少可用更新，不硬凑主推。**
+> 今日判断：**当日缺少值得主推的更新**
 
 ---
 
 ## 1) 今日最值得写的选题
 
-### 当日缺少可用更新，不建议硬写主推
+### 当日缺少值得主推的更新
 
 - **来源（当日权威 / 当日更新）**
   - Reuters，2026-06-21：https://www.reuters.com/

@@ -12,7 +12,7 @@
 > 目标读者：尚未毕业的美国留学生（实习 / New Grad）。  
 > Freshness：仅纳入 **2026-06-19 当天更新** 的新闻、公告、数据或权威资讯。  
 > 重要声明：涉及岗位、薪资、签证、deadline、公司招聘/扩招结论均标注需要二次核实。  
-> 扫描说明：已按要求补扫 Reuters、Bloomberg、WSJ、Fortune、Forbes、Business Insider、eFinancialCareers、WSO，并补看 LinkedIn / Reddit / Hacker News 检索结果作为痛点验证。Bloomberg 本环境不可访问。eFinancialCareers 当天站点维护，只能看到索引页与搜索摘要。WSO、LinkedIn、Reddit、HN 未检到 2026-06-19 当天足够强、且能直接转化为留学生职业机会判断的高互动讨论，因此不单独成题。Reuters 与 Forbes 当天没有检到足够强的同日身份政策更新，本日主线以 **AI 人才流向 + AI 基础设施资本开支** 为主。
+> 今日主线：**AI 人才流向 + AI 基础设施资本开支**
 
 ---
 
