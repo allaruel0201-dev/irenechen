@@ -93,9 +93,10 @@
 
       .hero {
         position: sticky;
-        top: 64px;
+        top: clamp(250px, 39vh, 420px);
         max-width: 460px;
         padding: 26px 0;
+        transform: translateX(clamp(-120px, -6vw, -72px));
       }
 
       .eyebrow {
@@ -385,6 +386,7 @@
           top: 0;
           max-width: 680px;
           padding: 8px 0 0;
+          transform: none;
         }
 
         h1 {
