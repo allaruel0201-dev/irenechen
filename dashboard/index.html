@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>美国留学生职业机会选题雷达 Dashboard</title>
+    <link rel="stylesheet" href="./style.css?v=20260630T013343418819Z" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-eyebrow">Career Signal Memo</div>
+        <div class="brand-title">选题雷达 Dashboard</div>
+        <div class="brand-sub">Daily career signals for international students</div>
+      </div>
+      <div class="controls">
+        <label class="control">
+          <span>关键词</span>
+          <input id="q" type="search" placeholder="Nvidia / H-1B / quant / data center…" />
+        </label>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="sidebar-title">Archive</div>
+        <div id="dayList" class="day-list"></div>
+      </aside>
+
+      <section class="content">
+        <div id="empty" class="empty hidden">
+          <div class="empty-title">没有匹配结果</div>
+          <div class="empty-sub">试试换个关键词。</div>
+        </div>
+
+        <div id="dayView" class="day-view"></div>
+      </section>
+    </main>
+
+    <script src="./data.js?v=20260630T013343418819Z"></script>
+    <script src="./app.js?v=20260630T013343418819Z"></script>
+  </body>
+</html>
