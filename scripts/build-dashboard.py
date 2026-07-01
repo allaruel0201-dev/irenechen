@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -15,6 +16,7 @@ from typing import Any
 WORKSPACE_ROOT = Path(os.getcwd())
 DAILY_DIR = WORKSPACE_ROOT / "outputs" / "daily"
 DASHBOARD_DIR = WORKSPACE_ROOT / "outputs" / "dashboard"
+ROOT_DASHBOARD_DIR = WORKSPACE_ROOT / "dashboard"
 
 
 DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-topic-radar\.md$")
@@ -535,6 +537,18 @@ def refresh_dashboard_asset_versions(version: str) -> None:
     index_path.write_text(updated, encoding="utf-8")
 
 
+def sync_root_dashboard_fallback() -> None:
+  """Keep the root-level dashboard fallback in sync with the deployed output."""
+  if not DASHBOARD_DIR.exists() or not ROOT_DASHBOARD_DIR.exists():
+    return
+
+  for name in ("index.html", "app.js", "style.css", "data.js"):
+    source = DASHBOARD_DIR / name
+    target = ROOT_DASHBOARD_DIR / name
+    if source.exists():
+      shutil.copyfile(source, target)
+
+
 def build() -> None:
   DASHBOARD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -570,6 +584,7 @@ def build() -> None:
   js += ";\n"
   (DASHBOARD_DIR / "data.js").write_text(js, encoding="utf-8")
   refresh_dashboard_asset_versions(version)
+  sync_root_dashboard_fallback()
 
 
 if __name__ == "__main__":

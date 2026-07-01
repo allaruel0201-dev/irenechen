@@ -144,6 +144,7 @@ def main() -> int:
       "git",
       "add",
       "outputs",
+      "dashboard",
       "scripts/build-dashboard.py",
       "scripts/build-dashboard.mjs",
       "scripts/publish-dashboard.py",
