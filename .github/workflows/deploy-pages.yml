@@ -11,6 +11,9 @@ on:
   schedule:
     # Run daily at 01:15 UTC (09:15 Asia/Shanghai) as a safety net.
     - cron: "15 1 * * *"
+  workflow_run:
+    workflows: ["Publish dashboard"]
+    types: [completed]
   workflow_dispatch: {}
 
 permissions:
@@ -24,6 +27,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

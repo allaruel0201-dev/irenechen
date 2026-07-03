@@ -5,7 +5,10 @@ import os
 import re
 import subprocess
 import sys
+import time
 import importlib.util
+import urllib.error
+import urllib.request
 from pathlib import Path
 
 
@@ -15,6 +18,8 @@ NO_QUOTES = ("“", "”", "\"")
 
 
 DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-topic-radar\.md$")
+GITHUB_SSH_REMOTE_RE = re.compile(r"^git@github\.com:(?P<owner>[^/]+)/(?P<repo>.+?)(?:\.git)?$")
+GITHUB_HTTPS_REMOTE_RE = re.compile(r"^https://github\.com/(?P<owner>[^/]+)/(?P<repo>.+?)(?:\.git)?$")
 
 
 def run(cmd: list[str], *, cwd: Path | None = None) -> str:
@@ -71,6 +76,97 @@ def strip_quotes_in_file(path: Path) -> bool:
 def git_pull_rebase_autostash() -> tuple[int, str]:
   # Avoid non-fast-forward push failures when GitHub Actions (or others) push to main.
   return try_run(["git", "pull", "--rebase", "--autostash"])
+
+
+def git_remote_origin_url() -> str:
+  code, out = try_run(["git", "config", "--get", "remote.origin.url"])
+  if code != 0:
+    return ""
+  return out.strip()
+
+
+def github_pages_data_url_from_remote(remote_url: str) -> str:
+  if not remote_url:
+    return ""
+
+  match = GITHUB_SSH_REMOTE_RE.match(remote_url) or GITHUB_HTTPS_REMOTE_RE.match(remote_url)
+  if not match:
+    return ""
+
+  owner = match.group("owner")
+  repo = match.group("repo")
+  if repo.endswith(".git"):
+    repo = repo[:-4]
+
+  if repo.lower() == f"{owner.lower()}.github.io":
+    return f"https://{repo}/dashboard/data.js"
+  return f"https://{owner}.github.io/{repo}/dashboard/data.js"
+
+
+def public_dashboard_data_url() -> str:
+  configured = (
+    os.environ.get("PUBLIC_DASHBOARD_DATA_URL")
+    or os.environ.get("DASHBOARD_DATA_URL")
+    or ""
+  ).strip()
+  if configured:
+    return configured
+  return github_pages_data_url_from_remote(git_remote_origin_url())
+
+
+def fetch_url_text(url: str) -> str:
+  req = urllib.request.Request(
+    url,
+    headers={
+      "Cache-Control": "no-cache",
+      "Pragma": "no-cache",
+      "User-Agent": "topic-radar-publisher/1.0",
+    },
+  )
+  with urllib.request.urlopen(req, timeout=20) as response:
+    charset = response.headers.get_content_charset() or "utf-8"
+    return response.read().decode(charset, errors="replace")
+
+
+def with_cache_buster(url: str) -> str:
+  sep = "&" if "?" in url else "?"
+  return f"{url}{sep}publish_verify={int(time.time())}"
+
+
+def verify_public_dashboard(date: str | None) -> None:
+  if not date:
+    return
+
+  url = public_dashboard_data_url()
+  if not url:
+    print("Warning: unable to derive public dashboard URL; skipping public verification.")
+    return
+
+  timeout = int(os.environ.get("PUBLIC_DASHBOARD_VERIFY_TIMEOUT_SECONDS", "360"))
+  interval = int(os.environ.get("PUBLIC_DASHBOARD_VERIFY_INTERVAL_SECONDS", "15"))
+  deadline = time.monotonic() + timeout
+  expected = f'"date": "{date}"'
+  last_error = ""
+
+  while time.monotonic() < deadline:
+    try:
+      text = fetch_url_text(with_cache_buster(url))
+      if expected in text or date in text:
+        print(f"Verified public dashboard contains {date}: {url}")
+        return
+      last_error = f"latest date not visible yet at {url}"
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+      last_error = str(exc)
+    time.sleep(interval)
+
+  raise RuntimeError(
+    "Published commit was pushed, but the public dashboard did not expose the "
+    f"latest date ({date}) within {timeout}s.\n"
+    f"Checked: {url}\n"
+    f"Last error: {last_error}\n"
+    "If the production site is not GitHub Pages, set PUBLIC_DASHBOARD_DATA_URL "
+    "to the deployed /dashboard/data.js URL."
+  )
 
 
 def validate_latest_daily_links(date: str | None) -> None:
@@ -192,6 +288,8 @@ def main() -> int:
     )
     sys.stderr.write(out)
     return code
+
+  verify_public_dashboard(date)
 
   print("Published: committed and pushed successfully.")
   return 0
