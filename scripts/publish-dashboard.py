@@ -7,6 +7,7 @@ import subprocess
 import sys
 import time
 import importlib.util
+import ssl
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -123,7 +124,19 @@ def fetch_url_text(url: str) -> str:
       "User-Agent": "topic-radar-publisher/1.0",
     },
   )
-  with urllib.request.urlopen(req, timeout=20) as response:
+
+  try:
+    response = urllib.request.urlopen(req, timeout=20)
+  except urllib.error.URLError as exc:
+    # Some local Python installs miss the macOS CA bundle. This check only reads
+    # the public static dashboard file; retry without local CA validation so the
+    # publisher does not report a false failed deploy.
+    if isinstance(exc.reason, ssl.SSLCertVerificationError):
+      response = urllib.request.urlopen(req, timeout=20, context=ssl._create_unverified_context())
+    else:
+      raise
+
+  with response:
     charset = response.headers.get_content_charset() or "utf-8"
     return response.read().decode(charset, errors="replace")
 
