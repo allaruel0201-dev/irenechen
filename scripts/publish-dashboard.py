@@ -7,14 +7,18 @@ import subprocess
 import sys
 import time
 import importlib.util
+import json
 import ssl
 import urllib.error
 import urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
 
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[1]
 DAILY_DIR = WORKSPACE_ROOT / "outputs" / "daily"
+OUTPUTS_DASHBOARD_DIR = WORKSPACE_ROOT / "outputs" / "dashboard"
+ROOT_DASHBOARD_DIR = WORKSPACE_ROOT / "dashboard"
 NO_QUOTES = ("“", "”", "\"")
 
 
@@ -182,6 +186,21 @@ def verify_public_dashboard(date: str | None) -> None:
   )
 
 
+def write_publish_marker(date: str | None) -> None:
+  if not date:
+    return
+
+  payload = {
+    "latest_daily_date": date,
+    "published_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+  }
+  text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+  for directory in (OUTPUTS_DASHBOARD_DIR, ROOT_DASHBOARD_DIR):
+    if not directory.exists():
+      continue
+    (directory / "publish-meta.json").write_text(text, encoding="utf-8")
+
+
 def validate_latest_daily_links(date: str | None) -> None:
   if not date:
     return
@@ -245,6 +264,7 @@ def main() -> int:
   # 1) Build dashboard data.js
   run([sys.executable, "scripts/build-dashboard.py"])
   validate_latest_daily_links(date)
+  write_publish_marker(date)
 
   # 2) Stage outputs (including updated data.js)
   # Netlify rebuilds from repo contents; also stage automation rule files that affect future runs.
@@ -266,6 +286,7 @@ def main() -> int:
   # 3) If nothing changed, exit quietly
   status = run(["git", "status", "--porcelain"])
   if status.strip() == "":
+    verify_public_dashboard(date)
     print("No changes to publish (git status clean).")
     return 0
 

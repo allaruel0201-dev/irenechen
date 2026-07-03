@@ -3,11 +3,6 @@ name: Deploy GitHub Pages (dashboard)
 on:
   push:
     branches: [main]
-    paths:
-      - "outputs/**"
-      - "scripts/build-dashboard.py"
-      - "scripts/build-dashboard.mjs"
-      - ".github/workflows/deploy-pages.yml"
   schedule:
     # Run daily at 01:15 UTC (09:15 Asia/Shanghai) as a safety net.
     - cron: "15 1 * * *"
