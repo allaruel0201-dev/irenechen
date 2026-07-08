@@ -1,0 +1,6 @@
+node_modules/
+.tmp/
+dist/index.html
+input/*
+!input/.gitkeep
+!dist/.gitkeep

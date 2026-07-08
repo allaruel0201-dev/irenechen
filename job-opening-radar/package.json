@@ -1,0 +1,14 @@
+{
+  "name": "dbc-job-opening-radar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static DBC job opening radar generated from Excel workbooks.",
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate.js"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "xlsx": "^0.18.5"
+  }
+}
