@@ -1020,6 +1020,7 @@ function buildHtml(data) {
 
     function isFilterableHeader(sheet, header) {
       const normalized = String(header || "").trim().toLowerCase();
+      if (normalized === "posting date") return false;
       if (normalized === "qualification" || normalized === "qualifications") return false;
       return getFilterOptions(sheet, header).length <= 1000;
     }
@@ -1032,7 +1033,11 @@ function buildHtml(data) {
         if (value) values.add(value);
       });
 
-      const options = Array.from(values).sort((a, b) => a.localeCompare(b, "zh-Hans-CN", { numeric: true, sensitivity: "base" }));
+      let options = Array.from(values);
+      if (String(header || "").trim().toLowerCase() === "recruitment season") {
+        options = options.filter((value) => /^20\\d{2}$/.test(value));
+      }
+      options.sort((a, b) => a.localeCompare(b, "zh-Hans-CN", { numeric: true, sensitivity: "base" }));
       filterOptionCache.set(header, options);
       return options;
     }
