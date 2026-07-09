@@ -236,21 +236,21 @@ function buildHtml(data) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DBC 秋招岗位开放表</title>
+  <title>2027秋招岗位汇总表</title>
   <style>
     :root {
-      --ink: #34261f;
-      --muted: #78685d;
-      --paper: #fffaf1;
-      --panel: #fffdf8;
-      --line: #e7d8c8;
-      --line-strong: #d4bda6;
-      --brand: #7a4d2e;
-      --brand-dark: #54331f;
-      --brand-soft: #ead7bf;
-      --accent: #b57a48;
-      --cream: #f5ead8;
-      --shadow: 0 18px 48px rgba(64, 42, 25, 0.12);
+      --ink: #172033;
+      --muted: #607089;
+      --paper: #f5f8fc;
+      --panel: #ffffff;
+      --line: #d9e3f0;
+      --line-strong: #b7c7dc;
+      --brand: #2563a9;
+      --brand-dark: #173d73;
+      --brand-soft: #dcecff;
+      --accent: #3b82c4;
+      --cream: #eef5ff;
+      --shadow: 0 18px 48px rgba(20, 55, 99, 0.12);
       color-scheme: light;
     }
 
@@ -262,8 +262,8 @@ function buildHtml(data) {
       margin: 0;
       min-height: 100vh;
       background:
-        linear-gradient(135deg, rgba(255, 250, 241, 0.96), rgba(240, 224, 204, 0.92)),
-        radial-gradient(circle at top right, rgba(181, 122, 72, 0.18), transparent 34%);
+        linear-gradient(135deg, rgba(247, 251, 255, 0.98), rgba(232, 241, 252, 0.94)),
+        radial-gradient(circle at top right, rgba(59, 130, 196, 0.16), transparent 34%);
       color: var(--ink);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
       letter-spacing: 0;
@@ -306,8 +306,8 @@ function buildHtml(data) {
 
     .hero-main,
     .consult {
-      border: 1px solid rgba(212, 189, 166, 0.82);
-      background: rgba(255, 253, 248, 0.88);
+      border: 1px solid rgba(183, 199, 220, 0.86);
+      background: rgba(255, 255, 255, 0.9);
       box-shadow: var(--shadow);
       border-radius: 8px;
     }
@@ -351,7 +351,7 @@ function buildHtml(data) {
       gap: 16px;
       align-items: center;
       background:
-        linear-gradient(135deg, rgba(255, 252, 246, 0.96), rgba(235, 214, 190, 0.96));
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(222, 236, 253, 0.96));
     }
 
     .consult strong {
@@ -364,7 +364,7 @@ function buildHtml(data) {
 
     .consult p {
       margin: 0;
-      color: #6b5140;
+      color: #42546d;
       font-size: 14px;
       line-height: 1.65;
     }
@@ -372,12 +372,12 @@ function buildHtml(data) {
     .qr-box {
       width: 122px;
       aspect-ratio: 1;
-      border: 1px dashed #a77a58;
+      border: 1px dashed #6d93bf;
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.58);
       display: grid;
       place-items: center;
-      color: #8a6248;
+      color: #315c89;
       text-align: center;
       font-weight: 700;
       line-height: 1.45;
@@ -393,8 +393,8 @@ function buildHtml(data) {
     }
 
     .panel {
-      border: 1px solid rgba(212, 189, 166, 0.82);
-      background: rgba(255, 253, 248, 0.92);
+      border: 1px solid rgba(183, 199, 220, 0.86);
+      background: rgba(255, 255, 255, 0.94);
       box-shadow: var(--shadow);
       border-radius: 8px;
       overflow: hidden;
@@ -407,7 +407,7 @@ function buildHtml(data) {
       padding: 14px;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      background: rgba(250, 241, 228, 0.72);
+      background: rgba(238, 245, 255, 0.82);
     }
 
     .search {
@@ -425,11 +425,11 @@ function buildHtml(data) {
     .profile-card input:focus,
     .profile-card select:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(181, 122, 72, 0.16);
+      box-shadow: 0 0 0 3px rgba(59, 130, 196, 0.16);
     }
 
     .clear {
-      border: 1px solid #916446;
+      border: 1px solid #1d4f86;
       background: var(--brand-dark);
       color: #fff;
       border-radius: 8px;
@@ -440,23 +440,6 @@ function buildHtml(data) {
       white-space: nowrap;
     }
 
-    .meta-line {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      color: var(--muted);
-      font-size: 14px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .counts {
-      color: var(--brand-dark);
-      font-weight: 800;
-    }
-
     .pager {
       display: flex;
       flex-wrap: wrap;
@@ -465,7 +448,7 @@ function buildHtml(data) {
       gap: 10px;
       padding: 12px 14px;
       border-bottom: 1px solid var(--line);
-      background: #fffaf2;
+      background: #f6faff;
       color: var(--muted);
       font-size: 14px;
     }
@@ -515,7 +498,7 @@ function buildHtml(data) {
     .filter-item label {
       display: block;
       margin: 0 0 5px;
-      color: #5a4030;
+      color: #263f5f;
       font-size: 12px;
       font-weight: 850;
       overflow: hidden;
@@ -567,8 +550,8 @@ function buildHtml(data) {
       position: sticky;
       top: 0;
       z-index: 2;
-      background: #ead7bf;
-      color: #3f2a1d;
+      background: #dcecff;
+      color: #173d73;
       font-size: 13px;
       font-weight: 850;
       white-space: normal;
@@ -576,18 +559,18 @@ function buildHtml(data) {
     }
 
     tbody tr:nth-child(even) td {
-      background: #fffbf4;
+      background: #f8fbff;
     }
 
     tbody tr:hover td {
-      background: #f7eddf;
+      background: #eef6ff;
     }
 
     .job-link {
-      color: #6d3f24;
+      color: #174f91;
       font-weight: 800;
       text-decoration: none;
-      border-bottom: 1px solid rgba(109, 63, 36, 0.34);
+      border-bottom: 1px solid rgba(23, 79, 145, 0.34);
     }
 
     .job-link:hover {
@@ -628,7 +611,7 @@ function buildHtml(data) {
       align-items: center;
       justify-content: center;
       padding: 18px;
-      background: rgba(47, 34, 25, 0.42);
+      background: rgba(20, 41, 68, 0.42);
     }
 
     body.locked .modal {
@@ -637,10 +620,10 @@ function buildHtml(data) {
 
     .profile-card {
       width: min(480px, 100%);
-      border: 1px solid rgba(212, 189, 166, 0.95);
+      border: 1px solid rgba(183, 199, 220, 0.95);
       border-radius: 8px;
       background: var(--panel);
-      box-shadow: 0 28px 80px rgba(35, 22, 14, 0.26);
+      box-shadow: 0 28px 80px rgba(20, 41, 68, 0.24);
       padding: 26px;
     }
 
@@ -666,7 +649,7 @@ function buildHtml(data) {
     .field label {
       display: block;
       margin-bottom: 7px;
-      color: #513729;
+      color: #173d73;
       font-weight: 800;
       font-size: 14px;
     }
@@ -698,9 +681,40 @@ function buildHtml(data) {
     .message {
       min-height: 22px;
       margin: 12px 0 0;
-      color: #8b2f23;
+      color: #9a3412;
       font-weight: 750;
       line-height: 1.45;
+    }
+
+    .about-dbc {
+      margin-top: 18px;
+      border: 1px solid rgba(183, 199, 220, 0.86);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: var(--shadow);
+      border-radius: 8px;
+      padding: 22px 24px;
+      color: var(--ink);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .about-dbc p {
+      margin: 0 0 10px;
+    }
+
+    .about-dbc p:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-dbc a {
+      color: var(--brand);
+      font-weight: 800;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(37, 99, 169, 0.28);
+    }
+
+    .about-dbc a:hover {
+      border-bottom-color: currentColor;
     }
 
     @media (max-width: 860px) {
@@ -755,9 +769,9 @@ function buildHtml(data) {
     <main class="shell">
       <section class="hero" aria-label="DBC Job Opening Radar">
         <div class="hero-main">
-          <p class="eyebrow">DBC JOB OPENING RADAR</p>
-          <h1>DBC 秋招岗位开放表</h1>
-          <p class="subtitle">只包含本周新增岗位，如需秋招所有已更新的在招岗位，请联系扫码联系tutor获取（已添加可直接联系）</p>
+          <p class="eyebrow">DBC职梦教研部 Job Opening Radar</p>
+          <h1>2027秋招岗位汇总表</h1>
+          <p class="subtitle">仅收录当周新增岗位，如需秋招完整岗位表或内推码，请添加右侧DBC职业规划师领取</p>
         </div>
         <aside class="consult">
           <div>
@@ -774,10 +788,6 @@ function buildHtml(data) {
         <div class="toolbar">
           <input id="globalSearch" class="search" type="search" placeholder="搜索公司、岗位、方向、资格、毕业时间、Sponsor 等展示字段">
           <button id="clearBtn" class="clear" type="button">清空</button>
-        </div>
-        <div class="meta-line">
-          <span id="sheetName"></span>
-          <span class="counts" id="counts"></span>
         </div>
         <div class="filter-wrap">
           <div class="filter-grid" id="filters"></div>
@@ -800,6 +810,11 @@ function buildHtml(data) {
           <table id="jobTable"></table>
           <div id="emptyState" class="empty">没有匹配结果，请调整搜索或筛选条件。</div>
         </div>
+      </section>
+      <section class="about-dbc" aria-label="关于 DreambigCareer">
+        <p>DreambigCareer（DBC职梦）2013年成立于美国休斯顿，13年来已成为全球留学生高薪求职领导品牌，帮助全球留学生斩获15000+高薪offer，坚持用真实案例说话，每张offer都可查验，可追踪。</p>
+        <p>官网地址：<a href="https://www.dreambigcareer.com/" target="_blank" rel="noopener noreferrer">https://www.dreambigcareer.com/</a></p>
+        <p>关注我们的公众号了解更多信息：DreambigCareer</p>
       </section>
     </main>
   </div>
@@ -841,8 +856,6 @@ function buildHtml(data) {
     const data = window.JOB_OPENING_DATA;
     const searchEl = document.getElementById("globalSearch");
     const clearBtn = document.getElementById("clearBtn");
-    const sheetNameEl = document.getElementById("sheetName");
-    const countsEl = document.getElementById("counts");
     const filtersEl = document.getElementById("filters");
     const pageInfoEl = document.getElementById("pageInfo");
     const pageSizeEl = document.getElementById("pageSize");
@@ -940,7 +953,6 @@ function buildHtml(data) {
 
     function renderFilters() {
       const sheet = currentSheet();
-      sheetNameEl.textContent = sheet.name;
 
       filtersEl.innerHTML = sheet.headers.filter((header) => isFilterableHeader(sheet, header)).map((header) => {
         const value = state.filters[header] || "";
@@ -974,7 +986,6 @@ function buildHtml(data) {
       state.page = Math.min(Math.max(1, state.page), totalPages);
       const start = (state.page - 1) * state.pageSize;
       const visibleRows = filteredRows.slice(start, start + state.pageSize);
-      countsEl.textContent = "总岗位数 " + sheet.rows.length + "，筛选后 " + filteredRows.length;
       pageInfoEl.textContent = filteredRows.length
         ? "当前显示第 " + (start + 1) + "-" + (start + visibleRows.length) + " 条，共 " + filteredRows.length + " 条"
         : "当前没有可显示的岗位";
