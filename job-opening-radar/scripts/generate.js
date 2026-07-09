@@ -592,6 +592,14 @@ function buildHtml(data) {
       line-height: 1.28;
     }
 
+    td.wrap-cell {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
     tbody tr:nth-child(even) td {
       background: #f8fbff;
     }
@@ -609,19 +617,6 @@ function buildHtml(data) {
 
     .job-link:hover {
       border-bottom-color: currentColor;
-    }
-
-    .apply-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 72px;
-      min-height: 34px;
-      border-radius: 8px;
-      background: var(--brand);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 800;
     }
 
     .empty {
@@ -1026,7 +1021,7 @@ function buildHtml(data) {
       prevPageEl.disabled = state.page <= 1;
       nextPageEl.disabled = state.page >= totalPages;
 
-      const headers = sheet.hasLink ? [...sheet.headers, "Apply"] : sheet.headers;
+      const headers = sheet.headers;
       const colgroup = '<colgroup>' + headers.map((header) => '<col style="width:' + columnWidth(header) + 'px">').join("") + '</colgroup>';
       const thead = '<thead><tr>' + headers.map((header) => '<th>' + escapeHtml(header) + '</th>').join("") + '</tr></thead>';
       const tbody = '<tbody>' + visibleRows.map((row) => renderRow(row, sheet)).join("") + '</tbody>';
@@ -1038,20 +1033,19 @@ function buildHtml(data) {
       const cells = sheet.headers.map((header) => {
         const rawValue = row.cells[header] || "";
         const isJobTitle = sheet.jobTitleKey && header === sheet.jobTitleKey;
+        const cellClass = isWrappingHeader(header) ? ' class="wrap-cell"' : '';
         if (isJobTitle && row.link) {
-          return '<td title="' + escapeAttr(rawValue) + '"><a class="job-link" href="' + escapeAttr(row.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(rawValue) + '</a></td>';
+          return '<td' + cellClass + ' title="' + escapeAttr(rawValue) + '"><a class="job-link" href="' + escapeAttr(row.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(rawValue) + '</a></td>';
         }
-        return '<td title="' + escapeAttr(rawValue) + '">' + escapeHtml(rawValue) + '</td>';
+        return '<td' + cellClass + ' title="' + escapeAttr(rawValue) + '">' + escapeHtml(rawValue) + '</td>';
       });
 
-      if (sheet.hasLink) {
-        const apply = row.link
-          ? '<a class="apply-btn" href="' + escapeAttr(row.link) + '" target="_blank" rel="noopener noreferrer">Apply</a>'
-          : "";
-        cells.push('<td>' + apply + '</td>');
-      }
-
       return '<tr>' + cells.join("") + '</tr>';
+    }
+
+    function isWrappingHeader(header) {
+      const normalized = String(header || "").trim().toLowerCase();
+      return normalized === "company" || normalized === "job title";
     }
 
     function matchesRow(row, sheet) {
@@ -1066,6 +1060,7 @@ function buildHtml(data) {
     function isFilterableHeader(sheet, header) {
       const normalized = String(header || "").trim().toLowerCase();
       if (normalized === "posting date") return false;
+      if (normalized === "application deadline") return false;
       if (["job direction", "qualification", "qualifications"].includes(normalized)) return false;
       return getFilterOptions(sheet, header).length <= 1000;
     }
