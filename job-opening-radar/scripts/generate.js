@@ -168,6 +168,7 @@ function mergeSheets(sheets) {
       return { cells, link: row.link || "" };
     });
   });
+  rows.sort((a, b) => locationRank(a.cells.Location) - locationRank(b.cells.Location));
 
   return {
     name: "全部岗位",
@@ -176,6 +177,12 @@ function mergeSheets(sheets) {
     hasLink,
     jobTitleKey
   };
+}
+
+function locationRank(location) {
+  const normalized = String(location || "").trim().toLowerCase();
+  if (["united states", "us", "usa", "u.s.", "u.s.a.", "美国"].includes(normalized)) return 0;
+  return 1;
 }
 
 function normalizeHeader(value, index) {
@@ -526,7 +533,7 @@ function buildHtml(data) {
 
     table {
       width: 100%;
-      min-width: 1680px;
+      min-width: 1480px;
       border-collapse: separate;
       border-spacing: 0;
       table-layout: fixed;
@@ -536,11 +543,11 @@ function buildHtml(data) {
     td {
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      padding: 10px 12px;
+      padding: 8px 9px;
       text-align: left;
       vertical-align: top;
-      font-size: 14px;
-      line-height: 1.45;
+      font-size: 13px;
+      line-height: 1.38;
       white-space: normal;
       overflow-wrap: anywhere;
       word-break: normal;
@@ -552,10 +559,10 @@ function buildHtml(data) {
       z-index: 2;
       background: #dcecff;
       color: #173d73;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 850;
       white-space: normal;
-      line-height: 1.35;
+      line-height: 1.28;
     }
 
     tbody tr:nth-child(even) td {
@@ -1055,16 +1062,22 @@ function buildHtml(data) {
 
     function columnWidth(header) {
       const normalized = String(header || "").trim().toLowerCase();
-      if (normalized === "apply") return 92;
-      if (normalized.includes("job title") || normalized.includes("title")) return 320;
-      if (normalized.includes("company")) return 210;
-      if (normalized.includes("qualification")) return 360;
-      if (normalized.includes("description") || normalized.includes("requirement")) return 360;
-      if (normalized.includes("location")) return 180;
-      if (normalized.includes("date") || normalized.includes("deadline")) return 145;
-      if (normalized.includes("sponsor") || normalized.includes("visa")) return 155;
-      if (normalized.includes("category") || normalized.includes("direction") || normalized.includes("season")) return 175;
-      return 170;
+      if (normalized === "apply") return 68;
+      if (normalized === "posting date") return 86;
+      if (normalized === "recruitment season") return 88;
+      if (normalized.includes("company")) return 130;
+      if (normalized.includes("category")) return 82;
+      if (normalized.includes("direction")) return 112;
+      if (normalized.includes("location")) return 96;
+      if (normalized.includes("type of program")) return 92;
+      if (normalized.includes("job title") || normalized.includes("title")) return 190;
+      if (normalized.includes("qualification")) return 220;
+      if (normalized.includes("year of graduation")) return 110;
+      if (normalized.includes("sponsor") || normalized.includes("visa")) return 82;
+      if (normalized.includes("educational background")) return 104;
+      if (normalized.includes("deadline")) return 100;
+      if (normalized.includes("description") || normalized.includes("requirement")) return 220;
+      return 105;
     }
 
     function escapeHtml(value) {
