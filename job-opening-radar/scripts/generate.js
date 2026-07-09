@@ -18,6 +18,7 @@ const outputFile = path.join(distDir, "index.html");
 const tempDir = path.join(projectRoot, ".tmp");
 
 const excelExts = new Set([".xlsx", ".xls", ".xlsm"]);
+const excludedHeaders = new Set(["job direction", "qualification", "qualifications"]);
 
 async function main() {
   const sourceArg = process.argv[2] ? path.resolve(process.cwd(), process.argv[2]) : null;
@@ -116,13 +117,16 @@ function parseSheet(worksheet, sheetName) {
 
   const visibleIndexes = uniqueHeaders
     .map((header, index) => ({ header, index }))
-    .filter(({ header, index }) => index < ignoredStart && header.trim().toLowerCase() !== "link")
+    .filter(({ header, index }) => {
+      const normalized = header.trim().toLowerCase();
+      return index < ignoredStart && normalized !== "link" && !excludedHeaders.has(normalized);
+    })
     .map(({ header, index }) => ({ key: header, index }));
 
   const dataRows = rows.slice(headerRowIndex + 1).map((row) => {
     const item = {};
     visibleIndexes.forEach(({ key, index }) => {
-      item[key] = normalizeCell(row[index]);
+      item[key] = normalizeValueForHeader(key, normalizeCell(row[index]));
     });
 
     const link = linkIndex >= 0 ? normalizeCell(row[linkIndex]) : "";
@@ -217,6 +221,28 @@ function canonicalHeader(header) {
 function normalizeCell(value) {
   if (value === null || value === undefined) return "";
   return String(value).replace(/\r\n/g, "\n").trim();
+}
+
+function normalizeValueForHeader(header, value) {
+  if (header.trim().toLowerCase() === "posting date") return normalizePostingDate(value);
+  return value;
+}
+
+function normalizePostingDate(value) {
+  const clean = String(value || "").trim();
+  if (!clean) return "";
+
+  const ymd = clean.match(/^(20\d{2})[./-](\d{1,2})[./-](\d{1,2})$/);
+  if (ymd) return formatDateParts(ymd[1], ymd[2], ymd[3]);
+
+  const mdy = clean.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{2})$/);
+  if (mdy) return formatDateParts(`20${mdy[3]}`, mdy[1], mdy[2]);
+
+  return clean;
+}
+
+function formatDateParts(year, month, day) {
+  return `${year}.${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}`;
 }
 
 function makeUniqueHeaders(headers) {
@@ -533,7 +559,7 @@ function buildHtml(data) {
 
     table {
       width: 100%;
-      min-width: 1480px;
+      min-width: 1360px;
       border-collapse: separate;
       border-spacing: 0;
       table-layout: fixed;
@@ -548,9 +574,10 @@ function buildHtml(data) {
       vertical-align: top;
       font-size: 13px;
       line-height: 1.38;
-      white-space: normal;
-      overflow-wrap: anywhere;
-      word-break: normal;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: keep-all;
     }
 
     th {
@@ -561,7 +588,7 @@ function buildHtml(data) {
       color: #173d73;
       font-size: 12px;
       font-weight: 850;
-      white-space: normal;
+      white-space: nowrap;
       line-height: 1.28;
     }
 
@@ -965,8 +992,8 @@ function buildHtml(data) {
         const value = state.filters[header] || "";
         const options = getFilterOptions(sheet, header);
         const optionHtml = ['<option value="">全部</option>'].concat(options.map((option) => {
-          const selected = value === option.toLowerCase() ? ' selected' : '';
-          return '<option value="' + escapeAttr(option) + '"' + selected + '>' + escapeHtml(option) + '</option>';
+          const selected = value === option.value ? ' selected' : '';
+          return '<option value="' + escapeAttr(option.value) + '"' + selected + '>' + escapeHtml(option.label) + '</option>';
         })).join("");
         return '<div class="filter-item"><label title="' + escapeAttr(header) + '">' + escapeHtml(header) + '</label><select data-filter="' + escapeAttr(header) + '">' + optionHtml + '</select></div>';
       }).join("");
@@ -1012,9 +1039,9 @@ function buildHtml(data) {
         const rawValue = row.cells[header] || "";
         const isJobTitle = sheet.jobTitleKey && header === sheet.jobTitleKey;
         if (isJobTitle && row.link) {
-          return '<td><a class="job-link" href="' + escapeAttr(row.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(rawValue) + '</a></td>';
+          return '<td title="' + escapeAttr(rawValue) + '"><a class="job-link" href="' + escapeAttr(row.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(rawValue) + '</a></td>';
         }
-        return '<td>' + escapeHtml(rawValue) + '</td>';
+        return '<td title="' + escapeAttr(rawValue) + '">' + escapeHtml(rawValue) + '</td>';
       });
 
       if (sheet.hasLink) {
@@ -1039,23 +1066,24 @@ function buildHtml(data) {
     function isFilterableHeader(sheet, header) {
       const normalized = String(header || "").trim().toLowerCase();
       if (normalized === "posting date") return false;
-      if (normalized === "qualification" || normalized === "qualifications") return false;
+      if (["job direction", "qualification", "qualifications"].includes(normalized)) return false;
       return getFilterOptions(sheet, header).length <= 1000;
     }
 
     function getFilterOptions(sheet, header) {
       if (filterOptionCache.has(header)) return filterOptionCache.get(header);
-      const values = new Set();
+      const values = new Map();
       sheet.rows.forEach((row) => {
         const value = String(row.cells[header] || "").trim();
-        if (value) values.add(value);
+        const normalized = value.toLowerCase();
+        if (value && !values.has(normalized)) values.set(normalized, value);
       });
 
-      let options = Array.from(values);
+      let options = Array.from(values.entries()).map(([value, label]) => ({ value, label }));
       if (String(header || "").trim().toLowerCase() === "recruitment season") {
-        options = options.filter((value) => /^20\\d{2}$/.test(value));
+        options = options.filter((option) => /^20\\d{2}$/.test(option.label));
       }
-      options.sort((a, b) => a.localeCompare(b, "zh-Hans-CN", { numeric: true, sensitivity: "base" }));
+      options.sort((a, b) => a.label.localeCompare(b.label, "zh-Hans-CN", { numeric: true, sensitivity: "base" }));
       filterOptionCache.set(header, options);
       return options;
     }
@@ -1063,20 +1091,18 @@ function buildHtml(data) {
     function columnWidth(header) {
       const normalized = String(header || "").trim().toLowerCase();
       if (normalized === "apply") return 68;
-      if (normalized === "posting date") return 86;
+      if (normalized === "posting date") return 98;
       if (normalized === "recruitment season") return 88;
-      if (normalized.includes("company")) return 130;
+      if (normalized.includes("company")) return 150;
       if (normalized.includes("category")) return 82;
-      if (normalized.includes("direction")) return 112;
       if (normalized.includes("location")) return 96;
       if (normalized.includes("type of program")) return 92;
-      if (normalized.includes("job title") || normalized.includes("title")) return 190;
-      if (normalized.includes("qualification")) return 220;
+      if (normalized.includes("job title") || normalized.includes("title")) return 320;
       if (normalized.includes("year of graduation")) return 110;
-      if (normalized.includes("sponsor") || normalized.includes("visa")) return 82;
+      if (normalized.includes("sponsor") || normalized.includes("visa")) return 90;
       if (normalized.includes("educational background")) return 104;
       if (normalized.includes("deadline")) return 100;
-      if (normalized.includes("description") || normalized.includes("requirement")) return 220;
+      if (normalized.includes("description") || normalized.includes("requirement")) return 180;
       return 105;
     }
 
