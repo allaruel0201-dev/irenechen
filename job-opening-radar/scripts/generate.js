@@ -88,12 +88,25 @@ async function resolveWorkbookFiles(sourceFile) {
     throw new Error("The zip file does not contain an Excel workbook.");
   }
 
-  return Promise.all(entries.map(async (entry, index) => {
+  const datedTotalEntries = entries.filter((entry) => isDatedTotalWorkbook(path.basename(entry.entryName)));
+  const selectedEntries = datedTotalEntries.length > 0
+    ? datedTotalEntries
+    : entries.filter((entry) => !isHistoricalSummaryWorkbook(path.basename(entry.entryName)));
+
+  return Promise.all(selectedEntries.map(async (entry, index) => {
     const basename = path.basename(entry.entryName);
     const workbookPath = path.join(tempDir, `${String(index + 1).padStart(2, "0")}-${basename}`);
     await fsp.writeFile(workbookPath, entry.getData());
     return { path: workbookPath, name: basename };
   }));
+}
+
+function isDatedTotalWorkbook(filename) {
+  return /^20\d{6}总表\.(xlsx|xls|xlsm)$/i.test(filename);
+}
+
+function isHistoricalSummaryWorkbook(filename) {
+  return /^20\d{2}招聘信息汇总表\.(xlsx|xls|xlsm)$/i.test(filename);
 }
 
 function parseSheet(worksheet, sheetName) {
