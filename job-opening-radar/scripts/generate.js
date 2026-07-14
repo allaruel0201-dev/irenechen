@@ -467,6 +467,7 @@ function buildHtml(data) {
     }
 
     .search:focus,
+    .filter-grid input:focus,
     .filter-grid select:focus,
     .profile-card input:focus,
     .profile-card select:focus {
@@ -552,6 +553,7 @@ function buildHtml(data) {
       white-space: nowrap;
     }
 
+    .filter-grid input,
     .filter-grid select {
       width: 100%;
       border: 1px solid var(--line);
@@ -828,7 +830,7 @@ function buildHtml(data) {
 
       <section class="panel" aria-label="岗位表">
         <div class="toolbar">
-          <input id="globalSearch" class="search" type="search" placeholder="搜索公司、岗位、方向、资格、毕业时间、Sponsor 等展示字段">
+          <input id="globalSearch" class="search" type="search" placeholder="搜索公司、岗位、毕业时间、Sponsor 等展示字段">
           <button id="clearBtn" class="clear" type="button">清空</button>
         </div>
         <div class="filter-wrap">
@@ -908,6 +910,12 @@ function buildHtml(data) {
     const profileForm = document.getElementById("profileForm");
     const profileMessage = document.getElementById("profileMessage");
     const filterOptionCache = new Map();
+    const textFilterHeaders = new Set([
+      "company",
+      "job title",
+      "year of graduation",
+      "educational background"
+    ]);
 
     initProfileGate();
     render();
@@ -998,6 +1006,10 @@ function buildHtml(data) {
 
       filtersEl.innerHTML = sheet.headers.filter((header) => isFilterableHeader(sheet, header)).map((header) => {
         const value = state.filters[header] || "";
+        if (isTextFilterHeader(header)) {
+          return '<div class="filter-item"><label title="' + escapeAttr(header) + '">' + escapeHtml(header) + '</label><input type="search" data-filter-text="' + escapeAttr(header) + '" value="' + escapeAttr(value) + '" placeholder="输入关键词筛选" autocomplete="off"></div>';
+        }
+
         const options = getFilterOptions(sheet, header);
         const optionHtml = ['<option value="">全部</option>'].concat(options.map((option) => {
           const selected = value === option.value ? ' selected' : '';
@@ -1010,6 +1022,20 @@ function buildHtml(data) {
         select.addEventListener("change", () => {
           const key = select.dataset.filter;
           const value = select.value.trim().toLowerCase();
+          if (value) {
+            state.filters[key] = value;
+          } else {
+            delete state.filters[key];
+          }
+          state.page = 1;
+          renderTable();
+        });
+      });
+
+      filtersEl.querySelectorAll("input[data-filter-text]").forEach((input) => {
+        input.addEventListener("input", () => {
+          const key = input.dataset.filterText;
+          const value = input.value.trim().toLowerCase();
           if (value) {
             state.filters[key] = value;
           } else {
@@ -1066,7 +1092,8 @@ function buildHtml(data) {
       if (state.globalSearch && !searchableText.includes(state.globalSearch)) return false;
 
       return Object.entries(state.filters).every(([header, value]) => {
-        return String(row.cells[header] || "").toLowerCase() === value;
+        const cellValue = String(row.cells[header] || "").toLowerCase();
+        return isTextFilterHeader(header) ? cellValue.includes(value) : cellValue === value;
       });
     }
 
@@ -1075,7 +1102,12 @@ function buildHtml(data) {
       if (normalized === "posting date") return false;
       if (normalized === "application deadline") return false;
       if (["job direction", "qualification", "qualifications"].includes(normalized)) return false;
+      if (isTextFilterHeader(header)) return true;
       return getFilterOptions(sheet, header).length <= 1000;
+    }
+
+    function isTextFilterHeader(header) {
+      return textFilterHeaders.has(String(header || "").trim().toLowerCase());
     }
 
     function getFilterOptions(sheet, header) {
