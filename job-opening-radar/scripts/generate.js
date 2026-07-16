@@ -664,7 +664,11 @@ function buildHtml(data) {
 
     .job-card-company {
       min-width: 0;
+      border: 1px solid #b8d5f5;
+      border-radius: 7px;
+      background: #eef6ff;
       color: var(--brand-dark);
+      padding: 3px 7px;
       font-size: 13px;
       font-weight: 850;
       line-height: 1.25;
@@ -928,9 +932,7 @@ function buildHtml(data) {
       }
 
       .subtitle {
-        margin-top: 7px;
-        font-size: 12px;
-        line-height: 1.45;
+        display: none;
       }
 
       .consult {
@@ -940,13 +942,15 @@ function buildHtml(data) {
       }
 
       .consult strong {
-        font-size: 13px;
+        font-size: 12.5px;
         line-height: 1.35;
-        margin-bottom: 0;
+        margin-bottom: 4px;
       }
 
       .consult p {
-        display: none;
+        display: block;
+        font-size: 11.5px;
+        line-height: 1.35;
       }
 
       .qr-box {
@@ -1399,7 +1403,6 @@ function buildHtml(data) {
           titleHtml,
           '<div class="job-card-meta">',
             renderCardLine([getCell(row, "Location"), getCell(row, "Type of Program"), getCell(row, "Job Category")]),
-            renderCardLine([prefixValue("毕业", getCell(row, "Year of Graduation")), prefixValue("Sponsor", getCell(row, "Sponsor")), prefixValue("学历", getCell(row, "Educational Background")), prefixValue("截止", getCell(row, "Application Deadline"))]),
           '</div>',
         '</article>'
       ].join("");
@@ -1408,11 +1411,6 @@ function buildHtml(data) {
     function renderCardLine(values) {
       const displayValue = values.map((value) => String(value || "").trim()).filter(Boolean).join(" · ") || "-";
       return '<div class="job-card-line">' + escapeHtml(displayValue) + '</div>';
-    }
-
-    function prefixValue(label, value) {
-      const displayValue = String(value || "").trim();
-      return displayValue ? label + " " + displayValue : "";
     }
 
     function getCell(row, header) {
