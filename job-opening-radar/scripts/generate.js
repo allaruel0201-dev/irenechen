@@ -532,6 +532,10 @@ function buildHtml(data) {
       background: rgba(255, 252, 246, 0.8);
     }
 
+    .filter-toggle {
+      display: none;
+    }
+
     .filter-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -642,28 +646,28 @@ function buildHtml(data) {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
-      padding: 14px;
-      box-shadow: 0 10px 26px rgba(20, 55, 99, 0.08);
+      padding: 10px 11px;
+      box-shadow: 0 6px 18px rgba(20, 55, 99, 0.07);
     }
 
     .job-card + .job-card {
-      margin-top: 10px;
+      margin-top: 7px;
     }
 
     .job-card-top {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
+      gap: 8px;
+      margin-bottom: 4px;
     }
 
     .job-card-company {
       min-width: 0;
       color: var(--brand-dark);
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 850;
-      line-height: 1.35;
+      line-height: 1.25;
       overflow-wrap: anywhere;
     }
 
@@ -673,8 +677,8 @@ function buildHtml(data) {
       border-radius: 999px;
       background: #eef6ff;
       color: #174f91;
-      padding: 4px 8px;
-      font-size: 12px;
+      padding: 3px 7px;
+      font-size: 11px;
       font-weight: 850;
       line-height: 1;
       white-space: nowrap;
@@ -683,11 +687,15 @@ function buildHtml(data) {
     .job-card-title {
       display: block;
       color: #174f91;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 850;
-      line-height: 1.45;
+      line-height: 1.32;
       text-decoration: none;
       overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .job-card-title:hover {
@@ -700,35 +708,17 @@ function buildHtml(data) {
     }
 
     .job-card-meta {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 12px;
+      margin-top: 6px;
     }
 
-    .job-card-field {
-      min-width: 0;
-      border: 1px solid #e4edf8;
-      border-radius: 8px;
-      background: #f8fbff;
-      padding: 8px 9px;
-    }
-
-    .job-card-label {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 850;
-      line-height: 1.2;
-      margin-bottom: 4px;
-    }
-
-    .job-card-value {
-      color: var(--ink);
-      font-size: 13px;
+    .job-card-line {
+      color: #4b5f78;
+      font-size: 11.5px;
       font-weight: 700;
       line-height: 1.35;
-      overflow-wrap: anywhere;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .empty {
@@ -909,6 +899,11 @@ function buildHtml(data) {
         margin-bottom: 10px;
       }
 
+      .panel {
+        display: flex;
+        flex-direction: column;
+      }
+
       .hero-main,
       .consult,
       .panel,
@@ -918,42 +913,108 @@ function buildHtml(data) {
 
       .hero-main {
         min-height: auto;
-        padding: 18px;
+        padding: 14px;
       }
 
       .eyebrow {
-        margin-bottom: 9px;
-        font-size: 11px;
+        margin-bottom: 6px;
+        font-size: 10px;
         line-height: 1.35;
       }
 
       h1 {
-        font-size: 30px;
-        line-height: 1.12;
+        font-size: 26px;
+        line-height: 1.08;
       }
 
       .subtitle {
-        font-size: 13px;
-        line-height: 1.6;
+        margin-top: 7px;
+        font-size: 12px;
+        line-height: 1.45;
       }
 
       .consult {
-        padding: 14px;
-        gap: 12px;
+        grid-template-columns: minmax(0, 1fr) 76px;
+        padding: 10px;
+        gap: 10px;
       }
 
       .consult strong {
-        font-size: 16px;
+        font-size: 13px;
+        line-height: 1.35;
+        margin-bottom: 0;
       }
 
       .consult p {
-        font-size: 13px;
+        display: none;
+      }
+
+      .qr-box {
+        width: 76px;
       }
 
       .toolbar,
-      .filter-wrap,
       .pager {
         padding: 10px;
+      }
+
+      .toolbar {
+        grid-template-columns: minmax(0, 1fr) 64px;
+        gap: 8px;
+        order: 1;
+      }
+
+      .filter-wrap {
+        order: 2;
+      }
+
+      .table-wrap {
+        order: 3;
+      }
+
+      .pager {
+        order: 4;
+      }
+
+      .clear {
+        min-height: 42px;
+        padding: 0 10px;
+      }
+
+      .filter-wrap {
+        padding: 0;
+        border-bottom: 1px solid var(--line);
+        background: #f6faff;
+      }
+
+      .filter-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 40px;
+        border: 0;
+        background: transparent;
+        padding: 0 10px;
+        color: var(--brand-dark);
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .filter-toggle::after {
+        content: "+";
+        color: var(--brand);
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .filter-wrap:not(.is-collapsed) .filter-toggle::after {
+        content: "-";
+      }
+
+      .filter-wrap.is-collapsed .filter-grid {
+        display: none;
       }
 
       .search,
@@ -964,8 +1025,13 @@ function buildHtml(data) {
       }
 
       .filter-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
+        padding: 0 10px 10px;
+      }
+
+      .filter-item label {
+        font-size: 11px;
       }
 
       .pager {
@@ -986,7 +1052,7 @@ function buildHtml(data) {
       .table-wrap {
         min-height: 240px;
         overflow: visible;
-        padding: 10px;
+        padding: 8px;
         background: #f6faff;
       }
 
@@ -1011,11 +1077,11 @@ function buildHtml(data) {
 
     @media (max-width: 520px) {
       .consult {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) 76px;
       }
 
       .qr-box {
-        width: 136px;
+        width: 76px;
       }
     }
   </style>
@@ -1045,7 +1111,8 @@ function buildHtml(data) {
           <input id="globalSearch" class="search" type="search" placeholder="搜索公司、岗位、毕业时间、Sponsor 等展示字段">
           <button id="clearBtn" class="clear" type="button">清空</button>
         </div>
-        <div class="filter-wrap">
+        <div class="filter-wrap" id="filterWrap">
+          <button class="filter-toggle" id="filterToggle" type="button" aria-expanded="true">筛选条件</button>
           <div class="filter-grid" id="filters"></div>
         </div>
         <div class="pager">
@@ -1113,6 +1180,8 @@ function buildHtml(data) {
     const data = window.JOB_OPENING_DATA;
     const searchEl = document.getElementById("globalSearch");
     const clearBtn = document.getElementById("clearBtn");
+    const filterWrap = document.getElementById("filterWrap");
+    const filterToggle = document.getElementById("filterToggle");
     const filtersEl = document.getElementById("filters");
     const pageInfoEl = document.getElementById("pageInfo");
     const pageSizeEl = document.getElementById("pageSize");
@@ -1131,8 +1200,23 @@ function buildHtml(data) {
       "educational background"
     ]);
 
+    initResponsiveFilters();
     initProfileGate();
     render();
+
+    function initResponsiveFilters() {
+      if (!filterWrap || !filterToggle) return;
+      if (window.matchMedia("(max-width: 720px)").matches) {
+        filterWrap.classList.add("is-collapsed");
+        filterToggle.setAttribute("aria-expanded", "false");
+      }
+
+      filterToggle.addEventListener("click", () => {
+        const willCollapse = !filterWrap.classList.contains("is-collapsed");
+        filterWrap.classList.toggle("is-collapsed", willCollapse);
+        filterToggle.setAttribute("aria-expanded", willCollapse ? "false" : "true");
+      });
+    }
 
     function initProfileGate() {
       const saved = readProfile();
@@ -1314,22 +1398,21 @@ function buildHtml(data) {
           '</div>',
           titleHtml,
           '<div class="job-card-meta">',
-            renderCardField("地区", getCell(row, "Location")),
-            renderCardField("类型", getCell(row, "Type of Program")),
-            renderCardField("方向", getCell(row, "Job Category")),
-            renderCardField("毕业年份", getCell(row, "Year of Graduation")),
-            renderCardField("Sponsor", getCell(row, "Sponsor")),
-            renderCardField("学历", getCell(row, "Educational Background")),
-            renderCardField("截止", getCell(row, "Application Deadline")),
-            renderCardField("更新", getCell(row, "Posting Date")),
+            renderCardLine([getCell(row, "Location"), getCell(row, "Type of Program"), getCell(row, "Job Category")]),
+            renderCardLine([prefixValue("毕业", getCell(row, "Year of Graduation")), prefixValue("Sponsor", getCell(row, "Sponsor")), prefixValue("学历", getCell(row, "Educational Background")), prefixValue("截止", getCell(row, "Application Deadline"))]),
           '</div>',
         '</article>'
       ].join("");
     }
 
-    function renderCardField(label, value) {
-      const displayValue = String(value || "").trim() || "-";
-      return '<div class="job-card-field"><span class="job-card-label">' + escapeHtml(label) + '</span><span class="job-card-value">' + escapeHtml(displayValue) + '</span></div>';
+    function renderCardLine(values) {
+      const displayValue = values.map((value) => String(value || "").trim()).filter(Boolean).join(" · ") || "-";
+      return '<div class="job-card-line">' + escapeHtml(displayValue) + '</div>';
+    }
+
+    function prefixValue(label, value) {
+      const displayValue = String(value || "").trim();
+      return displayValue ? label + " " + displayValue : "";
     }
 
     function getCell(row, header) {
