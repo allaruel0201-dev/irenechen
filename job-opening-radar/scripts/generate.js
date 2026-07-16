@@ -634,6 +634,103 @@ function buildHtml(data) {
       border-bottom-color: currentColor;
     }
 
+    .mobile-card-list {
+      display: none;
+    }
+
+    .job-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px;
+      box-shadow: 0 10px 26px rgba(20, 55, 99, 0.08);
+    }
+
+    .job-card + .job-card {
+      margin-top: 10px;
+    }
+
+    .job-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .job-card-company {
+      min-width: 0;
+      color: var(--brand-dark);
+      font-size: 15px;
+      font-weight: 850;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .job-card-season {
+      flex: 0 0 auto;
+      border: 1px solid #b8d5f5;
+      border-radius: 999px;
+      background: #eef6ff;
+      color: #174f91;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 850;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .job-card-title {
+      display: block;
+      color: #174f91;
+      font-size: 16px;
+      font-weight: 850;
+      line-height: 1.45;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    .job-card-title:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .job-card-title.is-plain {
+      color: var(--ink);
+    }
+
+    .job-card-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .job-card-field {
+      min-width: 0;
+      border: 1px solid #e4edf8;
+      border-radius: 8px;
+      background: #f8fbff;
+      padding: 8px 9px;
+    }
+
+    .job-card-label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .job-card-value {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
     .empty {
       display: none;
       padding: 46px 16px;
@@ -797,6 +894,121 @@ function buildHtml(data) {
       }
     }
 
+    @media (max-width: 720px) {
+      body {
+        background: #f3f7fd;
+      }
+
+      .shell {
+        width: min(100% - 18px, 1440px);
+        padding-bottom: 28px;
+      }
+
+      .hero {
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .hero-main,
+      .consult,
+      .panel,
+      .about-dbc {
+        box-shadow: 0 10px 28px rgba(20, 55, 99, 0.1);
+      }
+
+      .hero-main {
+        min-height: auto;
+        padding: 18px;
+      }
+
+      .eyebrow {
+        margin-bottom: 9px;
+        font-size: 11px;
+        line-height: 1.35;
+      }
+
+      h1 {
+        font-size: 30px;
+        line-height: 1.12;
+      }
+
+      .subtitle {
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .consult {
+        padding: 14px;
+        gap: 12px;
+      }
+
+      .consult strong {
+        font-size: 16px;
+      }
+
+      .consult p {
+        font-size: 13px;
+      }
+
+      .toolbar,
+      .filter-wrap,
+      .pager {
+        padding: 10px;
+      }
+
+      .search,
+      .filter-grid input,
+      .filter-grid select {
+        min-height: 42px;
+        font-size: 14px;
+      }
+
+      .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .pager {
+        align-items: stretch;
+      }
+
+      .pager-controls {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto minmax(72px, 1fr) 1fr 1fr;
+      }
+
+      .pager button,
+      .pager select {
+        width: 100%;
+      }
+
+      .table-wrap {
+        min-height: 240px;
+        overflow: visible;
+        padding: 10px;
+        background: #f6faff;
+      }
+
+      table {
+        display: none;
+      }
+
+      .mobile-card-list {
+        display: block;
+      }
+
+      .empty {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      .about-dbc {
+        padding: 18px;
+        font-size: 14px;
+      }
+    }
+
     @media (max-width: 520px) {
       .consult {
         grid-template-columns: 1fr;
@@ -851,6 +1063,7 @@ function buildHtml(data) {
           </div>
         </div>
         <div class="table-wrap">
+          <div id="jobCards" class="mobile-card-list"></div>
           <table id="jobTable"></table>
           <div id="emptyState" class="empty">没有匹配结果，请调整搜索或筛选条件。</div>
         </div>
@@ -906,6 +1119,7 @@ function buildHtml(data) {
     const prevPageEl = document.getElementById("prevPage");
     const nextPageEl = document.getElementById("nextPage");
     const tableEl = document.getElementById("jobTable");
+    const cardsEl = document.getElementById("jobCards");
     const emptyEl = document.getElementById("emptyState");
     const profileForm = document.getElementById("profileForm");
     const profileMessage = document.getElementById("profileMessage");
@@ -1065,6 +1279,7 @@ function buildHtml(data) {
       const thead = '<thead><tr>' + headers.map((header) => '<th>' + escapeHtml(header) + '</th>').join("") + '</tr></thead>';
       const tbody = '<tbody>' + visibleRows.map((row) => renderRow(row, sheet)).join("") + '</tbody>';
       tableEl.innerHTML = colgroup + thead + tbody;
+      cardsEl.innerHTML = visibleRows.map((row) => renderCard(row, sheet)).join("");
       emptyEl.classList.toggle("show", filteredRows.length === 0);
     }
 
@@ -1080,6 +1295,45 @@ function buildHtml(data) {
       });
 
       return '<tr>' + cells.join("") + '</tr>';
+    }
+
+    function renderCard(row, sheet) {
+      const company = getCell(row, "Company") || "未填写公司";
+      const title = getCell(row, sheet.jobTitleKey || "Job Title") || "未填写岗位名称";
+      const season = getCell(row, "Recruitment Season");
+      const titleHtml = row.link
+        ? '<a class="job-card-title" href="' + escapeAttr(row.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(title) + '</a>'
+        : '<span class="job-card-title is-plain">' + escapeHtml(title) + '</span>';
+      const seasonHtml = season ? '<span class="job-card-season">' + escapeHtml(season) + '</span>' : "";
+
+      return [
+        '<article class="job-card">',
+          '<div class="job-card-top">',
+            '<div class="job-card-company">' + escapeHtml(company) + '</div>',
+            seasonHtml,
+          '</div>',
+          titleHtml,
+          '<div class="job-card-meta">',
+            renderCardField("地区", getCell(row, "Location")),
+            renderCardField("类型", getCell(row, "Type of Program")),
+            renderCardField("方向", getCell(row, "Job Category")),
+            renderCardField("毕业年份", getCell(row, "Year of Graduation")),
+            renderCardField("Sponsor", getCell(row, "Sponsor")),
+            renderCardField("学历", getCell(row, "Educational Background")),
+            renderCardField("截止", getCell(row, "Application Deadline")),
+            renderCardField("更新", getCell(row, "Posting Date")),
+          '</div>',
+        '</article>'
+      ].join("");
+    }
+
+    function renderCardField(label, value) {
+      const displayValue = String(value || "").trim() || "-";
+      return '<div class="job-card-field"><span class="job-card-label">' + escapeHtml(label) + '</span><span class="job-card-value">' + escapeHtml(displayValue) + '</span></div>';
+    }
+
+    function getCell(row, header) {
+      return String(row.cells[header] || "").trim();
     }
 
     function isWrappingHeader(header) {
