@@ -27,7 +27,7 @@
 
 ## 1) 今日最值得写的 3 个选题
 
-### 1) Morgan Stanley Q2 利润涨 58%，大行 trading 收入冲到纪录：S&T / equities / IB 面试要会讲 AI 波动
+### 1) Morgan Stanley Q2 利润涨 58%，大行 trading 收入冲到纪录
 
 - **来源**
   - Wall Street Journal，2026-07-15：https://www.wsj.com/finance/live/stock-market-today-dow-sp-500-nasdaq-07-15-2026-2a3dd235/card/morgan-stanley-profit-rises-58-on-trading-dealmaking-strength-be4f8f0e
@@ -111,7 +111,7 @@
 
 ---
 
-### 2) ASML 因 AI 需求上调 2026 展望并考虑扩产：AI infra 机会不是只有写模型
+### 2) ASML 因 AI 需求上调 2026 展望并考虑扩产
 
 - **来源**
   - MarketWatch，2026-07-15：https://www.marketwatch.com/story/asml-is-scrambling-to-build-more-capacity-after-blockbuster-beat-and-raise-quarter-89e2febb
@@ -194,7 +194,7 @@
 
 ---
 
-### 3) Meta 员工起诉 AI 参与裁员筛选：科技 New Grad 要补 AI governance / HR analytics / employment risk
+### 3) Meta 员工起诉 AI 参与裁员筛选
 
 - **来源**
   - AP，2026-07-15：https://apnews.com/article/019fb9c7fdc09167e91547546bce5be8
@@ -373,4 +373,3 @@
 - Meta 诉讼文书、法院程序、是否涉及临时禁令或仲裁结果。
 - H-1B / PERM fraud investigation 的官方来源；NYPost / WSO / 社区讨论不能作为政策事实。
 - ASML、半导体设备、foundry、EDA、cloud infra 岗位是否有 citizenship / export-control 限制。
-
