@@ -20,6 +20,7 @@ DAILY_DIR = WORKSPACE_ROOT / "outputs" / "daily"
 OUTPUTS_DASHBOARD_DIR = WORKSPACE_ROOT / "outputs" / "dashboard"
 ROOT_DASHBOARD_DIR = WORKSPACE_ROOT / "dashboard"
 NO_QUOTES = ("“", "”", "\"")
+CONFLICT_MARKERS = ("<<<<<<<", "=======", ">>>>>>>")
 
 
 DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-topic-radar\.md$")
@@ -245,6 +246,30 @@ def validate_latest_daily_links(date: str | None) -> None:
     )
 
 
+def validate_no_conflict_markers() -> None:
+  paths = [
+    OUTPUTS_DASHBOARD_DIR / "index.html",
+    ROOT_DASHBOARD_DIR / "index.html",
+    OUTPUTS_DASHBOARD_DIR / "app.js",
+    ROOT_DASHBOARD_DIR / "app.js",
+    OUTPUTS_DASHBOARD_DIR / "style.css",
+    ROOT_DASHBOARD_DIR / "style.css",
+  ]
+  bad: list[str] = []
+  for path in paths:
+    if not path.exists() or not path.is_file():
+      continue
+    text = path.read_text(encoding="utf-8", errors="replace")
+    if any(marker in text for marker in CONFLICT_MARKERS):
+      bad.append(str(path.relative_to(WORKSPACE_ROOT)))
+
+  if bad:
+    raise RuntimeError(
+      "Refusing to publish files that contain git conflict markers:\n"
+      + "\n".join(f"- {path}" for path in bad)
+    )
+
+
 def main() -> int:
   # 0) Keep local branch up-to-date (robust for fully automated runs).
   code, out = git_pull_rebase_autostash()
@@ -264,6 +289,7 @@ def main() -> int:
   # 1) Build dashboard data.js
   run([sys.executable, "scripts/build-dashboard.py"])
   validate_latest_daily_links(date)
+  validate_no_conflict_markers()
   write_publish_marker(date)
 
   # 2) Stage outputs (including updated data.js)
