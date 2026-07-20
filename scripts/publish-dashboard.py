@@ -292,13 +292,15 @@ def main() -> int:
   validate_no_conflict_markers()
   write_publish_marker(date)
 
-  # 2) Stage outputs (including updated data.js)
+  # 2) Stage only topic-radar dashboard artifacts. Keep the separate
+  # job-opening site out of this publisher even though it also lives under outputs/.
   # Netlify rebuilds from repo contents; also stage automation rule files that affect future runs.
   run(
     [
       "git",
       "add",
-      "outputs",
+      "outputs/daily",
+      "outputs/dashboard",
       "dashboard",
       "scripts/build-dashboard.py",
       "scripts/build-dashboard.mjs",
