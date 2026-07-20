@@ -46,9 +46,12 @@ async function main() {
 }
 
 async function copyAssets() {
-  const qrSource = path.join(assetsDir, "qr.png");
-  if (fs.existsSync(qrSource)) {
-    await fsp.copyFile(qrSource, path.join(distDir, "qr.png"));
+  const assetNames = ["qr.png", "dbc-logo.png"];
+  for (const assetName of assetNames) {
+    const assetSource = path.join(assetsDir, assetName);
+    if (fs.existsSync(assetSource)) {
+      await fsp.copyFile(assetSource, path.join(distDir, assetName));
+    }
   }
 }
 
@@ -285,18 +288,19 @@ function buildHtml(data) {
   <title>2027秋招岗位汇总表</title>
   <style>
     :root {
-      --ink: #172033;
-      --muted: #607089;
-      --paper: #f5f8fc;
+      --ink: #1f2937;
+      --muted: #5f6b7a;
+      --paper: #f7f9fc;
       --panel: #ffffff;
-      --line: #d9e3f0;
+      --line: #d9e2ef;
       --line-strong: #b7c7dc;
-      --brand: #2563a9;
-      --brand-dark: #173d73;
-      --brand-soft: #dcecff;
-      --accent: #3b82c4;
+      --brand: #3366cc;
+      --brand-dark: #244f9f;
+      --brand-soft: #eef5ff;
+      --accent: #3399ff;
       --cream: #eef5ff;
-      --shadow: 0 18px 48px rgba(20, 55, 99, 0.12);
+      --shadow: 0 18px 50px rgba(31, 41, 55, 0.08);
+      --radius: 8px;
       color-scheme: light;
     }
 
@@ -308,10 +312,10 @@ function buildHtml(data) {
       margin: 0;
       min-height: 100vh;
       background:
-        linear-gradient(135deg, rgba(247, 251, 255, 0.98), rgba(232, 241, 252, 0.94)),
-        radial-gradient(circle at top right, rgba(59, 130, 196, 0.16), transparent 34%);
+        linear-gradient(180deg, rgba(51, 102, 204, 0.07), rgba(51, 153, 255, 0) 360px),
+        var(--paper);
       color: var(--ink);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-family: Inter, "Noto Sans SC", "Source Han Sans CN", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
       letter-spacing: 0;
     }
 
@@ -337,50 +341,65 @@ function buildHtml(data) {
     }
 
     .shell {
-      width: min(1440px, calc(100% - 32px));
+      width: min(1440px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 28px 0 44px;
+      padding: 32px 0 48px;
     }
 
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
-      gap: 18px;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+      gap: 24px;
       align-items: stretch;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .hero-main,
     .consult {
       border: 1px solid rgba(183, 199, 220, 0.86);
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       box-shadow: var(--shadow);
-      border-radius: 8px;
+      border-radius: var(--radius);
     }
 
     .hero-main {
-      padding: 26px;
+      padding: 26px 28px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      min-height: 190px;
+      min-height: 220px;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .brand-logo {
+      display: block;
+      width: min(300px, 44vw);
+      height: auto;
     }
 
     .eyebrow {
-      margin: 0 0 12px;
+      margin: 0;
       color: var(--brand);
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.13em;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      text-transform: uppercase;
     }
 
     h1 {
       margin: 0;
-      color: var(--brand-dark);
-      font-size: clamp(30px, 4vw, 54px);
-      line-height: 1.04;
-      font-weight: 850;
-      letter-spacing: 0;
+      color: var(--ink);
+      font-size: clamp(32px, 4.4vw, 56px);
+      line-height: 1.08;
+      font-weight: 600;
+      letter-spacing: -0.025em;
     }
 
     .subtitle {
@@ -397,20 +416,21 @@ function buildHtml(data) {
       gap: 16px;
       align-items: center;
       background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(222, 236, 253, 0.96));
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(238, 245, 255, 0.96));
     }
 
     .consult strong {
       display: block;
-      color: var(--brand-dark);
-      font-size: 19px;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 600;
       line-height: 1.45;
       margin-bottom: 8px;
     }
 
     .consult p {
       margin: 0;
-      color: #42546d;
+      color: var(--muted);
       font-size: 14px;
       line-height: 1.65;
     }
@@ -418,9 +438,9 @@ function buildHtml(data) {
     .qr-box {
       width: 122px;
       aspect-ratio: 1;
-      border: 1px dashed #6d93bf;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.58);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
       display: grid;
       place-items: center;
       color: #315c89;
@@ -440,9 +460,9 @@ function buildHtml(data) {
 
     .panel {
       border: 1px solid rgba(183, 199, 220, 0.86);
-      background: rgba(255, 255, 255, 0.94);
+      background: rgba(255, 255, 255, 0.96);
       box-shadow: var(--shadow);
-      border-radius: 8px;
+      border-radius: var(--radius);
       overflow: hidden;
     }
 
@@ -453,13 +473,13 @@ function buildHtml(data) {
       padding: 14px;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      background: rgba(238, 245, 255, 0.82);
+      background: var(--brand-soft);
     }
 
     .search {
       width: 100%;
       border: 1px solid var(--line-strong);
-      border-radius: 8px;
+      border-radius: var(--radius);
       background: #fff;
       color: var(--ink);
       padding: 12px 14px;
@@ -472,14 +492,14 @@ function buildHtml(data) {
     .profile-card input:focus,
     .profile-card select:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(59, 130, 196, 0.16);
+      box-shadow: 0 0 0 3px rgba(51, 153, 255, 0.18);
     }
 
     .clear {
-      border: 1px solid #1d4f86;
-      background: var(--brand-dark);
+      border: 1px solid var(--brand);
+      background: var(--brand);
       color: #fff;
-      border-radius: 8px;
+      border-radius: var(--radius);
       padding: 0 18px;
       cursor: pointer;
       font-weight: 750;
@@ -495,7 +515,7 @@ function buildHtml(data) {
       gap: 10px;
       padding: 12px 14px;
       border-bottom: 1px solid var(--line);
-      background: #f6faff;
+      background: #f7f9fc;
       color: var(--muted);
       font-size: 14px;
     }
@@ -510,9 +530,9 @@ function buildHtml(data) {
     .pager select {
       min-height: 34px;
       border: 1px solid var(--line-strong);
-      border-radius: 8px;
+      border-radius: var(--radius);
       background: #fff;
-      color: var(--brand-dark);
+      color: var(--brand);
       padding: 6px 10px;
       font-weight: 750;
     }
@@ -529,7 +549,7 @@ function buildHtml(data) {
     .filter-wrap {
       padding: 14px;
       border-bottom: 1px solid var(--line);
-      background: rgba(255, 252, 246, 0.8);
+      background: #fff;
     }
 
     .filter-toggle {
@@ -561,7 +581,7 @@ function buildHtml(data) {
     .filter-grid select {
       width: 100%;
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: var(--radius);
       background: #fff;
       color: var(--ink);
       padding: 10px 11px;
@@ -604,7 +624,7 @@ function buildHtml(data) {
       top: 0;
       z-index: 2;
       background: #dcecff;
-      color: #173d73;
+      color: var(--brand-dark);
       font-size: 12px;
       font-weight: 850;
       white-space: nowrap;
@@ -620,15 +640,15 @@ function buildHtml(data) {
     }
 
     tbody tr:nth-child(even) td {
-      background: #f8fbff;
+      background: #f7f9fc;
     }
 
     tbody tr:hover td {
-      background: #eef6ff;
+      background: var(--brand-soft);
     }
 
     .job-link {
-      color: #174f91;
+      color: var(--brand);
       font-weight: 800;
       text-decoration: none;
       border-bottom: 1px solid rgba(23, 79, 145, 0.34);
@@ -664,10 +684,10 @@ function buildHtml(data) {
 
     .job-card-company {
       min-width: 0;
-      border: 1px solid #b8d5f5;
+      border: 1px solid #c8daf8;
       border-radius: 7px;
-      background: #eef6ff;
-      color: var(--brand-dark);
+      background: var(--brand-soft);
+      color: var(--brand);
       padding: 3px 7px;
       font-size: 13px;
       font-weight: 850;
@@ -920,6 +940,14 @@ function buildHtml(data) {
         padding: 14px;
       }
 
+      .brand-lockup {
+        margin-bottom: 12px;
+      }
+
+      .brand-logo {
+        width: min(190px, 58vw);
+      }
+
       .eyebrow {
         margin-bottom: 6px;
         font-size: 10px;
@@ -988,7 +1016,7 @@ function buildHtml(data) {
       .filter-wrap {
         padding: 0;
         border-bottom: 1px solid var(--line);
-        background: #f6faff;
+        background: #f7f9fc;
       }
 
       .filter-toggle {
@@ -1095,7 +1123,10 @@ function buildHtml(data) {
     <main class="shell">
       <section class="hero" aria-label="DBC Job Opening Radar">
         <div class="hero-main">
-          <p class="eyebrow">DBC职梦教研部 Job Opening Radar</p>
+          <div class="brand-lockup">
+            <img class="brand-logo" src="./dbc-logo.png" alt="DBC职梦">
+            <p class="eyebrow">DBC职梦教研部 Job Opening Radar</p>
+          </div>
           <h1>2027秋招岗位汇总表</h1>
           <p class="subtitle">仅收录当周新增岗位，如需秋招完整岗位表或内推码，请添加右侧DBC职业规划师领取</p>
         </div>
