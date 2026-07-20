@@ -39,6 +39,14 @@ jobs:
       - name: Build dashboard data.js
         run: python3 scripts/build-dashboard.py
 
+      - name: Prepare dashboard-only Pages artifact
+        run: |
+          rm -rf .pages-artifact
+          mkdir -p .pages-artifact
+          cp outputs/index.html .pages-artifact/index.html
+          cp -R outputs/dashboard .pages-artifact/dashboard
+          touch .pages-artifact/.nojekyll
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
@@ -48,7 +56,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: outputs
+          path: .pages-artifact
 
       - name: Deploy to GitHub Pages
         id: deployment
