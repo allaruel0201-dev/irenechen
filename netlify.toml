@@ -1,9 +1,7 @@
 [build]
-  command = "python3 scripts/build-dashboard.py && cd job-opening-radar && npm install && npm run generate && cd .. && node scripts/build-protected-job-radar.mjs"
+  command = "python3 scripts/build-dashboard.py"
   publish = "outputs"
 
 [build.environment]
   PYTHON_VERSION = "3.11"
 
-[functions]
-  directory = "netlify/functions"
