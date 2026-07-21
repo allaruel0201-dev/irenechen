@@ -39,11 +39,13 @@ jobs:
       - name: Build dashboard data.js
         run: python3 scripts/build-dashboard.py
 
-      - name: Prepare dashboard-only Pages artifact
+      - name: Prepare selected works + dashboard Pages artifact
         run: |
           rm -rf .pages-artifact
           mkdir -p .pages-artifact
-          cp outputs/index.html .pages-artifact/index.html
+          cp outputs/portfolio/index.html .pages-artifact/index.html
+          cp outputs/portfolio/background.gif .pages-artifact/background.gif
+          cp -R outputs/portfolio .pages-artifact/portfolio
           cp -R outputs/dashboard .pages-artifact/dashboard
           touch .pages-artifact/.nojekyll
 
