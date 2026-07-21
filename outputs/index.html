@@ -3,12 +3,657 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>选题雷达 Dashboard</title>
-    <meta http-equiv="refresh" content="0; url=./dashboard/" />
+    <title>Selected Works</title>
+    <style>
+      :root {
+        --bg: #050505;
+        --surface: rgba(11, 12, 12, 0.68);
+        --surface-strong: rgba(17, 18, 18, 0.84);
+        --border: rgba(235, 239, 232, 0.16);
+        --border-strong: rgba(235, 239, 232, 0.34);
+        --text: #f4f2eb;
+        --secondary: #d8d4c9;
+        --muted: #aaa59b;
+        --accent: #b8d7a5;
+        --accent-soft: rgba(184, 215, 165, 0.15);
+        --warm: #e0a480;
+        --wechat: #4fd174;
+        --wechat-soft: rgba(79, 209, 116, 0.16);
+        --xhs: #f05f6f;
+        --xhs-soft: rgba(240, 95, 111, 0.14);
+        --shadow: 0 24px 58px rgba(0, 0, 0, 0.44);
+        --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        position: relative;
+        isolation: isolate;
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.34) 46%, rgba(0, 0, 0, 0.18)),
+          linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.5));
+      }
+
+      .bg-gif {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+        opacity: 0.92;
+        filter: brightness(1.18) contrast(1.12);
+        pointer-events: none;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        position: relative;
+        z-index: 2;
+        width: min(100%, 1240px);
+        min-height: 100vh;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+        gap: 48px;
+        align-items: start;
+        padding: 64px 32px;
+      }
+
+      .hero {
+        position: sticky;
+        top: 64px;
+        max-width: 460px;
+        padding: 26px 0;
+      }
+
+      .eyebrow {
+        color: var(--warm);
+        font-size: 12px;
+        letter-spacing: 0.16em;
+      }
+
+      h1 {
+        margin: 18px 0 0;
+        font-size: 3.2rem;
+        line-height: 1.05;
+        font-weight: 680;
+        letter-spacing: 0;
+      }
+
+      .intro {
+        margin: 20px 0 0;
+        color: var(--secondary);
+        font-size: 16px;
+        line-height: 1.76;
+      }
+
+      .hero-nav {
+        display: grid;
+        gap: 9px;
+        margin-top: 18px;
+      }
+
+      .hero-nav-link {
+        position: relative;
+        display: inline-block;
+        width: fit-content;
+        max-width: 100%;
+        padding-bottom: 5px;
+        color: var(--wechat);
+        font-size: 1.18rem;
+        line-height: 1.26;
+        font-weight: 720;
+        letter-spacing: 0;
+        text-decoration: none;
+        transition: color 160ms ease, opacity 160ms ease;
+      }
+
+      .hero-nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        border-radius: 999px;
+        background: currentColor;
+        opacity: 0.92;
+      }
+
+      .hero-nav-link.is-xiaohongshu {
+        color: var(--xhs);
+      }
+
+      .hero-nav-link:hover {
+        opacity: 0.78;
+      }
+
+      .hero-nav-link:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 4px;
+        border-radius: 4px;
+      }
+
+      .works-panel {
+        display: grid;
+        gap: 34px;
+      }
+
+      .work-section {
+        display: grid;
+        gap: 14px;
+        scroll-margin-top: 28px;
+      }
+
+      .work-section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 0 2px 10px;
+        border-bottom: 1px solid rgba(235, 239, 232, 0.18);
+      }
+
+      .work-section-title {
+        position: relative;
+        margin: 0;
+        color: var(--wechat);
+        font-size: 1.42rem;
+        line-height: 1.2;
+        font-weight: 760;
+        letter-spacing: 0;
+      }
+
+      .work-section-title::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -11px;
+        width: 76px;
+        height: 2px;
+        border-radius: 999px;
+        background: var(--wechat);
+      }
+
+      .work-section.is-xiaohongshu .work-section-title {
+        color: var(--xhs);
+      }
+
+      .work-section.is-xiaohongshu .work-section-title::after {
+        background: var(--xhs);
+      }
+
+      .work-count {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .work-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .work-card {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px 18px;
+        align-items: start;
+        padding: 18px 20px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+          var(--surface);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        box-shadow: var(--shadow);
+        transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease, background-color 180ms ease;
+      }
+
+      .work-card:hover {
+        border-color: var(--border-strong);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.028)),
+          var(--surface-strong);
+        box-shadow: 0 28px 68px rgba(0, 0, 0, 0.58);
+        transform: translateY(-2px);
+      }
+
+      .work-title {
+        margin: 0;
+        font-size: 1.08rem;
+        line-height: 1.28;
+        font-weight: 680;
+        letter-spacing: 0;
+      }
+
+      .work-title a {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 8px;
+        min-height: 32px;
+        text-decoration: none;
+        text-underline-offset: 5px;
+        text-decoration-thickness: 1px;
+        transition: color 160ms ease, opacity 160ms ease;
+      }
+
+      .work-title a:hover,
+      .work-card:hover .work-title a {
+        color: var(--accent);
+        text-decoration: underline;
+      }
+
+      .work-title a:focus-visible {
+        outline: 2px solid rgba(184, 215, 165, 0.64);
+        outline-offset: 4px;
+        border-radius: 4px;
+      }
+
+      .arrow-icon {
+        flex: 0 0 auto;
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        opacity: 0.7;
+        transform: translateY(2px);
+        transition: opacity 160ms ease, transform 160ms ease;
+      }
+
+      .work-title a:hover .arrow-icon,
+      .work-card:hover .arrow-icon {
+        opacity: 1;
+        transform: translate(1px, 1px);
+      }
+
+      .work-summary {
+        grid-column: 1 / -1;
+        display: -webkit-box;
+        margin: 0;
+        overflow: hidden;
+        color: var(--secondary);
+        font-size: 14px;
+        line-height: 1.65;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+
+      .work-data {
+        justify-self: end;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0;
+        padding: 7px 11px;
+        border: 1px solid rgba(184, 215, 165, 0.26);
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 12px;
+        line-height: 1.35;
+        font-weight: 650;
+        white-space: nowrap;
+      }
+
+      .keyword-row {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .keyword-chip {
+        padding: 4px 8px;
+        border: 1px solid rgba(224, 164, 128, 0.24);
+        border-radius: 999px;
+        background: rgba(224, 164, 128, 0.1);
+        color: #e7b493;
+        font-size: 12px;
+        line-height: 1.35;
+        font-weight: 560;
+      }
+
+      .empty-section {
+        padding: 18px 20px;
+        border: 1px dashed rgba(235, 239, 232, 0.2);
+        border-radius: 8px;
+        color: var(--muted);
+        background: rgba(11, 12, 12, 0.42);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+
+      @media (max-width: 860px) {
+        .page {
+          grid-template-columns: 1fr;
+          gap: 30px;
+          align-items: start;
+          padding: 34px 20px 44px;
+        }
+
+        .bg-gif {
+          object-position: center center;
+          opacity: 0.92;
+          filter: brightness(1.16) contrast(1.12);
+        }
+
+        body::before {
+          background:
+            linear-gradient(180deg, rgba(0, 0, 0, 0.54), rgba(0, 0, 0, 0.24) 42%, rgba(0, 0, 0, 0.68)),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.26));
+        }
+
+        .hero {
+          position: relative;
+          top: 0;
+          max-width: 680px;
+          padding: 8px 0 0;
+        }
+
+        h1 {
+          font-size: 2.35rem;
+        }
+
+        .work-section-title {
+          font-size: 1.32rem;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .page {
+          padding: 28px 16px 36px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .intro {
+          font-size: 15px;
+        }
+
+        .work-card {
+          grid-template-columns: 1fr;
+          padding: 20px 18px 18px;
+        }
+
+        .work-title {
+          font-size: 1.14rem;
+        }
+
+        .work-data {
+          justify-self: start;
+          white-space: normal;
+        }
+
+        .work-title a {
+          width: 100%;
+        }
+      }
+    </style>
   </head>
   <body>
-    <p>
-      正在跳转到 Dashboard：<a href="./dashboard/">./dashboard/</a>
-    </p>
+    <img class="bg-gif" src="./portfolio/background.gif" alt="" aria-hidden="true" />
+    <main class="page">
+      <section class="hero" aria-labelledby="pageTitle">
+        <div class="eyebrow">陈涵蕊 Irene</div>
+        <h1 id="pageTitle">代表作品</h1>
+        <nav class="hero-nav" aria-label="作品分类导航">
+          <a class="hero-nav-link is-wechat" href="#wechatWorks">公众号作品</a>
+          <a class="hero-nav-link is-xiaohongshu" href="#xiaohongshuWorks">小红书作品（网页版需登录小红书后查看）</a>
+        </nav>
+        <p class="intro">
+          把内容判断转化为可阅读、可收藏、可咨询的作品。
+        </p>
+      </section>
+
+      <section class="works-panel" id="worksPanel" aria-label="代表作品列表"></section>
+    </main>
+
+    <script>
+      const wechatWorks = [
+        {
+          title: "香港：欢迎你，小红书新总部",
+          summary: "",
+          data: "阅读量：10w+ / 前端涨粉：100+",
+          keywords: ["#挖掘痛点", "#全新选题"],
+          url: "https://mp.weixin.qq.com/s/CAcBini6-3z8x97w6MyPVQ?token=1055297595&lang=zh_CN"
+        },
+        {
+          title: "噩梦成真！哈佛、斯坦福等50所高校吊销中国留学生签证，强制180天内离开美国！",
+          summary: "",
+          data: "阅读量：10w+ / 前端涨粉：100+",
+          keywords: ["#快速追热点"],
+          url: "https://mp.weixin.qq.com/s/nrYTZ4M4Zk1-VI7td0KBKQ"
+        },
+        {
+          title: "留学生最爱的轻奢，被LVMH卖了",
+          summary: "",
+          data: "阅读量：5w+ / 前端涨粉：30+",
+          keywords: ["#热度洞察", "#关联用户"],
+          url: "https://mp.weixin.qq.com/s/f10zfYCsbaAIfRrDtss32Q"
+        },
+        {
+          title: "英伟达上海新办公室曝光！太有钱了…",
+          summary: "",
+          data: "阅读量：3w+ / 前端涨粉：20+",
+          keywords: ["#热点洞察", "#目标公司深挖"],
+          url: "https://mp.weixin.qq.com/s/ImCQS0V8QhUfbHalWZDDgg"
+        },
+        {
+          title: "Citadel：1800人，瓜分18亿",
+          summary: "",
+          data: "阅读量：2w+ / 前端涨粉：20+",
+          keywords: ["#目标公司深挖", "#创新"],
+          url: "https://mp.weixin.qq.com/s/QMZHKFko6dvgyQ4gv9MDaQ"
+        },
+        {
+          title: "全球瞩目！高盛万字长文分析DeepSeek，美股史诗级暴跌的原因找到了…",
+          summary: "",
+          data: "阅读量：1w+ / 前端涨粉：20+",
+          keywords: ["#研究报告", "#如何将复杂概念简单输出"],
+          url: "https://mp.weixin.qq.com/s/dHWy7hlhAyqSAOSiVL6P3Q?token=1055297595&lang=zh_CN"
+        },
+        {
+          title: "港大金融男勇脱“长衫”：逃离投行，我在腾讯找到舒适区",
+          summary: "",
+          data: "阅读量：3000",
+          keywords: ["#人物小传"],
+          url: "https://mp.weixin.qq.com/s/6T9e--rxxz3RQEVV1Pc4ew"
+        }
+      ];
+
+      const xiaohongshuWorks = [
+        {
+          title: "Job Interview准备的太充分像是在开卷…",
+          summary: "",
+          data: "赞：500+ / 收藏：800+",
+          keywords: ["#常规资料引流", "#创新封面"],
+          url: "https://www.xiaohongshu.com/explore/66021b2f000000001203fc0a?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBJu17BIhOaoDrsDaxTO37aEfgtdKMJFj3ij8fClbNndM=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782716756&share_id=a1300a4ca8b14510a4533aed97a6f1fe&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        },
+        {
+          title: "沃顿商学院估值建模课将对所有人开放",
+          summary: "",
+          data: "赞：200+ / 收藏：200+",
+          keywords: ["#新资料引流", "#创新标题"],
+          url: "https://www.xiaohongshu.com/explore/6634518c000000001e032db6?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBAgYZrS1wiFUFhpwl1O2j0cExpEsdzVwH5-ATLpdpj3A=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782716789&share_id=6b7e4105509e4d418da24a135af311e3&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        },
+        {
+          title: "时常觉得印度老姐天生掌握networking焚决",
+          summary: "",
+          data: "赞：500+ / 收藏：400+",
+          keywords: ["#专业知识分享", "#素人"],
+          url: "https://www.xiaohongshu.com/explore/6a1cf13c0000000038022f47?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBw6JroUHxP9uLbX3py3gf-gADG8lSmFaswJ4LxpGKX4A=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782717240&share_id=979ff33d58734ce58578999e6c65e867&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        },
+        {
+          title: "Jane Street：这本书才是Probability的正解",
+          summary: "",
+          data: "赞：200+ / 收藏：400+",
+          keywords: ["#痛点洞察"],
+          url: "https://www.xiaohongshu.com/explore/69d5c363000000001a020d97?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBZlGB-ocfYCrFbMYX4m-UNvFASorASQ77QlQMs4-UFC4=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782717222&share_id=eafecc312bee49c79517ef0485e05926&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        },
+        {
+          title: "读完这本堪比在hedge fund干了三年",
+          summary: "",
+          data: "赞：300+ / 收藏：500+",
+          keywords: ["#新资料挖掘", "#封面创新（AI）"],
+          url: "https://www.xiaohongshu.com/explore/69686426000000001a02e3f5?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBiq4Qot_kk50wFYTKg4DEOhap7MarL3GQYSuCxLT6rXE=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782717191&share_id=81a75086ecd74dff8d6a8362232e4789&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        },
+        {
+          title: "高盛的小红书真的很炸裂",
+          summary: "",
+          data: "赞：500+ / 收藏：500+",
+          keywords: ["#新资料挖掘", "#封面创新（AI）"],
+          url: "https://www.xiaohongshu.com/explore/6931ac06000000001e009a18?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBZWTazMd8gYXf7wLlIeUz_i1VtcFPH7-twqK5UhHGI6M=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782717168&share_id=07335cc5110848e2ac528110728b4d03&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        },
+        {
+          title: "起猛了，桥水也开始办直通录取的竞赛了",
+          summary: "",
+          data: "赞：200+ / 收藏：200+",
+          keywords: ["#信息播报", "#热门公司&岗位"],
+          url: "https://www.xiaohongshu.com/explore/6849518c000000000303a671?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBq8c22nQK57EjAuk392KL5XDRX-6EmIoJdi2sueVGQHk=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782717095&share_id=18e5327cf30045739ed3b8da37faf497&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        },
+        {
+          title: "真心推荐留子参加的一些Quant/Trading竞赛",
+          summary: "",
+          data: "赞：200+ / 收藏：200+",
+          keywords: ["#专业知识分享", "#社群引流"],
+          url: "https://www.xiaohongshu.com/explore/6841547b000000002101a51c?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBaK3L5Mjd0zwOIjdJXlAZphbyShCOh5yaptZd9XUWDzo=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782717084&share_id=42d9d178733a4116bba5819efb5f87da&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        },
+        {
+          title: "就说搞量化交易还得华人来",
+          summary: "",
+          data: "赞：300+ / 收藏：400+",
+          keywords: ["#热点洞察", "#笔记选题创新"],
+          url: "https://www.xiaohongshu.com/explore/680de62c000000001c02d514?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CB-qE0Rt0Z-AaVcN9zPAXvssLmqJFKPW5L6-VFtUJaeZk=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782717035&share_id=a36f436290724c0fb0f1b3facba05e95&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        },
+        {
+          title: "面完BlackRock，聊聊难度（已过版🥳",
+          summary: "",
+          data: "赞：200+ / 收藏：300+",
+          keywords: ["#专业知识分享", "#特殊时间段选题"],
+          url: "https://www.xiaohongshu.com/explore/66c53809000000001d039310?app_platform=android&ignoreEngage=true&app_version=9.30.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBp1TM3j03YWvOoWB08DnXvRG_pqHXtst35SUutttKJ34=&author_share=1&xhsshare=&shareRedId=ODtDNjdLNTo2NzUyOTgwNjY7OTpIRjtO&apptime=1782716845&share_id=29e38ecbced24570bf5fb83fab201b4a&share_channel=wechat&wechatWid=02e52202f088bdc048373d775dbaa93a&wechatOrigin=menu"
+        }
+      ];
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function arrowUpRightIcon() {
+        return `
+          <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M7 17L17 7"></path>
+            <path d="M9 7h8v8"></path>
+          </svg>
+        `;
+      }
+
+      function renderWorkCards(items) {
+        return items
+          .map((work) => {
+            const title = String(work.title || "").trim();
+            const summary = String(work.summary || "").trim();
+            const data = String(work.data || "").trim();
+            const url = String(work.url || "").trim();
+            const keywords = Array.isArray(work.keywords) ? work.keywords : [];
+
+            return `
+              <article class="work-card">
+                <h2 class="work-title">
+                  <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">
+                    <span>${escapeHtml(title)}</span>
+                    ${arrowUpRightIcon()}
+                  </a>
+                </h2>
+                ${data ? `<p class="work-data">${escapeHtml(data)}</p>` : ""}
+                ${summary ? `<p class="work-summary">${escapeHtml(summary)}</p>` : ""}
+                ${
+                  keywords.length
+                    ? `<div class="keyword-row">${keywords
+                        .map((keyword) => `<span class="keyword-chip">${escapeHtml(keyword)}</span>`)
+                        .join("")}</div>`
+                    : ""
+                }
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function renderWorkSection(title, items, emptyText, type, id) {
+        const count = items.length;
+        return `
+          <section id="${escapeHtml(id)}" class="work-section ${type ? `is-${escapeHtml(type)}` : ""}" aria-label="${escapeHtml(title)}">
+            <div class="work-section-head">
+              <h2 class="work-section-title">${escapeHtml(title)}</h2>
+              <div class="work-count">${count} 篇</div>
+            </div>
+            ${
+              count
+                ? `<div class="work-list">${renderWorkCards(items)}</div>`
+                : `<div class="empty-section">${escapeHtml(emptyText)}</div>`
+            }
+          </section>
+        `;
+      }
+
+      function renderWorks() {
+        document.getElementById("worksPanel").innerHTML = [
+          renderWorkSection("公众号作品", wechatWorks, "公众号作品待补充。", "wechat", "wechatWorks"),
+          renderWorkSection(
+            "小红书作品（网页版需登录小红书后查看）",
+            xiaohongshuWorks,
+            "小红书作品待补充。",
+            "xiaohongshu",
+            "xiaohongshuWorks"
+          )
+        ].join("");
+      }
+
+      renderWorks();
+    </script>
   </body>
 </html>
