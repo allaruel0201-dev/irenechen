@@ -25,6 +25,17 @@ ASSET_VERSION_PATTERNS = (
   (re.compile(r"(\./data\.js\?v=)[^\"]+"), r"\g<1>{version}"),
   (re.compile(r"(\./app\.js\?v=)[^\"]+"), r"\g<1>{version}"),
 )
+INLINE_ASSET_PATTERNS = {
+  "style": re.compile(
+    r"(?s)(?P<start><!-- INLINE_STYLE_START -->).*?(?P<end><!-- INLINE_STYLE_END -->)"
+  ),
+  "data": re.compile(
+    r"(?s)(?P<start><!-- INLINE_DATA_START -->).*?(?P<end><!-- INLINE_DATA_END -->)"
+  ),
+  "app": re.compile(
+    r"(?s)(?P<start><!-- INLINE_APP_START -->).*?(?P<end><!-- INLINE_APP_END -->)"
+  ),
+}
 
 
 def parse_date_from_filename(filename: str) -> str | None:
@@ -537,6 +548,38 @@ def refresh_dashboard_asset_versions(version: str) -> None:
     index_path.write_text(updated, encoding="utf-8")
 
 
+def inline_dashboard_assets() -> None:
+  """Make the deployed dashboard atomic so CDN subresource failures cannot blank it."""
+  index_path = DASHBOARD_DIR / "index.html"
+  if not index_path.exists():
+    return
+
+  style = (DASHBOARD_DIR / "style.css").read_text(encoding="utf-8")
+  data = (DASHBOARD_DIR / "data.js").read_text(encoding="utf-8")
+  app = (DASHBOARD_DIR / "app.js").read_text(encoding="utf-8")
+
+  # Avoid accidentally terminating an inline block if future report text includes
+  # a literal closing tag.
+  safe_style = re.sub(r"</style", r"<\\/style", style, flags=re.IGNORECASE)
+  safe_data = re.sub(r"</script", r"<\\/script", data, flags=re.IGNORECASE)
+  safe_app = re.sub(r"</script", r"<\\/script", app, flags=re.IGNORECASE)
+
+  replacements = {
+    "style": f'<!-- INLINE_STYLE_START -->\n    <style data-dashboard-bundle="style">\n{safe_style}\n    </style>\n    <!-- INLINE_STYLE_END -->',
+    "data": f'<!-- INLINE_DATA_START -->\n    <script data-dashboard-bundle="data">\n{safe_data}\n    </script>\n    <!-- INLINE_DATA_END -->',
+    "app": f'<!-- INLINE_APP_START -->\n    <script data-dashboard-bundle="app">\n{safe_app}\n    </script>\n    <!-- INLINE_APP_END -->',
+  }
+
+  text = index_path.read_text(encoding="utf-8")
+  updated = text
+  for name, pattern in INLINE_ASSET_PATTERNS.items():
+    if not pattern.search(updated):
+      raise RuntimeError(f"Missing inline asset markers for {name}: {index_path}")
+    updated = pattern.sub(lambda _match, value=replacements[name]: value, updated, count=1)
+
+  index_path.write_text(updated, encoding="utf-8")
+
+
 def sync_root_dashboard_fallback() -> None:
   """Keep the root-level dashboard fallback in sync with the deployed output."""
   if not DASHBOARD_DIR.exists() or not ROOT_DASHBOARD_DIR.exists():
@@ -584,6 +627,7 @@ def build() -> None:
   js += ";\n"
   (DASHBOARD_DIR / "data.js").write_text(js, encoding="utf-8")
   refresh_dashboard_asset_versions(version)
+  inline_dashboard_assets()
   sync_root_dashboard_fallback()
 
 

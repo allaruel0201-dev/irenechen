@@ -164,15 +164,27 @@ def verify_public_dashboard(date: str | None) -> None:
   interval = int(os.environ.get("PUBLIC_DASHBOARD_VERIFY_INTERVAL_SECONDS", "15"))
   deadline = time.monotonic() + timeout
   expected = f'"date": "{date}"'
+  index_url = url.rsplit("/", 1)[0] + "/"
   last_error = ""
 
   while time.monotonic() < deadline:
     try:
-      text = fetch_url_text(with_cache_buster(url))
-      if expected in text or date in text:
-        print(f"Verified public dashboard contains {date}: {url}")
+      data_text = fetch_url_text(with_cache_buster(url))
+      index_text = fetch_url_text(with_cache_buster(index_url))
+      data_is_current = expected in data_text or date in data_text
+      index_is_current = date in index_text and 'data-dashboard-bundle="data"' in index_text
+      if data_is_current and index_is_current:
+        print(
+          f"Verified public dashboard page and data contain {date}: "
+          f"{index_url} and {url}"
+        )
         return
-      last_error = f"latest date not visible yet at {url}"
+      missing = []
+      if not data_is_current:
+        missing.append("data.js")
+      if not index_is_current:
+        missing.append("atomic index.html")
+      last_error = f"latest date not visible yet in {', '.join(missing)}"
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
       last_error = str(exc)
     time.sleep(interval)
@@ -181,6 +193,7 @@ def verify_public_dashboard(date: str | None) -> None:
     "Published commit was pushed, but the public dashboard did not expose the "
     f"latest date ({date}) within {timeout}s.\n"
     f"Checked: {url}\n"
+    f"Checked page: {index_url}\n"
     f"Last error: {last_error}\n"
     "If the production site is not GitHub Pages, set PUBLIC_DASHBOARD_DATA_URL "
     "to the deployed /dashboard/data.js URL."
