@@ -446,16 +446,18 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
     if inline_title:
       tail = inline_title.group(2).strip()
       score_match = ALT_INLINE_SCORE_RE.search(tail)
+      if not score_match:
+        score_match = re.search(r"\*{0,2}(\d{1,2})\s*/\s*30\*{0,2}", tail)
       if score_match:
         title = inline_title.group(1).strip()
-        summary = ALT_INLINE_SCORE_RE.sub("", tail).strip()
+        summary = re.sub(r"(?:；|;)?\s*\*{0,2}\d{1,2}\s*/\s*30\*{0,2}。?\s*$", "", tail).strip()
         summary = summary.lstrip("：:").strip()
         alternatives.append(
           {
             "title": _normalize_dashboard_text(title),
             "summary": _normalize_dashboard_text(summary),
             "score_total": int(score_match.group(1)),
-            "source_url": "",
+            "source_url": _extract_first_url(tail),
           }
         )
         i += 1
