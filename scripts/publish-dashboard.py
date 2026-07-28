@@ -267,6 +267,8 @@ def validate_no_conflict_markers() -> None:
     ROOT_DASHBOARD_DIR / "app.js",
     OUTPUTS_DASHBOARD_DIR / "style.css",
     ROOT_DASHBOARD_DIR / "style.css",
+    OUTPUTS_DASHBOARD_DIR / "sw.js",
+    ROOT_DASHBOARD_DIR / "sw.js",
   ]
   bad: list[str] = []
   for path in paths:
