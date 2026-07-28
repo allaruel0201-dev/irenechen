@@ -184,6 +184,27 @@ def _extract_sublist_after_label(block_lines: list[str], label_index: int, max_i
   return items
 
 
+def _extract_title_list_after_label(
+  block_lines: list[str], label_index: int, max_items: int = 10
+) -> list[str]:
+  items: list[str] = []
+  for i in range(label_index + 1, len(block_lines)):
+    line = block_lines[i]
+    if re.match(r"^\s*-\s+\*\*", line) or re.match(r"^\s*###\s+", line):
+      break
+    match = re.match(r"^\s*(?:[-*]|\d+[.、）)])\s+(.+?)\s*$", line)
+    if not match:
+      if line.strip():
+        break
+      continue
+    text = _clean_line(match.group(1))
+    if text:
+      items.append(text)
+    if len(items) >= max_items:
+      break
+  return items
+
+
 def _extract_sources_after_label(
   block_lines: list[str], label_index: int, max_items: int = 10
 ) -> tuple[list[str], list[str]]:
@@ -248,6 +269,32 @@ def _extract_text_after_label(block_lines: list[str], label_index: int, max_char
   if len(joined) > max_chars:
     return joined[: max_chars - 1] + "…"
   return joined
+
+
+def _extract_inline_label_text(line: str, *labels: str) -> str:
+  """Read `- **Label**: value` and equivalent inline-label formats."""
+  for label in labels:
+    label_re = re.escape(label)
+    suffix_re = r"(?:（[^）]*）|\([^)]*\))?"
+    patterns = (
+      rf"^\s*-\s+\*\*{label_re}{suffix_re}\*\*\s*[：:]\s*(.+?)\s*$",
+      rf"^\s*-\s+{label_re}{suffix_re}\s*[：:]\s*(.+?)\s*$",
+      rf"^\s*\*\*{label_re}{suffix_re}\*\*\s*[：:]\s*(.+?)\s*$",
+    )
+    for pattern in patterns:
+      match = re.match(pattern, line)
+      if match:
+        return _clean_line(match.group(1))
+  return ""
+
+
+def _extract_labeled_text(
+  block_lines: list[str], label_index: int, labels: tuple[str, ...], max_chars: int
+) -> str:
+  inline = _extract_inline_label_text(block_lines[label_index], *labels)
+  if inline:
+    return inline[:max_chars]
+  return _extract_text_after_label(block_lines, label_index, max_chars)
 
 
 def _is_label_line(line: str, *labels: str) -> bool:
@@ -334,18 +381,45 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
     summary = ""
     why = ""
     signal = ""
+    platform = ""
+    content_angle = ""
+    job_directions = ""
+    lead_gen = ""
+    materials = ""
+    verification = ""
+    risk = ""
+    xhs_titles: list[str] = []
+    wechat_titles: list[str] = []
     for i, line in enumerate(block_lines):
       if _is_label_line(line, "来源"):
         if re.match(r"^\s*-\s+", line) or _has_bullet_items_after_label(block_lines, i):
           sources, source_urls = _extract_sources_after_label(block_lines, i, 10)
         else:
           sources, source_urls = _extract_plain_lines_after_label(block_lines, i, 10)
-      if _is_label_line(line, "事件摘要", "这件事"):
-        summary = _extract_text_after_label(block_lines, i, 520)
-      if _is_label_line(line, "为什么对美国留学生重要", "为什么值得写"):
-        why = _extract_text_after_label(block_lines, i, 680)
-      if _is_label_line(line, "职业机会信号", "可写角度", "什么方向展开"):
-        signal = _extract_text_after_label(block_lines, i, 680)
+      if _is_label_line(line, "事件摘要", "这件事") or _extract_inline_label_text(line, "事件摘要", "这件事"):
+        summary = _extract_labeled_text(block_lines, i, ("事件摘要", "这件事"), 900)
+      if _is_label_line(line, "为什么对美国留学生重要", "为什么值得写") or _extract_inline_label_text(line, "为什么对美国留学生重要", "为什么值得写"):
+        why = _extract_labeled_text(block_lines, i, ("为什么对美国留学生重要", "为什么值得写"), 1100)
+      if _is_label_line(line, "职业机会信号", "可写角度", "什么方向展开") or _extract_inline_label_text(line, "职业机会信号", "可写角度", "什么方向展开"):
+        signal = _extract_labeled_text(block_lines, i, ("职业机会信号", "可写角度", "什么方向展开"), 1100)
+      if _is_label_line(line, "适合平台") or _extract_inline_label_text(line, "适合平台"):
+        platform = _extract_labeled_text(block_lines, i, ("适合平台",), 240)
+      if _is_label_line(line, "小红书标题 3 个", "小红书标题") or _extract_inline_label_text(line, "小红书标题 3 个", "小红书标题"):
+        xhs_titles = _extract_title_list_after_label(block_lines, i, 6)
+      if _is_label_line(line, "公众号标题 2 个", "公众号标题") or _extract_inline_label_text(line, "公众号标题 2 个", "公众号标题"):
+        wechat_titles = _extract_title_list_after_label(block_lines, i, 6)
+      if _is_label_line(line, "内容切入角度", "内容角度") or _extract_inline_label_text(line, "内容切入角度", "内容角度"):
+        content_angle = _extract_labeled_text(block_lines, i, ("内容切入角度", "内容角度"), 1200)
+      if _is_label_line(line, "可引导的求职方向", "求职方向") or _extract_inline_label_text(line, "可引导的求职方向", "求职方向"):
+        job_directions = _extract_labeled_text(block_lines, i, ("可引导的求职方向", "求职方向"), 900)
+      if _is_label_line(line, "引流方式") or _extract_inline_label_text(line, "引流方式"):
+        lead_gen = _extract_labeled_text(block_lines, i, ("引流方式",), 900)
+      if _is_label_line(line, "可配套资料") or _extract_inline_label_text(line, "可配套资料"):
+        materials = _extract_labeled_text(block_lines, i, ("可配套资料",), 900)
+      if _is_label_line(line, "需要二次核实的事实点", "需要二次核实") or _extract_inline_label_text(line, "需要二次核实的事实点", "需要二次核实"):
+        verification = _extract_labeled_text(block_lines, i, ("需要二次核实的事实点", "需要二次核实"), 1100)
+      if _is_label_line(line, "风险提示") or _extract_inline_label_text(line, "风险提示"):
+        risk = _extract_labeled_text(block_lines, i, ("风险提示",), 900)
 
     topics.append(
       {
@@ -356,6 +430,15 @@ def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
         "summary": _normalize_dashboard_text(summary),
         "why_it_matters": _normalize_dashboard_text(why),
         "job_signal": _normalize_dashboard_text(signal),
+        "platform": _normalize_dashboard_text(platform),
+        "xhs_titles": [_normalize_dashboard_text(item) for item in xhs_titles],
+        "wechat_titles": [_normalize_dashboard_text(item) for item in wechat_titles],
+        "content_angle": _normalize_dashboard_text(content_angle),
+        "job_directions": _normalize_dashboard_text(job_directions),
+        "lead_gen": _normalize_dashboard_text(lead_gen),
+        "materials": _normalize_dashboard_text(materials),
+        "verification": _normalize_dashboard_text(verification),
+        "risk": _normalize_dashboard_text(risk),
       }
     )
 

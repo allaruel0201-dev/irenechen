@@ -28,6 +28,17 @@ function sectionBlock(label, body) {
   `;
 }
 
+function listBlock(label, items) {
+  const values = (items || []).map((item) => String(item || "").trim()).filter(Boolean);
+  if (!values.length) return "";
+  return `
+    <section class="memo-block">
+      <div class="memo-label">${escapeHtml(label)}</div>
+      <ol class="detail-list">${values.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+    </section>
+  `;
+}
+
 function storyLink(url, text) {
   const href = String(url || "").trim();
   if (!href) return `<span class="topic-title">${escapeHtml(text)}</span>`;
@@ -102,6 +113,7 @@ function renderDay(day) {
       const summary = (t.summary || "").trim();
       const why = (t.why_it_matters || "").trim();
       const signal = (t.job_signal || "").trim();
+      const score = Number.isFinite(t.score_total) ? `${t.score_total}/30` : "";
       return `
         <article class="card topic-card${primaryUrl ? " is-clickable" : ""}"${clickableCardAttrs(primaryUrl)}>
           <div class="topic-head">
@@ -109,10 +121,20 @@ function renderDay(day) {
               <div class="topic-index">${escapeHtml(parsed.index || String(idx + 1).padStart(2, "0"))}</div>
               ${storyLink(primaryUrl, parsed.title)}
             </div>
+            ${score ? `<div class="score-badge">${escapeHtml(score)}</div>` : ""}
           </div>
-          ${sectionBlock("这件事", summary)}
-          ${sectionBlock("为什么值得写", why)}
-          ${sectionBlock("可写角度", signal)}
+          ${sectionBlock("事件摘要", summary)}
+          ${sectionBlock("为什么对美国留学生重要", why)}
+          ${sectionBlock("职业机会信号", signal)}
+          ${sectionBlock("适合平台", t.platform)}
+          ${listBlock("小红书标题", t.xhs_titles)}
+          ${listBlock("公众号标题", t.wechat_titles)}
+          ${sectionBlock("内容切入角度", t.content_angle)}
+          ${sectionBlock("可引导的求职方向", t.job_directions)}
+          ${sectionBlock("引流方式", t.lead_gen)}
+          ${sectionBlock("可配套资料", t.materials)}
+          ${sectionBlock("需要二次核实的事实点", t.verification)}
+          ${sectionBlock("风险提示", t.risk)}
           ${
             sources.length
               ? `<section class="memo-block">
@@ -185,7 +207,22 @@ function applyFilters(data, query) {
 
   const days = (data.days || []).map((d) => {
     const top = (d.top_topics || []).filter((t) => {
-      const text = `${t.title || ""} ${(t.sources || []).join(" ")}`.toLowerCase();
+      const text = [
+        t.title,
+        ...(t.sources || []),
+        t.summary,
+        t.why_it_matters,
+        t.job_signal,
+        t.platform,
+        ...(t.xhs_titles || []),
+        ...(t.wechat_titles || []),
+        t.content_angle,
+        t.job_directions,
+        t.lead_gen,
+        t.materials,
+        t.verification,
+        t.risk,
+      ].join(" ").toLowerCase();
       return !q || text.includes(q);
     });
 

@@ -439,6 +439,30 @@ a {
   line-height: 1.74;
 }
 
+.detail-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.detail-list li + li {
+  margin-top: 4px;
+}
+
+.score-badge {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
 .alt-card {
   padding: 24px 26px;
 }
