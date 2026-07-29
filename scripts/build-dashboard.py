@@ -157,6 +157,24 @@ def _normalize_dashboard_text(text: str) -> str:
   return out
 
 
+def _strip_alternative_source_prefix(text: str) -> str:
+  """Keep alternative-card copy compact while retaining source_url separately."""
+  out = text.strip()
+  if not out:
+    return out
+
+  # Common compact-list format:
+  # — Reuters / Publisher：https://example.com/... — editorial angle
+  out = re.sub(
+    r"^\s*[—-]\s*[^：:\n]{1,120}[：:]\s*https?://\S+\s*[—-]\s*",
+    "",
+    out,
+  )
+  # Defensive fallback for a bare leading URL.
+  out = re.sub(r"^\s*https?://\S+\s*[—-]?\s*", "", out)
+  return out.strip()
+
+
 def _extract_first_url(text: str) -> str:
   markdown_link = re.search(r"\((https?://[^)\s]+)\)", text)
   if markdown_link:
@@ -485,7 +503,7 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
       alternatives.append(
         {
           "title": _normalize_dashboard_text(title),
-          "summary": _normalize_dashboard_text(summary),
+          "summary": _normalize_dashboard_text(_strip_alternative_source_prefix(summary)),
           "score_total": score_num,
           "source_url": _extract_first_url(source),
         }
@@ -530,7 +548,7 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
       alternatives.append(
         {
           "title": _normalize_dashboard_text(title),
-          "summary": _normalize_dashboard_text(summary),
+          "summary": _normalize_dashboard_text(_strip_alternative_source_prefix(summary)),
           "score_total": score_total,
           "source_url": source_url,
         }
@@ -550,7 +568,7 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
         alternatives.append(
           {
             "title": _normalize_dashboard_text(title),
-            "summary": _normalize_dashboard_text(summary),
+            "summary": _normalize_dashboard_text(_strip_alternative_source_prefix(summary)),
             "score_total": int(score_match.group(1)),
             "source_url": _extract_first_url(tail),
           }
@@ -577,7 +595,7 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
       alternatives.append(
         {
           "title": _normalize_dashboard_text(title.strip()),
-          "summary": _normalize_dashboard_text(summary.strip()),
+          "summary": _normalize_dashboard_text(_strip_alternative_source_prefix(summary)),
           "score_total": int(score_match.group(1)),
           "source_url": source_url,
         }
@@ -623,7 +641,7 @@ def parse_alternatives(markdown: str) -> list[dict[str, Any]]:
     alternatives.append(
       {
         "title": _normalize_dashboard_text(title.strip()),
-        "summary": _normalize_dashboard_text(summary.strip()),
+        "summary": _normalize_dashboard_text(_strip_alternative_source_prefix(summary)),
         "score_total": score_total,
         "source_url": source_url,
       }

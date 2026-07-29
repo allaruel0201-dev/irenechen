@@ -346,6 +346,7 @@ a {
 }
 
 .card {
+  min-width: 0;
   padding: 30px 32px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -371,6 +372,7 @@ a {
 
 .topic-head,
 .alt-head {
+  min-width: 0;
   display: flex;
   align-items: start;
   justify-content: space-between;
@@ -399,12 +401,15 @@ a {
 }
 
 .topic-link {
+  min-width: 0;
   color: var(--text-primary);
   font-size: clamp(1.25rem, 1.75vw, 1.48rem);
   line-height: 1.32;
   font-weight: 600;
   letter-spacing: -0.02em;
   text-decoration: none;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   text-underline-offset: 5px;
   transition: color 160ms ease, text-decoration-color 160ms ease;
 }
@@ -437,6 +442,8 @@ a {
   color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.74;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .detail-list {
@@ -464,12 +471,16 @@ a {
 }
 
 .alt-card {
+  min-width: 0;
+  overflow: hidden;
   padding: 24px 26px;
 }
 
 .alt-summary {
   margin-top: 18px;
   font-size: 14px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .source-list {
