@@ -316,6 +316,7 @@ def main() -> int:
       "add",
       "outputs/daily",
       "outputs/dashboard",
+      "outputs/portfolio/index.html",
       "dashboard",
       "scripts/build-dashboard.py",
       "scripts/build-dashboard.mjs",

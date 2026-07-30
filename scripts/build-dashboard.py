@@ -45,6 +45,23 @@ SERVICE_WORKER_REGISTRATION = """    <!-- OFFLINE_FALLBACK_START -->
             .catch(() => {});
         });
       }
+
+      window.addEventListener("load", () => {
+        const currentDate = window.TOPIC_RADAR_DATA?.days?.[0]?.date || "";
+        fetch(`./publish-meta.json?ts=${Date.now()}`, { cache: "no-store" })
+          .then((response) => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
+          })
+          .then((meta) => {
+            const latestDate = String(meta.latest_daily_date || "");
+            if (!latestDate || latestDate === currentDate) return;
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set("v", latestDate);
+            window.location.replace(nextUrl.toString());
+          })
+          .catch(() => {});
+      });
     </script>
     <!-- OFFLINE_FALLBACK_END -->
 """
@@ -358,7 +375,11 @@ def _extract_plain_lines_after_label(
 def parse_top_topics(markdown: str) -> list[dict[str, Any]]:
   section = take_section(
     markdown,
-    re.compile(r"^##\s*1[\)）]\s*今日最值得写的(?:\s*3\s*个)?选题\s*$", re.M),
+    re.compile(
+      r"^##\s*1[\)）]\s*今日最值得写的(?:\s*\d+\s*个)?选题"
+      r"(?:\s*[（(]\s*\d+\s*个\s*[）)])?\s*$",
+      re.M,
+    ),
     re.compile(r"^##\s*2[\)）]\s*", re.M),
   )
   if not section:
@@ -702,7 +723,12 @@ def ensure_offline_fallback() -> None:
     return
 
   text = index_path.read_text(encoding="utf-8")
-  if "<!-- OFFLINE_FALLBACK_START -->" in text:
+  fallback_pattern = re.compile(
+    r"(?s)\s*<!-- OFFLINE_FALLBACK_START -->.*?<!-- OFFLINE_FALLBACK_END -->"
+  )
+  if fallback_pattern.search(text):
+    updated = fallback_pattern.sub("\n" + SERVICE_WORKER_REGISTRATION.rstrip(), text, count=1)
+    index_path.write_text(updated, encoding="utf-8")
     return
   if "</body>" not in text:
     raise RuntimeError(f"Missing closing body tag: {index_path}")
