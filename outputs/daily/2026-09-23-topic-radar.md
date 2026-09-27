@@ -2,35 +2,7 @@
 
 ## 1) 今日最值得写的 3 个选题
 
-### 1. H-1B 10 万美元入境限制延长至 2027 年，但收费仍受法院命令阻断
-
-- **来源**
-  - Federal Register，2026-09-23：https://www.federalregister.gov/documents/2026/09/23/2026-19554/restriction-on-entry-of-certain-nonimmigrant-workers
-  - White House：https://www.whitehouse.gov/presidential-actions/2026/09/restriction-on-entry-of-certain-nonimmigrant-workers-faad/
-  - Yale OISS，2026-09-23：https://oiss.yale.edu/news/presidential-proclamation-extends-h-1b-100000-fee-policy-fee-remains-blocked-by-court-order
-- **事件摘要**：9 月 23 日 Federal Register 正式刊登总统公告，把针对部分境外 H-1B 入境及相关 petition 的 10 万美元付款限制延长至 2027 年 9 月 21 日，并披露上一周期有 700 多份 petition 支付该款。公告签署于 9 月 18 日；Yale 等校国际学生办公室同日提醒，马萨诸塞联邦法院此前撤销该收费政策，因此 USCIS 当前仍被法院命令禁止收取该费用，延长公告并不等于收费已经恢复执行。
-- **选题价值**：这是“政策文本延长”与“现实执行被法院阻断”同时存在的典型身份政策冲突。运营价值不在制造 10 万美元焦虑，而在把公告、法院命令、适用人群和不同申请路径拆清。
-- **为什么对美国留学生重要**：F-1 / OPT 学生最容易把标题误读成所有 H-1B 申请都要立即交 10 万美元。真正需要核验的是境内 change of status、境外 consular processing、transfer、extension、travel 与雇主承担成本的差异，以及诉讼后续。
-- **关键信号 / 职业机会信号**：可核实事实是公告延长一年、针对特定境外入境场景、700 多份付款数据以及现有法院阻断。合理推断是雇主在跨境派遣、sponsorship 预算和候选人地点上会继续提高合规审查；不能写成所有 H-1B 雇主已统一停止 sponsor。
-- **与最近选题的新增信息**：9 月 22 日日报讨论的是公告与雇主核验框架；本条新增的是 9 月 23 日 Federal Register 正式刊登、700 多份付款数据及高校对法院禁令的同日确认，因此保留但对连续身份叙事减 2 分。
-- **适合平台**：两者都适合。
-- **小红书标题 3 个**
-  1. H-1B 10万美元限制延长了，但现在真的要交吗
-  2. 公告生效和法院禁令同时存在：H-1B先看这张表
-  3. 别被10万美元标题吓到：哪些H-1B场景才需要核验
-- **公众号标题 2 个**
-  1. H-1B 10 万美元限制延长一年：公告、法院禁令与实际适用边界
-  2. 从 Federal Register 到 USCIS 执行：如何判断 H-1B 费用政策当前状态
-- **内容切入角度**：用“文件已刊登—法院仍阻断—执行待机构更新”三层时间轴，按 change of status、consular processing、transfer、extension 和 travel 做场景矩阵。
-- **可延展方向**：雇主 sponsorship 预算、petition 路径、national-interest exception、诉讼节点、学校国际学生办公室指引。
-- **可引导的求职方向**：不强行推岗位；可引导学生建立 offer 身份核验表，并在签约前向 HR / immigration counsel 确认 petition 路径和费用承担。
-- **引流方式**：关键词 `H1B费用核验`，领取政策时间轴、场景矩阵和 HR 提问清单。
-- **可配套资料**：Federal Register 中文索引、法院节点时间线、五类申请场景对照、雇主核验问题清单。
-- **需要二次核实的事实点**：USCIS、DHS、DOS 最新执行口径；法院命令和上诉状态；现有 petition、change of status、transfer、renewal、consular processing 与旅行的具体适用；national-interest exception 流程。
-- **风险提示**：公告延长不等于法院禁令已解除；10 万美元限制不是对所有 H-1B 持有人统一征费。本文不构成法律意见。
-- **评分**：时效性 5；账号选题匹配度 5；事件信号强度 5；小红书适配度 5；公众号适配度 5；引流潜力 5；内容差异化 4；连续身份叙事减 2 分，**总分 28/30**。
-
-### 2. Hudson River Trading 英国人均薪酬 82 万英镑，设备投入折合人均 240 万英镑
+### 1. Hudson River Trading 英国人均薪酬 82 万英镑，设备投入折合人均 240 万英镑
 
 - **来源**
   - eFinancialCareers，2026-09-23：https://www.efinancialcareers.se/news/hudson-river-trading-pay-uk-high-frequency-trading
@@ -57,7 +29,7 @@
 - **风险提示**：人均值会被高薪少数人和实体间成本分摊拉动，不代表个体 offer；PP&E 不能未经证实全部写成 GPU 或 AI 投入；英国数据不能平移为美国 New Grad 待遇。
 - **评分**：时效性 5；账号选题匹配度 5；事件信号强度 5；小红书适配度 5；公众号适配度 5；引流潜力 5；内容差异化 4；相邻量化薪酬叙事减 2 分，**总分 27/30**。
 
-### 3. Hellman & Friedman 探索以最高 100 亿美元出售保险软件公司 Applied Systems
+### 2. Hellman & Friedman 探索以最高 100 亿美元出售保险软件公司 Applied Systems
 
 - **来源**
   - Reuters，2026-09-23（可访问转载）：https://www.streetinsider.com/Reuters/Exclusive-Hellman%2B%26%2BFriedman%2Bexplores%2Bsale%2Bof%2BApplied%2BSystems%2Bat%2Bup%2Bto%2B%2410%2Bbillion%2C%2Bsources%2Bsay/27096816.html
@@ -83,7 +55,33 @@
 - **风险提示**：信息来自匿名知情人士，交易可能不发生；“最高 100 亿美元”不是成交价，不得写成已经出售或由此确定推导投行扩招。
 - **评分**：时效性 5；账号选题匹配度 5；事件信号强度 4；小红书适配度 4；公众号适配度 5；引流潜力 4；内容差异化 5，**总分 27/30**。
 
-## 2) 备选选题池（10 个）
+### 3. RIT 秋季 Career Fair 集中 220 多家雇主招聘 co-op、实习与全职
+
+- **来源**
+  - Rochester Institute of Technology 官方活动页，2026-09-23：https://www.rit.edu/events/rit-university-wide-career-fair
+- **事件摘要**：RIT 于 9 月 23 日举行 University-Wide Career Fair，官方称有 220 多家从小型企业到 Fortune 500 的雇主，面向所有专业学生与校友，招聘 co-op、internship 和 full-time。雇主完整名单需登录 Career Connect 查看，公开页没有逐家列出岗位、deadline 或 sponsorship。
+- **选题价值**：在连续多日宏观政策和公司新闻之外，这是一条具体校园资源信号：单场校招把实习、co-op 与全职三类管道集中到同一天，也可观察实体 career fair 是否仍是雇主构建 early-career pipeline 的核心入口。
+- **为什么对美国留学生重要**：RIT 的 co-op 体系和技术型雇主密度对本科、硕士和国际学生具有直接参考价值，尤其适合做“如何在现场核验 sponsorship、岗位资格与面试节奏”的实操内容；但活动仅限 RIT，不应包装为所有学生都能参加。
+- **关键信号 / 职业机会信号**：可核实事实是日期、220+ 雇主、参与范围和岗位类型。合理推断是秋季校园招聘仍有大量线下面对面筛选场景；具体金融、量化、AI、科技雇主数量和真实 openings 必须查看当天 Career Connect 名单。
+- **与最近选题的新增信息**：最近 7 个目标日未主推美国大学 career fair / employer pipeline；本条补足大学就业资源方向，不与金融薪酬、H-1B 或 AI 资本叙事重复。
+- **适合平台**：小红书优先，公众号适合做校园招聘核验方法。
+- **小红书标题 3 个**
+  1. 一场校招220+雇主：RIT秋季Career Fair怎么逛才有效
+  2. Co-op、实习、全职同场：线下Career Fair先问这6件事
+  3. 别只收名片：面对220家雇主怎样筛sponsorship
+- **公众号标题 2 个**
+  1. RIT 220+ 雇主 Career Fair：如何从校园名单读出真实招聘管道
+  2. 线下校招仍然重要：从 RIT 秋招拆解 co-op、实习与全职筛选逻辑
+- **内容切入角度**：把雇主分成目标行业、岗位类型、身份可行性与后续动作四个象限；提供现场提问与 24 小时 follow-up 模板，而不是简单搬运名单。
+- **可延展方向**：co-op pipeline、校园招聘、career center 资源、Handshake / Career Connect、国际学生 employer screening。
+- **可引导的求职方向**：Software、Engineering、Data、AI、Business、Finance 与 Operations；具体公司和岗位以当天系统为准。
+- **引流方式**：关键词 `校招清单`，领取 Career Fair 雇主筛选表、现场提问卡和 follow-up 邮件模板。
+- **可配套资料**：四象限筛选表、sponsorship 提问模板、30 秒自我介绍、会后跟进 tracker。
+- **需要二次核实的事实点**：220+ 雇主完整名单、每家实际岗位、CPT / OPT / STEM OPT / sponsorship 政策、年级限制、deadline、薪资和面试安排。
+- **风险提示**：参会不等于有岗位或面试；公开活动页不证明任何雇主 sponsor。活动为 RIT Only，不要向非本校学生承诺入场。
+- **评分**：时效性 5；账号选题匹配度 4；事件信号强度 4；小红书适配度 5；公众号适配度 4；引流潜力 5；内容差异化 5，**总分 27/30**。
+
+## 2) 备选选题池（9 个）
 
 1. **Citadel 伦敦增配投资人员，三家实体平均薪酬约 120 万美元** — eFinancialCareers，2026-09-23：https://www.efinancialcareers.co.uk/news/citadel-london-pay — 投资人员增量、实体分工和薪酬具体，但与当天 HRT 及 9 月 16 日 Jane Street 薪酬叙事重复，冷却后 **23/30**。
 2. **Winton 英国主实体连续第三年增员，2025 年人均薪酬升 11% 至 34.4 万英镑** — eFinancialCareers，2026-09-23：https://www.efinancialcareers.com/news/winton — 能写老牌 quant fund 从低谷恢复，但营收与 headcount 仍远低于历史高点，且主要数据来自年度账目，**22/30**。
@@ -92,11 +90,10 @@
 5. **Scotiabank 从 Morgan Stanley 引入纽约新兴市场国际销售负责人** — eFinancialCareers，2026-09-23：https://www.efinancialcareers-canada.com/news/toussaint-davis — EM sales senior hire 明确，但缺少团队、产品和 junior pipeline 增量，**19/30**。
 6. **Zymeworks 以约 9.29 亿美元收购 Theravance Biopharma** — Lazard transaction log，2026-09-23：https://www.lazard.com/financial-advisory/transactions — 可做 healthcare M&A 案例，但需补双方公告、溢价、融资与顾问分工后再开发，**19/30**。
 7. **McKinsey 称同一 agent 任务单次成本可相差 30 倍，企业 AI 管理转向 task economics** — Fortune，2026-09-23：https://fortune.com/2026/09/23/mckinsey-cheaper-ai-models-bigger-ai-bills-cfo/ — FinOps、AI systems 与 workflow design 角度具体，但属常规 AI adoption 且近期 AI 主推过密，降权后 **18/30**。
-8. **RIT 秋季 Career Fair 集中 220 多家雇主招聘 co-op、实习与全职** — RIT，2026-09-23：https://www.rit.edu/events/rit-university-wide-career-fair — 校园招聘资源具体，但完整雇主、岗位和 sponsorship 仅能在 Career Connect 核验，**24/30**。
-9. **Yale 发布 H-1B 公告与法院禁令的校内解释** — Yale OISS，2026-09-23：https://oiss.yale.edu/news/presidential-proclamation-extends-h-1b-100000-fee-policy-fee-remains-blocked-by-court-order — 已并入主推作为执行状态核验，不另起同质内容，**17/30**。
-10. **UC Riverside 举行面向校内岗位、work-study 与本地兼职的 Student Employment Job Fair** — UCR，2026-09-23：https://events.ucr.edu/event/2026-ucr-student-employment-job-fair-4144 — 对在校现金流和校内经验有实用性，但公开页没有雇主数量与岗位清单，**17/30**。
+8. **Yale 发布 H-1B 公告与法院禁令的校内解释** — Yale OISS，2026-09-23：https://oiss.yale.edu/news/presidential-proclamation-extends-h-1b-100000-fee-policy-fee-remains-blocked-by-court-order — 同日核验价值存在，但核心政策已于 9 月 22 日主推，按 5 日冷却不重复，**17/30**。
+9. **UC Riverside 举行面向校内岗位、work-study 与本地兼职的 Student Employment Job Fair** — UCR，2026-09-23：https://events.ucr.edu/event/2026-ucr-student-employment-job-fair-4144 — 对在校现金流和校内经验有实用性，但公开页没有雇主数量与岗位清单，**17/30**。
 
-> **金融高薪 / 身份 / 量化优先策略执行结果**：Federal Register 当日正式刊登 H-1B 延长公告，身份政策优先级已满足；HRT、Citadel、Winton、PIMCO 和 Scotiabank 提供足量金融高薪、量化与人才流动线索。
+> **金融高薪 / 身份 / 量化优先策略执行结果**：HRT、Citadel、Winton、PIMCO 和 Scotiabank 提供足量金融高薪、量化与人才流动线索；身份政策核心事实已于 9 月 22 日主推，9 月 23 日仅有正式刊登与校方解释，不重复升格。
 
 ## 3) 不建议写的热点
 
@@ -129,15 +126,15 @@
 
 ## 6) 今日运营优先级
 
-1. **先写 H-1B 公告与法院禁令的冲突状态**：用场景矩阵消除“所有人都要交 10 万美元”的误读。
-2. **第二条写 HRT 的资本密度**：不要只做薪资刺激，用人均设备投入解释 HFT 真正的技术壁垒。
-3. **第三条写 Applied Systems 潜在出售**：用一宗大型 PE 退出流程训练 software M&A 案例判断。
+1. **先写 HRT 的资本密度**：不要只做薪资刺激，用人均设备投入解释 HFT 真正的技术壁垒。
+2. **第二条写 Applied Systems 潜在出售**：用一宗大型 PE 退出流程训练 software M&A 案例判断。
+3. **第三条写 RIT Career Fair**：把 220+ 雇主转成筛选、提问与跟进方法，所有岗位和身份信息标二次核实。
 
 ## 7) 题材审计与来源扫描说明
 
-- 主推覆盖身份政策、量化 / HFT 与基础设施、PE / software M&A；财报类 0 条，AI / 科技类 0 条，3 条覆盖 3 个方向。
+- 主推覆盖量化 / HFT 与基础设施、PE / software M&A、大学就业资源；财报类 0 条，AI / 科技类 0 条，3 条覆盖 3 个方向。
 - 已执行最近 5 个目标日叙事冷却与 7 日公司冷却。HRT 因接近 9 月 16 日 Jane Street 薪酬和 9 月 22 日 Goldman 电子做市叙事减 2 分；Citadel、Winton 降为备选，避免同类内容包揽主推。
 - 已并行扫描金融高薪、投行、quant / HFT / hedge fund、身份政策、招聘与人才流动、office / campus / manufacturing、M&A / IPO / 融资、AI / 科技、大学就业资源与社区讨论。
 - Reuters、Bloomberg、WSJ、Fortune、Forbes、Business Insider、eFinancialCareers 与 WSO 均已扫。Bloomberg 主站受 robots.txt 限制；WSJ、Forbes、Business Insider 与 WSO 未检出强于主推且可稳定核验的 9 月 23 日新增。Reuters 的 Applied Systems 独家由可访问转载核验。
-- 已补扫 Federal Register、USCIS、DHS、DOL、SEVP、高校页面、LinkedIn、Reddit、Blind 与 HN。Federal Register 当日刊登 H-1B 延长公告；未见 USCIS / DOS 同日执行 FAQ 改变法院阻断状态。
+- 已补扫 Federal Register、USCIS、DHS、DOL、SEVP、高校页面、LinkedIn、Reddit、Blind 与 HN。Federal Register 当日正式刊登 9 月 22 日已主推的 H-1B 公告；未见 USCIS / DOS 同日执行 FAQ 改变法院阻断状态，因此不重复主推。
 - Reddit 当日较高互动的 `Would you major in CS again?` 讨论约 27 票，反映 CS 就业焦虑，但仍不足以作为就业事实；r/FinancialCareers 多数同日帖子为个位数互动。LinkedIn、WSO、Blind 与 HN 未确认合格的同日高互动职业主线，社区内容未作为事实依据。
