@@ -32,7 +32,6 @@
 
 - **来源**
   - Bloomberg 摘要 / Dealbreaker，2026-09-25：https://dealbreaker.com/2026/09/opening-bell-9-25-2026
-  - Bloomberg 报道作者公开摘要（LinkedIn），2026-09-25：https://www.linkedin.com/posts/activity-7508017486808260608
 - **事件摘要**：Bloomberg 报道称，管理约 970 亿美元、拥有 360 多个交易团队的 Millennium 原计划募集创纪录的 200 亿美元，新一轮需求超过 300 亿美元，预计接纳约 220 亿美元。公司同时探索更多向外部 managers 配资并替换外部资本的安排。
 - **选题价值**：这是多策略平台资本集中度与投资者需求的强信号。资金不是直接等于招聘，但对 pod capacity、risk allocation、external manager network 和 talent war 的解释力高于普通月度业绩。
 - **为什么对美国留学生重要**：对 hedge fund、prime brokerage、fundraising、risk、operations 和 manager research 感兴趣的学生，这是理解 multi-manager 模型如何把资本、人才和风险系统组合起来的案例；不能据此直接宣布 headcount 增长。
@@ -88,7 +87,7 @@
 3. **NCSU Poole 商学院 Career Fair 集中 100+ 公司，覆盖银行、金融、IT 与专业服务** — NC State，2026-09-25：https://poole.ncsu.edu/undergraduate/event/career-and-internship-fair-6/ — 金融求职适配强，但岗位和身份信息不公开，**21/30**。
 4. **全球股票基金单周净流入 441 亿美元，为 7 月初以来最高** — Reuters，2026-09-25：https://www.marketscreener.com/news/global-equity-funds-snap-two-week-outflow-as-ai-optimism-returns-ce785adfdc8fff20 — 资金流拐点具体，但 AI optimism 叙事近期过密，**20/30**。
 5. **美债收益率急升，30 年期触及 2004 年以来高位附近** — Reuters，2026-09-25：https://www.fidelity.com/news/article/international/202609250809RTRSNEWSCOMBINED_L6N45H0MT_1 — 可做 rates / macro 面试素材，但主要为市场日报，**19/30**。
-6. **Fortune 评论称 entry-level jobs 本质是 apprenticeship，AI 正削弱企业为训练新人付费的意愿** — Fortune，2026-09-25：https://fortune.com/2026/09/25/entry-level-jobs-ai-apprenticeship-subsidy/ — 观点鲜明但属于评论，需与 BLS / employer data 结合，**18/30**。
+6. **Fortune 评论称 entry-level jobs 本质是 apprenticeship，AI 正削弱企业为训练新人付费的意愿** — Fortune，2026-09-25：https://fortune.com/2026/09/25/ai-junior-jobs-apprenticeship-talent-pipeline/ — 观点鲜明但属于评论，需与 BLS / employer data 结合，**18/30**。
 7. **Reddit 对 Oracle 裁员与 AI spending 重分配的讨论约 69 票** — Reddit，2026-09-25：https://www.reddit.com/r/artificial/comments/1wpnhzz/oracle_cut_21000_jobs_and_paid_18b_in_severance/ — 可作读者痛点验证，基础事实来自旧披露，不作为当天新闻，**16/30**。
 
 > **金融高薪 / 身份优先策略执行结果**：Citadel、Millennium、PIMCO 与 BMO 构成充足金融高薪、量化、宏观交易和结构化信贷线索。USCIS、DHS、DOL 与 Federal Register 未见 9 月 25 日新的 F-1、CPT、OPT / STEM OPT、H-1B 或 PERM 实质更新，不重复前日联名信。

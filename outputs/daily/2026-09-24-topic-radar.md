@@ -86,9 +86,9 @@
 1. **Citadel 第三次请回顶级投资人才 recruiter Matt Giannini，明确服务 equities 扩张** — Business Insider，2026-09-24：https://www.businessinsider.es/mercados/ultima-arma-citadel-guerra-por-talento-los-fondos-inversion-es-un-gran-fichaje-bumeran_7040662_0.html — 人才战争信号强，但次日有更具体 quant headcount 计划，留作人才流动备选，**24/30**。
 2. **University of Iowa All Majors Career Fair 集中 100+ 雇主与 1,000+ 学生** — University of Iowa，2026-09-24：https://clas.uiowa.edu/event/37158/0 — 校园 pipeline 具体，但完整雇主和 sponsorship 信息仍需校内系统核验，**22/30**。
 3. **University of Nebraska 秋季校招第 4 日集中 business、finance、analytics 与 supply chain** — University of Nebraska，2026-09-24：https://careers.unl.edu/upcoming-fairs-events/university-career-internship-fair-employer-details/ — 题材有用但缺公开 employer count，**20/30**。
-4. **McDonald’s 公布 85 亿美元、覆盖 4.6 万家门店的生产力改造** — Fortune，2026-09-24：https://fortune.com/2026/09/24/mcdonalds-productivity-investment-cfo/ — 运营、automation 与 corporate finance 可写，但具体人才结构不足，**20/30**。
+4. **McDonald’s 公布 85 亿美元、覆盖 4.6 万家门店的生产力改造** — Fortune，2026-09-24：https://www.fortune.com/2026/09/24/mcdonalds-bets-8-5-billion-productivity-makeover-across-more-than-46000-restaurants/ — 运营、automation 与 corporate finance 可写，但具体人才结构不足，**20/30**。
 5. **PIMCO 聘请前 Goldman / Balyasny 商品研究高管 Damien Courvalin 任 PM** — Hedgeweek，2026-09-24：https://hedgeweek.com/news/pimco-appoints-ex-goldman-sachs-and-balyasny-exec-as-pm — commodities 人才迁移明确，但单人任命不足以证明团队扩张，**20/30**。
-6. **Public 与 Kalshi 合作把 AI trading agents 引入 prediction markets** — Fortune，2026-09-24：https://fortune.com/2026/09/24/public-ai-trading-agents-kalshi-prediction-markets/ — 产品结合新颖，但近期 tokenization / derivatives 叙事过密且监管边界待核验，降权后 **18/30**。
+6. **Public 与 Kalshi 合作把 AI trading agents 引入 prediction markets** — Fortune / Yahoo Finance，2026-09-24：https://finance.yahoo.com/technology/ai/articles/public-brings-ai-trading-agents-113000637.html — 产品结合新颖，但近期 tokenization / derivatives 叙事过密且监管边界待核验，降权后 **18/30**。
 7. **AI 辅助海投可能把招聘瓶颈推向 screening 与 evaluation** — arXiv，2026-09-24：https://arxiv.org/abs/2609.30058 — 同日论文与 early-career 痛点高度相关，但需阅读全文和方法审查后再开发，**18/30**。
 
 > **金融高薪 / 身份优先策略执行结果**：H-1B 医疗联名信满足身份政策优先；Citadel、PIMCO 与 private-markets workflow 提供金融高薪和人才流动线索。当日没有新的 USCIS 最终规则，未把 comment deadline 写成政策生效。

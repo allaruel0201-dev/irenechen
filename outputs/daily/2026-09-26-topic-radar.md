@@ -6,8 +6,8 @@
 
 ## 2) 备选选题池（4 个）
 
-1. **Fortune 汇总 Walmart 无学位技能路径与六位数晋升案例** — Fortune，2026-09-26：https://fortune.com/2026/09/26/walmart-jobs-six-figure-salary-no-college-degree/ — 对技能型职业路径有传播性，但偏零售 workforce，且与核心金融、量化、AI、科技及身份方向距离较远，**17/30**。
-2. **Microsoft Copilot app 增加 code generation 等能力** — Business Recorder / Reuters 摘要，2026-09-26：https://www.brecorder.com/news/40384716 — 属常规产品功能更新，缺少重大技术、组织或招聘变化，按 AI 规则不主推，**15/30**。
+1. **Fortune 汇总 Walmart 无学位技能路径与六位数晋升案例** — Fortune，2026-09-26：https://fortune.com/2026/09/26/walmart-job-training-truck-driver-technician-optician-gen-z/ — 对技能型职业路径有传播性，但偏零售 workforce，且与核心金融、量化、AI、科技及身份方向距离较远，**17/30**。
+2. **Microsoft Copilot app 增加 code generation 等能力** — Reuters / Investing.com，原始发布日期 2026-09-25：https://www.investing.com/news/stock-market-news/microsoft-revamps-copilot-with-code-generation-agentic-ai-tools-4917410 — 属前一日常规产品功能更新，缺少重大技术、组织或招聘变化，不应跨日主推，**13/30**。
 3. **PIMCO 的 Centre Square CMBS 损失在亚洲时区继续传播** — TBS / Bloomberg，2026-09-26：https://newsdig.tbs.co.jp/articles/withbloomberg/2968747?display=1 — 原始 Bloomberg 事件为 9 月 25 日，不能换时区后重复作为 26 日主线，**14/30**。
 4. **Reddit 对 AI 造成净岗位减少的讨论约 389 票** — Reddit，讨论发布于 2026-09-25、延续至 09-26：https://www.reddit.com/r/Infographics/comments/1wpub1b/most_people_believe_ai_will_lead_to_more_job/ — 有情绪热度，但不是 26 日新事实，也缺可靠原始数据口径，**13/30**。
 
