@@ -95,7 +95,7 @@
 6. **Anthropic 把 Harvard 天体物理学家 Chris Stubbs 加入控制董事会的 trust** — Fortune，2026-10-21：https://fortune.com/section/Investing/page/16/ — 在 IPO 压力上升时调整独特治理结构，属于 AI governance 组织信号；但当天 Google Cloud 已占唯一科技主推，且需核验 trust 权限与正式任命文件，**21/30**。
 7. **Nvidia 在欧洲扩大 physical-AI 合作，Agile Robots 计划明年生产 1,000 至 2,000 台小型人形机器人** — Reuters / Yahoo Finance Canada，2026-10-21：https://ca.finance.yahoo.com/news/nvidias-huang-hails-europes-ai-161545672.html — 同时发布可把 data-center 模块部署从六个月缩到两周的设计；但属于合作与产品更新，未达到重大技术突破或美国职业落地门槛，**20/30**。
 8. **Red Cat 与 Steyr Motors 签署合并协议，并承诺两年内不因运营原因裁减技术员工** — Tiger Brokers 对公开披露的聚合页，2026-10-21：https://www.itiger.com/news/2677676607 — workforce protection 条款罕见，且保留 Steyr 制造与研发三年；但报价 10 月 19 日已宣布、页面含 AI 生成摘要且欧洲 defense 叙事处于冷却，**18/30**。
-9. **HBCU CONNECT 举办全天虚拟 career fair，Esri 同日列入该活动及 UC Riverside STEM fair 招聘行程** — HBCU CONNECT，2026-10-21：https://careerfair.hbcuconnect.com/en/；Esri，2026-10-21：https://www.esri.com/en-us/about/careers/recruiting-events — 能证明雇主在 virtual、GIS 与 STEM 校园渠道保持触达，但参会公司完整名单、实际岗位、国际学生资格和互动数据不足，且校园 pipeline 叙事仍在冷却，**17/30**。
+9. **HBCU CONNECT 举办全天虚拟 conference 与 career fair，面向学生、校友和求职者开放** — HBCU CONNECT，2026-10-21：https://careerfair.hbcuconnect.com/en/ — 活动强调直接接触 recruiters、graduate-school options 和职业发展 sessions，能证明 virtual 校园渠道保持活跃；但参会公司完整名单、实际岗位、国际学生资格和互动数据不足，且校园 pipeline 叙事仍在冷却，**17/30**。
 
 > **金融高薪 / 身份优先策略执行结果**：Barclays 的 prime-financing 资本重配和 Pantheon 的 secondaries 超募分别提供 sell-side market structure 与 private-markets capital-flow 两条金融高薪主线。USCIS、DHS、DOL、Federal Register、SEVP 与大学国际学生办公室未检到 10 月 21 日新的 F-1、CPT、OPT / STEM OPT、H-1B 或 PERM 实质规则；不重复 10 月 7 日 OPT fee proposal、10 月 8 日 PERM 执法和 10 月 14 日 EAD renewal 规则。
 
