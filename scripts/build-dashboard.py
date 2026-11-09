@@ -38,30 +38,98 @@ INLINE_ASSET_PATTERNS = {
 }
 SERVICE_WORKER_REGISTRATION = """    <!-- OFFLINE_FALLBACK_START -->
     <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("./sw.js", { updateViaCache: "none" })
-            .catch(() => {});
-        });
-      }
+      (function () {
+        var RELOAD_KEY = "topic-radar-reload";
+        var FRESH_KEY = "topic-radar-fresh";
 
-      window.addEventListener("load", () => {
-        const currentDate = window.TOPIC_RADAR_DATA?.days?.[0]?.date || "";
-        fetch(`./publish-meta.json?ts=${Date.now()}`, { cache: "no-store" })
-          .then((response) => {
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return response.json();
-          })
-          .then((meta) => {
-            const latestDate = String(meta.latest_daily_date || "");
-            if (!latestDate || latestDate === currentDate) return;
-            const nextUrl = new URL(window.location.href);
-            nextUrl.searchParams.set("v", latestDate);
-            window.location.replace(nextUrl.toString());
-          })
-          .catch(() => {});
-      });
+        function store(key, value) {
+          try {
+            sessionStorage.setItem(key, value);
+          } catch (error) {}
+        }
+
+        function read(key) {
+          try {
+            return sessionStorage.getItem(key);
+          } catch (error) {
+            return null;
+          }
+        }
+
+        function purgeAndReload() {
+          var purge =
+            "caches" in window
+              ? caches.keys().then(function (keys) {
+                  return Promise.all(
+                    keys.map(function (key) {
+                      return caches.delete(key);
+                    })
+                  );
+                })
+              : Promise.resolve();
+          var unregister =
+            "serviceWorker" in navigator
+              ? navigator.serviceWorker.getRegistrations().then(function (items) {
+                  return Promise.all(
+                    items.map(function (item) {
+                      return item.unregister();
+                    })
+                  );
+                })
+              : Promise.resolve();
+          return Promise.all([purge, unregister])
+            .catch(function () {})
+            .then(function () {
+              var next = new URL(window.location.href);
+              next.searchParams.set("fresh", String(Date.now()));
+              window.location.replace(next.toString());
+            });
+        }
+
+        // Render self-heal: if the archive list is still empty after load, the
+        // browser served a stale/corrupt cached page. Purge caches, drop the
+        // service worker, then reload once with a cache-busting parameter.
+        window.addEventListener("load", function () {
+          window.setTimeout(function () {
+            var list = document.getElementById("dayList");
+            if (list && list.children.length > 0) return;
+            if (read(FRESH_KEY) === "1") return;
+            store(FRESH_KEY, "1");
+            purgeAndReload();
+          }, 1500);
+        });
+
+        // Offline fallback.
+        if ("serviceWorker" in navigator) {
+          window.addEventListener("load", function () {
+            navigator.serviceWorker
+              .register("./sw.js", { updateViaCache: "none" })
+              .catch(function () {});
+          });
+        }
+
+        // Staleness check: reload at most once so a lagging marker can never
+        // trap the page in a reload loop.
+        window.addEventListener("load", function () {
+          var days = window.TOPIC_RADAR_DATA && window.TOPIC_RADAR_DATA.days;
+          var currentDate = (days && days[0] && days[0].date) || "";
+          fetch("./publish-meta.json?ts=" + Date.now(), { cache: "no-store" })
+            .then(function (response) {
+              if (!response.ok) throw new Error("HTTP " + response.status);
+              return response.json();
+            })
+            .then(function (meta) {
+              var latestDate = String((meta && meta.latest_daily_date) || "");
+              if (!latestDate || latestDate === currentDate) return;
+              if (read(RELOAD_KEY) === "1") return;
+              store(RELOAD_KEY, "1");
+              var next = new URL(window.location.href);
+              next.searchParams.set("v", latestDate);
+              window.location.replace(next.toString());
+            })
+            .catch(function () {});
+        });
+      })();
     </script>
     <!-- OFFLINE_FALLBACK_END -->
 """
@@ -768,7 +836,7 @@ self.addEventListener("fetch", (event) => {{
   if (event.request.mode !== "navigate") return;
 
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, {{ cache: "no-store" }})
       .then((response) => {{
         if (!response.ok) throw new Error(`HTTP ${{response.status}}`);
         const copy = response.clone();
@@ -777,7 +845,7 @@ self.addEventListener("fetch", (event) => {{
         );
         return response;
       }})
-      .catch(() => caches.match(OFFLINE_PAGE))
+      .catch(() => caches.match(OFFLINE_PAGE, {{ ignoreSearch: true }}))
   );
 }});
 """
