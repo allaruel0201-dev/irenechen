@@ -796,6 +796,27 @@ def sync_root_dashboard_fallback() -> None:
       shutil.copyfile(source, target)
 
 
+def write_publish_meta(latest_date: str | None) -> None:
+  """Keep publish-meta.json in sync with the bundled data.
+
+  The client-side staleness check compares publish-meta.json's latest_daily_date
+  with the newest date inside the inlined data. If the marker lags behind the
+  data, the page reloads itself on every load and never renders, so the build
+  must always refresh the marker in both dashboard directories.
+  """
+  if not latest_date:
+    return
+
+  payload = {
+    "latest_daily_date": latest_date,
+    "published_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+  }
+  text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+  for directory in (DASHBOARD_DIR, ROOT_DASHBOARD_DIR):
+    if directory.exists():
+      (directory / "publish-meta.json").write_text(text, encoding="utf-8")
+
+
 def build() -> None:
   DASHBOARD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -835,6 +856,7 @@ def build() -> None:
   ensure_offline_fallback()
   write_service_worker(version)
   sync_root_dashboard_fallback()
+  write_publish_meta(days[0]["date"] if days else None)
 
 
 if __name__ == "__main__":
